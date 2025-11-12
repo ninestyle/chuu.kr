@@ -1,0 +1,24 @@
+모델 연출 사진 생성 요청
+
+When other characters appear besides the main model, use different hair colors and outfits unless they wear the same uniform. The main model is the service provider. The customer must be clearly visible, centered, and naturally receiving the service. Focus on realistic interaction and emphasize the service over the individuals. Use the [Scene] text to guide the service type and mood. Create a professional, high-quality, and fitting setting. 
+
+[ Photo ]
+   - width and length ratio 16:9, full screen
+   - cinematic, super realistic, don't create text
+   - color tone: Pastel Dream (Pink, Lavender, Cream)
+   - background: matte solid
+
+[ Model ]
+   - profile: korean woman in her 20s glamorous slim and toned 
+   - hair: ash blond, slightly tousled short wavy bob 
+   - headwear: a clean, light gray sanitary baker’s cap made of breathable fabric, softly fitted around the head without flattening the hairstyle. It has a modern, minimal design that allows some volume at the top, suitable for a glamorous look while maintaining full hair coverage. No logos or decorations.
+   - mask: small, clear acrylic chef face shield covering only the mouth and nose, held about 2-3 cm away from the face, not covering eyes, forehead, or ears, no glasses or eyewear worn, minimal and lightweight design.
+   - clothing: ultra slim body fit, no visible underwear
+   - clothing > top: white color, a comfortable uniform
+   - clothing > apron: gray color, bib apron, canvas fabric, with "CHUU" embroidered or printed cleanly at the center front of the apron
+   - clothing > bottom: gray color, pants 
+
+[ Scene ]
+- 파티시에 모델은 주방에서 다음과 같은 제품을 만들고 있다.
+레터링 케이크
+크림 위에 원하는 문구나 간단한 그림을 직접 그려 넣어 마음을 전하는 케이크입니다.
