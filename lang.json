@@ -119,7 +119,7 @@
         "media_desc": "Meet CHUU's lovely moments on video!",
         "location_title": "Location",
         "order_button": "Order Now",
-        "order_button_url": "./request/?lang=en"
+        "order_button_url": "https://app.dam.so/order/chuu/?lang=en"
     },
     "ko": {
         "site_title": "츄 - 레터링 케익 & 쿠키",
@@ -213,6 +213,6 @@
         "media_desc": "츄의 사랑스러운 순간을 영상으로 만나보세요!",
         "location_title": "오시는 길",
         "order_button": "주문하기",
-        "order_button_url": "./request/?lang=ko"
+        "order_button_url": "https://app.dam.so/order/chuu/?lang=ko"
     }
 }
