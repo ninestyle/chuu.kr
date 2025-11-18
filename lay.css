@@ -16,7 +16,7 @@
    --bg-navbar-animated: linear-gradient(45deg, #fef7f9, #ffffff, #fef7f9, #fdeff2);
    --bg-card: #FFFFFF;
    --bg-button: #E0BBE4; /* Pastel Lavender */
-   --bg-button-hover: #D2AAE1;
+   --bg-button-hover: #C98696;
    --bg-lang-switcher: #FFF4E0; /* Soft Cream */
    --bg-lang-switcher-hover: #FFECCF;
    --bg-lang-switcher-active: #E0BBE4;
@@ -42,7 +42,7 @@
    --border-form-input: #E0D5E3;
    --border-form-input-focus: var(--text-accent);
    
-   --ce-text-color: #FFFFFF;
+   --ce-text-color: #614B51;
    --ce-input-bg-color: rgba(255, 181, 197, 0.4); /* Sweet Pink */
    --ce-input-border-color: rgba(255, 181, 197, 0.6);
 }
@@ -55,7 +55,7 @@
        --bg-navbar-animated: linear-gradient(45deg, #4d3f47, #3b3037, #4d3f47, #5c4e56);
        --bg-card: #4A3E45;
        --bg-button: #E0BBE4; /* Lavender pop */
-       --bg-button-hover: #E9CBED;
+       --bg-button-hover: #C98696;
        --bg-lang-switcher: #5C4E56;
        --bg-lang-switcher-hover: #705F6A;
        --bg-lang-switcher-active: #E0BBE4;
@@ -80,6 +80,7 @@
        --border-form-input: #705F6A;
        --border-form-input-focus: var(--text-accent);
        
+       --ce-text-color: #F5EAF0;
        --ce-input-bg-color: rgba(224, 187, 228, 0.3); /* Pastel Lavender */
        --ce-input-border-color: rgba(224, 187, 228, 0.5);
    }
@@ -126,6 +127,15 @@ body, .pe-card__title, .pe-process-item__title {
 
 .pe-process-grid {
    margin-bottom: 100px;
+}
+
+/* =================================================================
+   Header Icon Button Hover Fix
+================================================================= */
+.ce-button-group__icon:hover {
+    background-color: var(--bg-lang-switcher-hover);
+    color: var(--text-accent);
+    transform: scale(1.1);
 }
 
 /* =================================================================
