@@ -1,8 +1,8 @@
 /*
-   Last Modified: 2025-07-09 07:25
-   Author: Maxim
-   Contact: https://www.maxim.pe.kr
-   License: © 2025 Maxim. All Rights Reserved.
+    Version: 2.2.1
+    Last Modified: 2025-11-18
+    Author: Maxim
+    License: © 2025 Maxim. All Rights Reserved.
 */
 
 /* =================================================================
@@ -15,13 +15,13 @@
    --bg-secondary: #FEF7F9; /* Very Soft Pink */
    --bg-navbar-animated: linear-gradient(45deg, #fef7f9, #ffffff, #fef7f9, #fdeff2);
    --bg-card: #FFFFFF;
-   --bg-cta-button: #E0BBE4; /* Pastel Lavender */
-   --bg-cta-button-hover: #D2AAE1;
-   --bg-nav-icon-button: #FFB5C5; /* Sweet Pink */
-   --bg-nav-icon-button-hover: #FFACC2;
+   --bg-button: #E0BBE4; /* Pastel Lavender */
+   --bg-button-hover: #D2AAE1;
    --bg-lang-switcher: #FFF4E0; /* Soft Cream */
    --bg-lang-switcher-hover: #FFECCF;
    --bg-lang-switcher-active: #E0BBE4;
+   --bg-modal-button: var(--bg-button);
+   --bg-modal-button-hover: var(--bg-button-hover);
 
    --text-primary: #614B51; /* Deep Rose Brown */
    --text-secondary: #8C7B80;
@@ -29,15 +29,22 @@
    --text-accent: #957DAD; /* Deeper Lavender */
    --text-accent-hover: #8568A4;
    --text-navbar: #614B51;
-   --text-lang-switcher: #614B51; /* Changed for visibility */
+   --text-lang-switcher: #614B51;
    --text-lang-switcher-active: #FFFFFF;
-   --text-nav-icon-button: #FFFFFF;
-   --text-cta-button: #FFFFFF;
+   --text-button: #FFFFFF;
+   --text-modal-button: var(--text-button);
    --text-section-title-icon: #F4C2D4; /* Light Pink */
+   --text-form-loader: var(--text-accent);
 
    --border-card: #FCEFF2;
    --border-navbar-bottom: #FCEFF2;
    --border-section-heading-underline: #E0BBE4;
+   --border-form-input: #E0D5E3;
+   --border-form-input-focus: var(--text-accent);
+   
+   --ce-text-color: #FFFFFF;
+   --ce-input-bg-color: rgba(255, 181, 197, 0.4); /* Sweet Pink */
+   --ce-input-border-color: rgba(255, 181, 197, 0.6);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,12 +54,13 @@
        --bg-secondary: #4D3F47; /* Muted magenta */
        --bg-navbar-animated: linear-gradient(45deg, #4d3f47, #3b3037, #4d3f47, #5c4e56);
        --bg-card: #4A3E45;
-       --bg-cta-button: #E0BBE4; /* Lavender pop */
-       --bg-cta-button-hover: #E9CBED;
-       --bg-nav-icon-button: #FFB5C5; /* Sweet Pink pop */
+       --bg-button: #E0BBE4; /* Lavender pop */
+       --bg-button-hover: #E9CBED;
        --bg-lang-switcher: #5C4E56;
        --bg-lang-switcher-hover: #705F6A;
        --bg-lang-switcher-active: #E0BBE4;
+       --bg-modal-button: var(--bg-button);
+       --bg-modal-button-hover: var(--bg-button-hover);
 
        --text-primary: #F5EAF0;
        --text-secondary: #D9CAD4;
@@ -61,25 +69,31 @@
        --text-navbar: #F5EAF0;
        --text-lang-switcher: #F5EAF0;
        --text-lang-switcher-active: #3B3037;
-       --text-cta-button: #3B3037;
-       --text-nav-icon-button: #3B3037;
+       --text-button: #3B3037;
+       --text-modal-button: var(--text-button);
        --text-section-title-icon: #7A6A85;
+       --text-form-loader: var(--text-accent);
 
        --border-card: #5C4E56;
        --border-navbar-bottom: #5C4E56;
        --border-section-heading-underline: #E0BBE4;
+       --border-form-input: #705F6A;
+       --border-form-input-focus: var(--text-accent);
+       
+       --ce-input-bg-color: rgba(224, 187, 228, 0.3); /* Pastel Lavender */
+       --ce-input-border-color: rgba(224, 187, 228, 0.5);
    }
 }
 
 /* =================================================================
    Custom Styles for CHUU Site
 ================================================================= */
-body, .ui-card-title, .process-title {
+body, .pe-card__title, .pe-process-item__title {
    font-family: 'Gowun Dodum', sans-serif;
    font-weight: 400;
 }
 
-#home .home-logo {
+.pe-header .home-logo {
    font-family: 'Fredoka One', cursive;
    font-size: clamp(5rem, 3.5rem + 7.5vw, 8rem);
    font-weight: 400;
@@ -87,92 +101,88 @@ body, .ui-card-title, .process-title {
    text-transform: uppercase;
 }
 
-.logo {
+.pe-nav__logo {
    font-family: 'Poppins', sans-serif;
    font-weight: 700;
 }
 
-#home .content .subtitle {
+.pe-header__content .pe-header__subtitle {
    font-family: 'Gowun Dodum', sans-serif;
 }
 
-.section h2 {
+.pe-section h2 {
    font-family: 'Poppins', sans-serif;
    font-weight: 600;
 }
 
-main > .section:nth-of-type(even) {
-   background-color: var(--bg-secondary);
-}
-
-.product-details {
+.pe-product-list {
    padding: 0;
    margin-block-start: 30px;
 }
 
-.product-item .item-value {
+.pe-product-list__item .pe-product-list__value {
    line-height: 1.6;
 }
 
-.process-grid {
+.pe-process-grid {
    margin-bottom: 100px;
 }
 
 /* =================================================================
    Section Divider - Wavy
 ================================================================= */
-.section-divider {
+.pe-section.section-divider {
    position: relative;
    padding-top: 0;
-   padding-bottom: 200px; /* 구분선 높이만큼 패딩 추가 */
+   padding-bottom: 200px;
 }
 
-.section-divider::after {
+.pe-section.section-divider::after {
    content: '';
    position: absolute;
    left: 0;
    bottom: 0;
    width: 100%;
-   height: 80px; /* 구분선 높이 */
+   height: 80px;
    background-repeat: no-repeat;
    background-size: 100% 100%;
 }
 
-.section-divider.to-primary::after {
+.pe-section.section-divider.to-primary::after {
    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z' style='fill:%23FFFFFF;'%3E%3C/path%3E%3C/svg%3E");
 }
 
-.section-divider.to-secondary::after {
+.pe-section.section-divider.to-secondary::after {
    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z' style='fill:%23FEF7F9;'%3E%3C/path%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark) {
-   .section-divider.to-primary::after {
+   .pe-section.section-divider.to-primary::after {
        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z' style='fill:%233B3037;'%3E%3C/path%3E%3C/svg%3E");
    }
-   .section-divider.to-secondary::after {
+   .pe-section.section-divider.to-secondary::after {
        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z' style='fill:%234D3F47;'%3E%3C/path%3E%3C/svg%3E");
    }
 }
 
-.section-dynamic.section-divider::after {
+.pe-section--dynamic.section-divider::after {
    display: none;
 }
 
-section#cookies {
+.pe-section#cookies {
    padding-top: 100px;
 }
 
-section#request {
+.pe-section#request {
    padding: 0 0 100px 0;
 }
 
-.section-divider.to-primary {
+.pe-section.section-divider.to-primary {
    transform: none;
    opacity: 1;
 }
 
-/* z-index for home elements to ensure proper layering */
-#home .overlay { z-index: 1; }
-#home .content { z-index: 3; }
-#home .slide-indicators { z-index: 10; }
+.pe-header .pe-overlay { z-index: 1; }
+.pe-header #ce-bg-canvas { z-index: 2; }
+.pe-header__content { z-index: 3; }
+.pe-header .slide-indicators { z-index: 10; }
