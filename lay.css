@@ -182,7 +182,18 @@ body, .pe-card__title, .pe-process-item__title {
    opacity: 1;
 }
 
-.pe-header .pe-overlay { z-index: 1; }
-.pe-header #ce-bg-canvas { z-index: 2; }
-.pe-header__content { z-index: 3; }
+.pe-header .pe-overlay { z-index: 3; }
+.pe-header #ce-bg-canvas { z-index: 4; }
+.pe-header__content { z-index: 5; }
 .pe-header .slide-indicators { z-index: 10; }
+
+.pe-product-list__item--options {
+   flex-direction: column;
+   align-items: flex-start;
+   gap: 5px;
+}
+
+.pe-product-list__item--options .pe-product-list__value {
+   text-align: left;
+   margin-inline-start: 0;
+}

@@ -83,18 +83,18 @@ const heartEffect = {
             
             this.hearts.push({
                 x, y, directionX, directionY, size, color, rotation,
-                draw: () => {
-                    this.drawHeart(this.x, this.y, this.size, this.color, this.rotation);
+                draw: function() {
+                    heartEffect.drawHeart(this.x, this.y, this.size, this.color, this.rotation);
                 },
-                update: () => {
-                    if (this.x > this.width + this.size || this.x < -this.size) { this.x = (this.directionX > 0) ? -this.size : this.width + this.size; }
-                    if (this.y > this.height + this.size || this.y < -this.size) { this.y = (this.directionY > 0) ? -this.size : this.height + this.size; }
+                update: function() {
+                    if (this.x > heartEffect.width + this.size || this.x < -this.size) { this.x = (this.directionX > 0) ? -this.size : heartEffect.width + this.size; }
+                    if (this.y > heartEffect.height + this.size || this.y < -this.size) { this.y = (this.directionY > 0) ? -this.size : heartEffect.height + this.size; }
                     
-                    if (this.mouse.x !== null) {
-                        let dx = this.mouse.x - this.x;
-                        let dy = this.mouse.y - this.y;
+                    if (heartEffect.mouse.x !== null) {
+                        let dx = heartEffect.mouse.x - this.x;
+                        let dy = heartEffect.mouse.y - this.y;
                         let distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < this.mouse.radius + this.size) { 
+                        if (distance < heartEffect.mouse.radius + this.size) { 
                             this.x -= dx / 20; 
                             this.y -= dy / 20; 
                         }
