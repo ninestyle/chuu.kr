@@ -1,94 +1,113 @@
 /*
-    Version: 2.2.1
-    Last Modified: 2025-11-18
+    Version: 3.0.0 (V3 Refactored)
+    Framework: User Styles (Tier 3)
+    Last Modified: 2025-11-23
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
+    Theme: CHUU - Pastel Dream
 */
 
-/* =================================================================
-   Theme: CHUU - Pastel Dream
-================================================================= */
-
 :root {
-   /* -- Light Mode: Pastel Dream Theme -- */
+   /* [V3 Core Mapping] */
+   /* Mapping Pastel Dream theme to Core variables */
+   --ex-color-primary: #C98696;      /* Headings: Dusty Rose */
+   --ex-color-secondary: #8C7B80;    /* Text: Soft Gray */
+   --ex-color-accent: #E0BBE4;       /* Accent: Pastel Lavender */
+   --ex-color-bg: #FFFFFF;           /* Background: White */
+   --ex-color-surface: #FEF7F9;      /* Surface: Very Soft Pink */
+   --ex-color-text: #614B51;         /* Body Text: Deep Rose Brown */
+   --ex-color-border: #FCEFF2;       /* Borders */
+
+   /* [User Variables] */
    --bg-primary: #FFFFFF;
-   --bg-secondary: #FEF7F9; /* Very Soft Pink */
+   --bg-secondary: #FEF7F9;
    --bg-navbar-animated: linear-gradient(45deg, #fef7f9, #ffffff, #fef7f9, #fdeff2);
    --bg-card: #FFFFFF;
-   --bg-button: #E0BBE4; /* Pastel Lavender */
+   --bg-button: #E0BBE4;
    --bg-button-hover: #C98696;
-   --bg-lang-switcher: #FFF4E0; /* Soft Cream */
+   --bg-lang-switcher: #FFF4E0;
    --bg-lang-switcher-hover: #FFECCF;
    --bg-lang-switcher-active: #E0BBE4;
-   --bg-modal-button: var(--bg-button);
-   --bg-modal-button-hover: var(--bg-button-hover);
+   --bg-offer-badge: #E0BBE4;
+   --bg-overlay: rgba(0, 0, 0, 0.2);
 
-   --text-primary: #614B51; /* Deep Rose Brown */
+   --text-primary: #614B51;
    --text-secondary: #8C7B80;
-   --text-headings: #C98696; /* Dusty Rose */
-   --text-accent: #957DAD; /* Deeper Lavender */
+   --text-headings: #C98696;
+   --text-accent: #957DAD;
    --text-accent-hover: #8568A4;
    --text-navbar: #614B51;
    --text-lang-switcher: #614B51;
    --text-lang-switcher-active: #FFFFFF;
    --text-button: #FFFFFF;
-   --text-modal-button: var(--text-button);
-   --text-section-title-icon: #F4C2D4; /* Light Pink */
-   --text-form-loader: var(--text-accent);
-
+   --text-section-title-icon: #F4C2D4;
+   --text-header-title: #FFFFFF;
+   --text-header-subtitle: #FFFFFF;
+   --text-footer: #8C7B80;
+   
+   --bg-footer: #FEF7F9;
    --border-card: #FCEFF2;
    --border-navbar-bottom: #FCEFF2;
    --border-section-heading-underline: #E0BBE4;
-   --border-form-input: #E0D5E3;
-   --border-form-input-focus: var(--text-accent);
    
+   --shadow-card: rgba(201, 134, 150, 0.1);
+   --shadow-card-hover: rgba(201, 134, 150, 0.2);
+   
+   --ce-canvas-rgb: 255, 181, 197;
    --ce-text-color: #614B51;
-   --ce-input-bg-color: rgba(255, 181, 197, 0.4); /* Sweet Pink */
+   --ce-input-bg-color: rgba(255, 181, 197, 0.4);
    --ce-input-border-color: rgba(255, 181, 197, 0.6);
 }
 
 @media (prefers-color-scheme: dark) {
    :root {
-       /* -- Dark Mode: Pastel Dream Theme -- */
-       --bg-primary: #3B3037; /* Deep, warm purple/brown */
-       --bg-secondary: #4D3F47; /* Muted magenta */
+       /* [V3 Core Mapping - Dark] */
+       --ex-color-primary: #F4C2D4;
+       --ex-color-secondary: #D9CAD4;
+       --ex-color-accent: #E0BBE4;
+       --ex-color-bg: #3B3037;
+       --ex-color-surface: #4D3F47;
+       --ex-color-text: #F5EAF0;
+       --ex-color-border: #5C4E56;
+
+       /* [User Variables - Dark] */
+       --bg-primary: #3B3037;
+       --bg-secondary: #4D3F47;
        --bg-navbar-animated: linear-gradient(45deg, #4d3f47, #3b3037, #4d3f47, #5c4e56);
        --bg-card: #4A3E45;
-       --bg-button: #E0BBE4; /* Lavender pop */
+       --bg-button: #E0BBE4;
        --bg-button-hover: #C98696;
        --bg-lang-switcher: #5C4E56;
        --bg-lang-switcher-hover: #705F6A;
        --bg-lang-switcher-active: #E0BBE4;
-       --bg-modal-button: var(--bg-button);
-       --bg-modal-button-hover: var(--bg-button-hover);
+       --bg-offer-badge: #E0BBE4;
+       --bg-overlay: rgba(0, 0, 0, 0.5);
 
        --text-primary: #F5EAF0;
        --text-secondary: #D9CAD4;
-       --text-headings: #F4C2D4; /* Bright but soft pink */
+       --text-headings: #F4C2D4;
        --text-accent: #E0BBE4;
+       --text-accent-hover: #F4C2D4;
        --text-navbar: #F5EAF0;
        --text-lang-switcher: #F5EAF0;
        --text-lang-switcher-active: #3B3037;
        --text-button: #3B3037;
-       --text-modal-button: var(--text-button);
        --text-section-title-icon: #7A6A85;
-       --text-form-loader: var(--text-accent);
-
+       --text-header-title: #FFFFFF;
+       --text-header-subtitle: #F5EAF0;
+       --text-footer: #D9CAD4;
+       
+       --bg-footer: #2D242A;
        --border-card: #5C4E56;
        --border-navbar-bottom: #5C4E56;
        --border-section-heading-underline: #E0BBE4;
-       --border-form-input: #705F6A;
-       --border-form-input-focus: var(--text-accent);
        
-       --ce-text-color: #F5EAF0;
-       --ce-input-bg-color: rgba(224, 187, 228, 0.3); /* Pastel Lavender */
-       --ce-input-border-color: rgba(224, 187, 228, 0.5);
+       --ce-canvas-rgb: 224, 187, 228;
+       --ce-input-bg-color: rgba(224, 187, 228, 0.3);
    }
 }
 
-/* =================================================================
-   Custom Styles for CHUU Site
-================================================================= */
+/* Fonts */
 body, .pe-card__title, .pe-process-item__title {
    font-family: 'Gowun Dodum', sans-serif;
    font-weight: 400;
@@ -100,6 +119,8 @@ body, .pe-card__title, .pe-process-item__title {
    font-weight: 400;
    line-height: 1;
    text-transform: uppercase;
+   color: #FFFFFF;
+   text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
 }
 
 .pe-nav__logo {
@@ -116,31 +137,7 @@ body, .pe-card__title, .pe-process-item__title {
    font-weight: 600;
 }
 
-.pe-product-list {
-   padding: 0;
-   margin-block-start: 30px;
-}
-
-.pe-product-list__item .pe-product-list__value {
-   line-height: 1.6;
-}
-
-.pe-process-grid {
-   margin-bottom: 100px;
-}
-
-/* =================================================================
-   Header Icon Button Hover Fix
-================================================================= */
-.ce-button-group__icon:hover {
-    background-color: var(--bg-lang-switcher-hover);
-    color: var(--text-accent);
-    transform: scale(1.1);
-}
-
-/* =================================================================
-   Section Divider - Wavy
-================================================================= */
+/* Wavy Dividers (SVG Data URI) */
 .pe-section.section-divider {
    position: relative;
    padding-top: 0;
@@ -175,34 +172,16 @@ body, .pe-card__title, .pe-process-item__title {
    }
 }
 
-.pe-section--dynamic.section-divider::after {
-   display: none;
-}
-
-.pe-section#cookies {
-   padding-top: 100px;
-}
-
-.pe-section#request {
-   padding: 0 0 100px 0;
-}
-
-.pe-section.section-divider.to-primary {
-   transform: none;
-   opacity: 1;
-}
-
-.pe-header .pe-overlay { z-index: 3; }
-.pe-header #ce-bg-canvas { z-index: 4; }
-.pe-header__content { z-index: 5; }
-.pe-header .slide-indicators { z-index: 10; }
+.pe-section--dynamic.section-divider::after { display: none; }
+.pe-section#cookies { padding-top: 100px; }
+.pe-section#request { padding: 0 0 100px 0; }
+.pe-section.section-divider.to-primary { transform: none; opacity: 1; }
 
 .pe-product-list__item--options {
    flex-direction: column;
    align-items: flex-start;
    gap: 5px;
 }
-
 .pe-product-list__item--options .pe-product-list__value {
    text-align: left;
    margin-inline-start: 0;

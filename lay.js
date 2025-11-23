@@ -1,10 +1,36 @@
 /*
-    Version: 2.2.1
-    Last Modified: 2025-11-18
+    Version: 3.0.0 (V3 Refactored)
+    Framework: User Configuration (Tier 3)
+    Last Modified: 2025-11-23
     Author: Maxim
-    License: © 2025 Maxim. All Rights Reserved.
+    Theme: CHUU - Pastel Dream
 */
 
+const siteConfig = {
+    // [기본 설정]
+    language: 'ko',
+
+    // [캔버스 헤더 설정]
+    canvas_effect: 'heartEffect',
+    canvas_image_type: 'cover',
+    canvas_image_path: './section/home/',
+    canvas_image_count: 3,
+    canvas_image_format: 'jpg',
+    canvas_image_slide: 10,
+    canvas_indicators: true,
+    canvas_overlay: 'dotted',
+
+    // [아이콘 버튼] Profile, Request, Search 연결
+    icon_buttons: [
+        { name: 'Profile', icon: 'mail', url: '#profile' },
+        { name: 'Search', icon: 'search', url: '#search' },
+        { name: 'Request', icon: 'auto_awesome', url: '#request' }
+    ]
+    
+    // [API 설정] Demo Mode이므로 API Path 및 Turnstile Key 불필요
+};
+
+// [커스텀 이펙트] 하트 효과 (V3 Migration)
 const heartEffect = {
     canvas: null,
     ctx: null,
@@ -180,24 +206,12 @@ const heartEffect = {
     }
 };
 
-const siteConfig = {
-    canvas_effect: 'heartEffect',
-    canvas_image_type: 'cover',
-    canvas_image_count: 3,
-    canvas_image_path: './section/home/',
-    canvas_image_format: 'jpg',
-    canvas_indicators: true,
-    canvas_overlay: 'dotted',
-
-    icon_buttons: [
-        { name: 'Profile', icon: 'mail', url: '#profile' },
-        { name: 'Request', icon: 'auto_awesome', url: '#request' }
-    ],
-
-    TURNSTILE_SITE_KEY: '0x4AAAAAAACBUaQ2J0vXkPSAt'
-};
-
+// V3 Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    PE_V2.registerEffect('heartEffect', heartEffect);
-    PE_V2.init(siteConfig);
+    if (typeof PE_V3 !== 'undefined') {
+        PE_V3.registerEffect('heartEffect', heartEffect);
+        PE_V3.init(siteConfig);
+    } else {
+        console.error("Page Express V3 libraries not loaded.");
+    }
 });

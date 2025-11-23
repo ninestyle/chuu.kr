@@ -20,12 +20,12 @@
         "cookies_05_price_6pack": "$26",
         "cookies_06_price_3pack": "$15.5",
         "cookies_06_price_6pack": "$29",
-        "cookies_07_price_3pack": "$12.5",
-        "cookies_07_price_6pack": "$23",
-        "cookies_08_price_3pack": "$14",
-        "cookies_08_price_6pack": "$26",
-        "cookies_09_price_3pack": "$15.5",
-        "cookies_09_price_6pack": "$29"
+        "faq_title": "FAQ",
+        "order_button": "Order Now",
+        "order_button_url": "https://app.9style.com/order/chuu/?lang=en",
+        "contact_label_name": "Name:",
+        "contact_label_email": "E-mail:",
+        "location_title": "Location"
     },
     "en": {
         "site_title": "CHUU - Custom Cakes & Cookies",
@@ -100,12 +100,6 @@
         "cookies_05_desc": "A fantastic taste featuring a dense red velvet cookie filled with a soft cream cheese filling.",
         "cookies_06_title": "Oreo S'mores Cookie",
         "cookies_06_desc": "Crispy Oreos, chewy marshmallows, and rich chocolate come together to evoke memories of a campfire.",
-        "cookies_07_title": "Lemon Delight Cookie",
-        "cookies_07_desc": "Refreshing lemon zest and a sweet glaze combine to bring a burst of freshness to your mouth.",
-        "cookies_08_title": "Peanut Butter Pretzel Cookie",
-        "cookies_08_desc": "Salty pretzel pieces are added to a savory peanut butter base, creating an irresistible sweet and salty combination.",
-        "cookies_09_title": "Injeolmi Soboro Cookie",
-        "cookies_09_desc": "A cookie targeting traditional tastes, with a dough full of savory Injeolmi (Korean rice cake) powder topped with crispy soboro.",
         "faq_cake_01_q": "How many days in advance should I order a cake?",
         "faq_cake_01_a": "All cakes are made to order, so we recommend booking at least 3 days in advance. For complex designs, please inquire with more time.",
         "faq_cake_02_q": "How do I store the cake?",
@@ -131,17 +125,10 @@
         "media_title": "Advertising Video",
         "media_desc": "Meet CHUU's lovely moments on video!",
         "location_title": "Location",
-        "order_button": "Order Now",
-        "order_button_url": "https://app.9style.com/order/chuu/?lang=en",
         "profile_title": "Profile",
         "profile_desc": "Our company information and contact details.",
-        "contact_label_name": "Name:",
-        "contact_label_email": "E-mail:",
-        "contact_title": "Send a Message",
-        "contact_desc": "Have questions? Please feel free to ask.",
-        "contact_placeholder_email": "Your Email Address",
-        "contact_placeholder_message": "Your Message",
-        "contact_button": "Send Message"
+        "contact_label_name": "Representative:",
+        "contact_label_email": "Email:"
     },
     "ko": {
         "site_title": "츄 - 레터링 케익 & 쿠키",
@@ -216,12 +203,6 @@
         "cookies_05_desc": "꾸덕한 레드벨벳 쿠키 속에 부드러운 크림치즈 필링을 가득 채워 환상적인 맛을 자랑합니다.",
         "cookies_06_title": "오레오 스모어 쿠키",
         "cookies_06_desc": "바삭한 오레오와 쫀득한 마시멜로, 진한 초콜릿이 만나 캠프파이어의 추억을 떠올리게 합니다.",
-        "cookies_07_title": "레몬 딜라이트 쿠키",
-        "cookies_07_desc": "상큼한 레몬 제스트와 달콤한 글레이즈가 어우러져 입안 가득 상쾌함을 선사합니다.",
-        "cookies_08_title": "피넛버터 프레첼 쿠키",
-        "cookies_08_desc": "고소한 피넛버터 베이스에 짭짤한 프레첼 조각이 더해져 멈출 수 없는 단짠의 조화를 이룹니다.",
-        "cookies_09_title": "인절미 소보로 쿠키",
-        "cookies_09_desc": "고소한 인절미 가루를 듬뿍 넣은 반죽 위에 바삭한 소보로를 올려 할매니얼 입맛을 저격합니다.",
         "faq_cake_01_q": "케이크 주문은 최소 며칠 전에 해야 하나요?",
         "faq_cake_01_a": "모든 케이크는 주문 제작으로, 최소 3일 전 예약을 권장합니다. 복잡한 디자인은 여유있게 문의해주세요.",
         "faq_cake_02_q": "케이크 보관은 어떻게 하나요?",
@@ -252,11 +233,6 @@
         "profile_title": "연락처",
         "profile_desc": "궁금한 점은 언제든지 문의하세요.",
         "contact_label_name": "이름:",
-        "contact_label_email": "이메일:",
-        "contact_title": "문의하기",
-        "contact_desc": "담당자가 확인 후 이메일로 답변 드립니다.",
-        "contact_placeholder_email": "이메일 주소를 입력하세요",
-        "contact_placeholder_message": "문의 내용을 입력하세요",
-        "contact_button": "메시지 보내기"
+        "contact_label_email": "이메일:"
     }
 }
