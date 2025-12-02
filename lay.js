@@ -1,7 +1,7 @@
 /*
-    Version: 3.0.0 (V3 Refactored)
+    Version: 3.2.0 (Refactored)
     Framework: User Configuration (Tier 3)
-    Last Modified: 2025-11-23
+    Last Modified: 2025-12-02
     Author: Maxim
     Theme: CHUU - Pastel Dream
 */
@@ -9,6 +9,9 @@
 const siteConfig = {
     // [기본 설정]
     language: 'ko',
+
+    // [V3.2 Config] Demo Mode Activation
+    demo_mode: true, // This enables auto-injection of demo elements
 
     // [캔버스 헤더 설정]
     canvas_effect: 'heartEffect',
@@ -20,17 +23,19 @@ const siteConfig = {
     canvas_indicators: true,
     canvas_overlay: 'dotted',
 
-    // [아이콘 버튼] Profile, Request, Search 연결
+    // [아이콘 버튼]
+    // Note: V3.2 Global Router supports '@action' syntax, 
+    // but for simple page scrolling we keep '#' syntax.
     icon_buttons: [
         { name: 'Profile', icon: 'mail', url: '#profile' },
         { name: 'Search', icon: 'search', url: '#search' },
-        { name: 'Request', icon: 'auto_awesome', url: '#request' }
+        { name: 'Request', icon: 'auto_awesome', url: '#demo' } // Points to auto-injected demo section
     ]
     
     // [API 설정] Demo Mode이므로 API Path 및 Turnstile Key 불필요
 };
 
-// [커스텀 이펙트] 하트 효과 (V3 Migration)
+// [커스텀 이펙트] 하트 효과 (V3 Compatible)
 const heartEffect = {
     canvas: null,
     ctx: null,

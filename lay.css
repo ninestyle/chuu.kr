@@ -1,7 +1,7 @@
 /*
-    Version: 3.0.0 (V3 Refactored)
+    Version: 3.2.0 (V3 Refactored)
     Framework: User Styles (Tier 3)
-    Last Modified: 2025-11-23
+    Last Modified: 2025-12-02
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
     Theme: CHUU - Pastel Dream
@@ -9,14 +9,13 @@
 
 :root {
    /* [V3 Core Mapping] */
-   /* Mapping Pastel Dream theme to Core variables */
-   --ex-color-primary: #C98696;      /* Headings: Dusty Rose */
-   --ex-color-secondary: #8C7B80;    /* Text: Soft Gray */
-   --ex-color-accent: #E0BBE4;       /* Accent: Pastel Lavender */
-   --ex-color-bg: #FFFFFF;           /* Background: White */
-   --ex-color-surface: #FEF7F9;      /* Surface: Very Soft Pink */
-   --ex-color-text: #614B51;         /* Body Text: Deep Rose Brown */
-   --ex-color-border: #FCEFF2;       /* Borders */
+   --ex-color-primary: #C98696;
+   --ex-color-secondary: #8C7B80;
+   --ex-color-accent: #E0BBE4;
+   --ex-color-bg: #FFFFFF;
+   --ex-color-surface: #FEF7F9;
+   --ex-color-text: #614B51;
+   --ex-color-border: #FCEFF2;
 
    /* [User Variables] */
    --bg-primary: #FFFFFF;
@@ -137,7 +136,7 @@ body, .pe-card__title, .pe-process-item__title {
    font-weight: 600;
 }
 
-/* Wavy Dividers (SVG Data URI) */
+/* Wavy Dividers */
 .pe-section.section-divider {
    position: relative;
    padding-top: 0;
@@ -174,7 +173,6 @@ body, .pe-card__title, .pe-process-item__title {
 
 .pe-section--dynamic.section-divider::after { display: none; }
 .pe-section#cookies { padding-top: 100px; }
-.pe-section#demo { padding: 0 0 100px 0; }
 .pe-section.section-divider.to-primary { transform: none; opacity: 1; }
 
 .pe-product-list__item--options {
