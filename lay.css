@@ -1,14 +1,12 @@
 /*
-    Version: 3.2.0 (V3 Refactored)
+    Version: 3.2.0 (Standardized)
     Framework: User Styles (Tier 3)
-    Last Modified: 2025-12-02
-    Author: Maxim
-    License: © 2025 Maxim. All Rights Reserved.
+    Last Modified: 2025-12-05
     Theme: CHUU - Pastel Dream
 */
 
 :root {
-   /* [V3 Core Mapping] */
+   /* [Tier 1 Mapping] Core Variables */
    --ex-color-primary: #C98696;
    --ex-color-secondary: #8C7B80;
    --ex-color-accent: #E0BBE4;
@@ -17,50 +15,22 @@
    --ex-color-text: #614B51;
    --ex-color-border: #FCEFF2;
 
-   /* [User Variables] */
-   --bg-primary: #FFFFFF;
-   --bg-secondary: #FEF7F9;
-   --bg-navbar-animated: linear-gradient(45deg, #fef7f9, #ffffff, #fef7f9, #fdeff2);
-   --bg-card: #FFFFFF;
-   --bg-button: #E0BBE4;
-   --bg-button-hover: #C98696;
-   --bg-lang-switcher: #FFF4E0;
-   --bg-lang-switcher-hover: #FFECCF;
-   --bg-lang-switcher-active: #E0BBE4;
-   --bg-offer-badge: #E0BBE4;
-   --bg-overlay: rgba(0, 0, 0, 0.2);
+   /* [Tier 2 Mapping] Page Variables */
+   --pe-color-bg: #FFFFFF;
+   --pe-color-text: #614B51;
+   --pe-color-accent: #E0BBE4;
+   --pe-font-heading: 'Poppins', sans-serif;
+   --pe-bg-section-even: #FEF7F9;
+   --pe-shadow-card: 0 10px 30px rgba(201, 134, 150, 0.1);
+   --pe-border-color: #FCEFF2;
 
-   --text-primary: #614B51;
-   --text-secondary: #8C7B80;
-   --text-headings: #C98696;
-   --text-accent: #957DAD;
-   --text-accent-hover: #8568A4;
-   --text-navbar: #614B51;
-   --text-lang-switcher: #614B51;
-   --text-lang-switcher-active: #FFFFFF;
-   --text-button: #FFFFFF;
-   --text-section-title-icon: #F4C2D4;
-   --text-header-title: #FFFFFF;
-   --text-header-subtitle: #FFFFFF;
-   --text-footer: #8C7B80;
-   
-   --bg-footer: #FEF7F9;
-   --border-card: #FCEFF2;
-   --border-navbar-bottom: #FCEFF2;
-   --border-section-heading-underline: #E0BBE4;
-   
-   --shadow-card: rgba(201, 134, 150, 0.1);
-   --shadow-card-hover: rgba(201, 134, 150, 0.2);
-   
-   --ce-canvas-rgb: 255, 181, 197;
-   --ce-text-color: #614B51;
-   --ce-input-bg-color: rgba(255, 181, 197, 0.4);
-   --ce-input-border-color: rgba(255, 181, 197, 0.6);
+   /* [User Variables] Custom Theme */
+   --bg-navbar-animated: linear-gradient(45deg, #fef7f9, #ffffff, #fef7f9, #fdeff2);
 }
 
 @media (prefers-color-scheme: dark) {
    :root {
-       /* [V3 Core Mapping - Dark] */
+       /* [Tier 1 Mapping - Dark] */
        --ex-color-primary: #F4C2D4;
        --ex-color-secondary: #D9CAD4;
        --ex-color-accent: #E0BBE4;
@@ -69,44 +39,16 @@
        --ex-color-text: #F5EAF0;
        --ex-color-border: #5C4E56;
 
-       /* [User Variables - Dark] */
-       --bg-primary: #3B3037;
-       --bg-secondary: #4D3F47;
-       --bg-navbar-animated: linear-gradient(45deg, #4d3f47, #3b3037, #4d3f47, #5c4e56);
-       --bg-card: #4A3E45;
-       --bg-button: #E0BBE4;
-       --bg-button-hover: #C98696;
-       --bg-lang-switcher: #5C4E56;
-       --bg-lang-switcher-hover: #705F6A;
-       --bg-lang-switcher-active: #E0BBE4;
-       --bg-offer-badge: #E0BBE4;
-       --bg-overlay: rgba(0, 0, 0, 0.5);
-
-       --text-primary: #F5EAF0;
-       --text-secondary: #D9CAD4;
-       --text-headings: #F4C2D4;
-       --text-accent: #E0BBE4;
-       --text-accent-hover: #F4C2D4;
-       --text-navbar: #F5EAF0;
-       --text-lang-switcher: #F5EAF0;
-       --text-lang-switcher-active: #3B3037;
-       --text-button: #3B3037;
-       --text-section-title-icon: #7A6A85;
-       --text-header-title: #FFFFFF;
-       --text-header-subtitle: #F5EAF0;
-       --text-footer: #D9CAD4;
-       
-       --bg-footer: #2D242A;
-       --border-card: #5C4E56;
-       --border-navbar-bottom: #5C4E56;
-       --border-section-heading-underline: #E0BBE4;
-       
-       --ce-canvas-rgb: 224, 187, 228;
-       --ce-input-bg-color: rgba(224, 187, 228, 0.3);
+       /* [Tier 2 Mapping - Dark] */
+       --pe-color-bg: #3B3037;
+       --pe-color-text: #F5EAF0;
+       --pe-bg-section-even: #4D3F47;
+       --pe-shadow-card: 0 10px 30px rgba(0,0,0,0.3);
+       --pe-border-color: #5C4E56;
    }
 }
 
-/* Fonts */
+/* Fonts & Typography */
 body, .pe-card__title, .pe-process-item__title {
    font-family: 'Gowun Dodum', sans-serif;
    font-weight: 400;
@@ -136,7 +78,7 @@ body, .pe-card__title, .pe-process-item__title {
    font-weight: 600;
 }
 
-/* Wavy Dividers */
+/* Custom Wavy Dividers */
 .pe-section.section-divider {
    position: relative;
    padding-top: 0;
