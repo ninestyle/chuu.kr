@@ -1,0 +1,55 @@
+{
+    "_default": {
+        "ex_footer_credit_text": "Powered by Maxim",
+        "ex_footer_credit_url": "https://www.maxim.pe.kr",
+        "ex_copyright_text": "&copy; ${year} ${domain_brand}. All Rights Reserved."
+    },
+    "ko": {
+        "ex_btn_confirm": "확인",
+        "ex_btn_cancel": "취소",
+        "ex_btn_close": "닫기",
+        "ex_btn_submit": "전송",
+        "ex_btn_search": "검색",
+        "ex_demo_title": "Express Series",
+        "ex_demo_link_warning": "이 링크는 예시이며 실제 사이트와 무관합니다.",
+        "ex_success_demo": "데모 모드: 요청이 성공적으로 처리되었습니다 (가상).",
+        "ex_error_network": "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        "ex_error_unknown": "알 수 없는 오류가 발생했습니다.",
+        "ex_error_api": "서버 요청에 실패했습니다.",
+        "ex_error_captcha": "보안 검증에 실패했습니다. 새로고침 후 다시 시도해주세요.",
+        "ex_success_title": "완료",
+        "ex_success_desc": "요청하신 작업이 성공적으로 처리되었습니다."
+    },
+    "en": {
+        "ex_btn_confirm": "Confirm",
+        "ex_btn_cancel": "Cancel",
+        "ex_btn_close": "Close",
+        "ex_btn_submit": "Submit",
+        "ex_btn_search": "Search",
+        "ex_demo_title": "Express Series",
+        "ex_demo_link_warning": "This link is a demo and not related to the actual site.",
+        "ex_success_demo": "Demo Mode: Request processed successfully (Mock).",
+        "ex_error_network": "Network error. Please try again later.",
+        "ex_error_unknown": "An unknown error occurred.",
+        "ex_error_api": "Server request failed.",
+        "ex_error_captcha": "Security verification failed. Please refresh.",
+        "ex_success_title": "Complete",
+        "ex_success_desc": "Your request has been processed successfully."
+    },
+    "vi": {
+        "ex_btn_confirm": "Xác nhận",
+        "ex_btn_cancel": "Hủy",
+        "ex_btn_close": "Đóng",
+        "ex_btn_submit": "Gửi",
+        "ex_btn_search": "Tìm kiếm",
+        "ex_demo_title": "Express Series",
+        "ex_demo_link_warning": "Liên kết này là bản demo và không liên quan đến trang web thực tế.",
+        "ex_success_demo": "Chế độ Demo: Yêu cầu được xử lý thành công (Giả lập).",
+        "ex_error_network": "Lỗi mạng. Vui lòng thử lại sau.",
+        "ex_error_unknown": "Đã xảy ra lỗi không xác định.",
+        "ex_error_api": "Yêu cầu máy chủ thất bại.",
+        "ex_error_captcha": "Xác minh bảo mật thất bại. Vui lòng làm mới.",
+        "ex_success_title": "Hoàn thành",
+        "ex_success_desc": "Yêu cầu của bạn đã được xử lý thành công."
+    }
+}

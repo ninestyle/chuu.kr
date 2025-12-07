@@ -1,34 +1,35 @@
 /*
-    Express Core Engine (Tier 1)
-    - Passive Mode, API Interface, UI Utilities
-    Version: 3.3.0
-    Last Modified: 2025-11-24
-    Author: Maxim
+    Tier 1: Express Core Engine
+    Version: 4.0.0 (Migration Build)
+    Role: Facility (Infrastructure, API, UI, Canvas Core)
+    Last Modified: 2025-12-07
     License: © 2025 Maxim. All Rights Reserved.
 */
+
 const Express = (() => {
     'use strict';
 
     let config = {};
     let langData = {};
     let isInitialized = false;
-    let currentLang = 'en';
-
+    
+    // [System Defaults]
     const FALLBACK_MSGS = {
-        ex_error_network: "Network Error. Please check your connection.",
-        ex_error_unknown: "An unknown error occurred.",
-        ex_error_captcha: "Security verification failed. Please refresh.",
-        ex_error_api: "Server request failed.",
+        ex_error_network: "Network Error",
+        ex_error_unknown: "Unknown Error",
         ex_btn_confirm: "OK",
-        ex_btn_cancel: "Cancel",
-        ex_btn_close: "Close"
+        ex_btn_cancel: "Cancel"
     };
 
-    // [Tier 1] Common Utilities
+    // -------------------------------------------------------------------------
+    // 1. Utilities (Facility Tools)
+    // -------------------------------------------------------------------------
     const Util = {
+        // DOM Selector
         $(selector, parent = document) { return parent.querySelector(selector); },
         $$(selector, parent = document) { return parent.querySelectorAll(selector); },
 
+        // Domain & Environment Info
         getDomainInfo() {
             const hostname = window.location.hostname;
             const pathname = window.location.pathname;
@@ -42,6 +43,7 @@ const Express = (() => {
                 const brand = parts.length > 2 ? parts[parts.length - 2] : parts[0];
                 const sub = parts.length > 2 ? parts.slice(0, -2).join('.') : '';
                 const apex = `${brand}.${tld}`;
+                // Remove index.html and trailing slashes for clean path
                 const cleanedPath = pathname.replace(/index\.html$/, '').replace(/\/$/, '').replace(/^\//, '');
                 domainInfo = { full: hostname, apex: apex, sub: sub, tld: tld, brand: brand, path: cleanedPath };
             }
@@ -57,6 +59,7 @@ const Express = (() => {
             };
         },
 
+        // Text Processing (Variable Injection)
         processText(str) {
             if (!str || typeof str !== 'string') return str;
             const vars = this.getDomainInfo();
@@ -67,10 +70,10 @@ const Express = (() => {
         },
 
         getText(key) {
-            const val = langData[key];
-            return val ? this.processText(val) : (FALLBACK_MSGS[key] || key);
+            return langData[key] ? this.processText(langData[key]) : (FALLBACK_MSGS[key] || key);
         },
 
+        // Cooldown Factory (Spam Prevention)
         createCooldown(key, duration = 30000) {
             return {
                 isActive() {
@@ -89,6 +92,7 @@ const Express = (() => {
             };
         },
 
+        // Array Shuffler
         createShuffleList(count) {
             const list = Array.from({ length: count }, (_, i) => i + 1);
             for (let i = list.length - 1; i > 0; i--) {
@@ -99,16 +103,12 @@ const Express = (() => {
         }
     };
 
+    // -------------------------------------------------------------------------
+    // 2. UI Components (Visual Ingredients)
+    // -------------------------------------------------------------------------
     const UI = {
         init() {
-            this.injectStyles();
             this.initDemoLinks();
-        },
-
-        injectStyles() {
-            // Tier 1 CSS should be loaded via <link> in HTML for performance, 
-            // but this is a fallback for dynamic imports if needed.
-            // In V3.3 Standard, we expect CSS to be loaded by Tier 2 or HTML.
         },
 
         initDemoLinks() {
@@ -117,11 +117,12 @@ const Express = (() => {
                 if (link) {
                     e.preventDefault();
                     const href = link.getAttribute('href');
+                    
                     const warningMsg = Util.getText('ex_demo_link_warning');
                     const title = Util.getText('ex_demo_title') || 'Notice';
 
                     this.Modal.show(title, warningMsg, { type: 'confirm' }).then((confirm) => {
-                        if (confirm && href && href !== '#' && !href.startsWith('javascript:')) {
+                        if (confirm && href && href !== '#') {
                             window.open(href, '_blank');
                         }
                     });
@@ -133,6 +134,7 @@ const Express = (() => {
             show(btnElement = null) {
                 if (btnElement) {
                     const textSpan = btnElement.querySelector('span:not(.ex-loader)');
+                    // Create loader only if not exists
                     if (!btnElement.querySelector('.ex-loader')) {
                         const loader = document.createElement('span');
                         loader.className = 'ex-loader';
@@ -147,7 +149,7 @@ const Express = (() => {
                         overlay = document.createElement('div');
                         overlay.id = 'ex-global-loader';
                         overlay.className = 'ex-overlay ex-flex-center';
-                        overlay.innerHTML = `<div class="ex-loader" style="width: 40px; height: 40px; border-color: rgba(255,255,255,0.2); border-top-color: #FFF;"></div>`;
+                        overlay.innerHTML = `<div class="ex-loader" style="width: 40px; height: 40px;"></div>`;
                         document.body.appendChild(overlay);
                     }
                     setTimeout(() => overlay.classList.add('active'), 10);
@@ -185,6 +187,7 @@ const Express = (() => {
                 toast.textContent = Util.processText(message);
                 
                 container.appendChild(toast);
+                
                 requestAnimationFrame(() => toast.classList.add('active'));
 
                 setTimeout(() => {
@@ -209,7 +212,7 @@ const Express = (() => {
                     const contentHtml = `<div class="ex-modal__content">${Util.processText(content)}</div>`;
                     
                     let buttonsHtml = '';
-                    if (options.type === 'confirm') {
+                    if (options.type === 'confirm' || options.type === 'yesno') {
                         buttonsHtml = `
                             <div class="ex-modal__actions">
                                 <button class="ex-btn ex-btn--secondary" data-action="cancel">${Util.getText('ex_btn_cancel')}</button>
@@ -243,11 +246,7 @@ const Express = (() => {
 
                     modal.addEventListener('click', (e) => {
                         const action = e.target.dataset.action;
-                        if (action) close(action === 'confirm');
-                    });
-                    // Close on overlay click
-                    overlay.addEventListener('click', (e) => {
-                        if (e.target === overlay && options.type !== 'confirm') close(false);
+                        if (action) close(action === 'confirm' || action === 'close');
                     });
                 });
             }
@@ -266,7 +265,7 @@ const Express = (() => {
             open(src) {
                 const overlay = document.createElement('div');
                 overlay.className = 'ex-lightbox';
-                overlay.innerHTML = `<img src="${src}"><span class="ex-lightbox__close">&times;</span>`;
+                overlay.innerHTML = `<div class="ex-lightbox__content"><img src="${src}"><span class="ex-lightbox__close">&times;</span></div>`;
                 document.body.appendChild(overlay);
                 
                 requestAnimationFrame(() => overlay.classList.add('active'));
@@ -282,10 +281,14 @@ const Express = (() => {
         }
     };
 
+    // -------------------------------------------------------------------------
+    // 3. Canvas Engine (Visual Core)
+    // -------------------------------------------------------------------------
     const Canvas = {
         init(container, options = {}) {
             if (!container) return;
             
+            // Layer Setup
             let canvasLayer = container.querySelector('.ex-canvas');
             if (!canvasLayer) {
                 canvasLayer = document.createElement('div');
@@ -295,14 +298,18 @@ const Express = (() => {
                 canvasLayer.innerHTML = '';
             }
 
+            // 1. Overlay Pattern
             if (options.overlay) {
                 const overlay = document.createElement('div');
-                // Support both boolean and string types for overlay
-                const overlayType = (options.overlay === true) ? 'dotted' : options.overlay;
-                overlay.className = `ex-canvas__overlay ex-canvas__overlay--${overlayType}`;
-                canvasLayer.appendChild(overlay);
+                // Support both boolean true (dotted) and specific string
+                const overlayType = options.overlay === true ? 'dotted' : options.overlay;
+                if (overlayType && overlayType !== 'none') {
+                    overlay.className = `ex-canvas__overlay ex-canvas__overlay--${overlayType}`;
+                    canvasLayer.appendChild(overlay);
+                }
             }
 
+            // 2. Background Media (Image/Slider)
             const hasImage = options.image_count > 0 && options.image_path;
             const slideDuration = parseInt(options.image_slide, 10) || 0;
             const type = options.image_type || 'none';
@@ -315,23 +322,22 @@ const Express = (() => {
                 }
             }
 
-            // Effects Support (External & Internal)
-            if (options.effect) {
+            // 3. Effect Engine
+            const effectName = options.effect;
+            if (effectName && effectName !== 'none') {
                 const effectCanvas = document.createElement('canvas');
                 effectCanvas.className = 'ex-canvas__effect';
                 canvasLayer.appendChild(effectCanvas);
                 
-                // 1. Check if effect is registered in Express.Effects
-                if (Express.Effects && Express.Effects[options.effect]) {
-                    Express.Effects[options.effect].init(container); // Pass container or header
-                } 
-                // 2. Check global window object (Legacy/User extensions)
-                else if (typeof window[options.effect] === 'function') {
-                    window[options.effect](effectCanvas);
-                }
-                // 3. Object-based global effect (like heartEffect)
-                else if (window[options.effect] && typeof window[options.effect].init === 'function') {
-                    window[options.effect].init(container);
+                // Priority: Window Global (Tier 3) -> Express.Effects (Tier 1 Registry) -> Internal
+                if (typeof window[effectName] === 'function') {
+                    window[effectName](effectCanvas); // Legacy function style
+                } else if (typeof window[effectName] === 'object' && window[effectName].init) {
+                     window[effectName].init(canvasLayer); // Tier 3 Object style
+                } else if (Express.Effects && Express.Effects[effectName]) {
+                     Express.Effects[effectName].init(canvasLayer); // Tier 1 Registry
+                } else if (effectName === 'particle') {
+                     this.Effects.particle(effectCanvas); // Internal Default
                 }
             }
         },
@@ -350,7 +356,7 @@ const Express = (() => {
         initSlideshow(layer, options) {
             const slideWrapper = document.createElement('div');
             slideWrapper.className = 'ex-canvas__slider';
-            // Create buffer slots
+            
             const slides = [document.createElement('img'), document.createElement('img')];
             slides.forEach(img => {
                 img.className = 'ex-canvas__slide';
@@ -387,21 +393,80 @@ const Express = (() => {
 
         getImageSrc(num, options) {
             const fmt = options.image_format || 'webp';
-            // Ensure path ends with slash
-            const path = options.image_path.endsWith('/') ? options.image_path : options.image_path + '/';
-            return `${path}${num}.${fmt}`;
+            return `${options.image_path}${num}.${fmt}`;
+        },
+
+        // Internal Effects
+        Effects: {
+            particle(canvas) {
+                const ctx = canvas.getContext('2d');
+                let width, height, particles = [];
+
+                const resize = () => {
+                    width = canvas.width = canvas.parentElement.clientWidth;
+                    height = canvas.height = canvas.parentElement.clientHeight;
+                };
+
+                class Particle {
+                    constructor() {
+                        this.reset();
+                    }
+                    reset() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.size = Math.random() * 2;
+                        this.speedX = (Math.random() - 0.5) * 0.5;
+                        this.speedY = (Math.random() - 0.5) * 0.5;
+                        this.opacity = Math.random() * 0.5;
+                        this.fade = Math.random() > 0.5 ? 0.005 : -0.005;
+                    }
+                    update() {
+                        this.x += this.speedX;
+                        this.y += this.speedY;
+                        this.opacity += this.fade;
+
+                        if (this.opacity <= 0 || this.opacity >= 0.5) this.fade = -this.fade;
+                        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+                    }
+                    draw() {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                const initParticles = () => {
+                    particles = [];
+                    for (let i = 0; i < 50; i++) particles.push(new Particle());
+                };
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, width, height);
+                    particles.forEach(p => { p.update(); p.draw(); });
+                    requestAnimationFrame(animate);
+                };
+
+                window.addEventListener('resize', resize);
+                resize();
+                initParticles();
+                animate();
+            }
         }
     };
 
+    // -------------------------------------------------------------------------
+    // 4. Data & Logic (i18n, API, Security)
+    // -------------------------------------------------------------------------
     const Data = {
         async load(userLang) {
-            currentLang = userLang;
-            // Use CDN path for production, relative for dev/local
-            const coreUrl = 'https://cdn.dam.so/_inc/express/express-v3.json';
+            // [V4 Protocol] 1. URL -> 2. Storage -> 3. Navigator -> 4. Config Default
+            
+            // Core Data (System) + User Data (Tier 3)
+            const coreUrl = './express/express-v4.json';
             const userUrl = './lang.json';
 
             try {
-                // Parallel fetch
                 const [coreRes, userRes] = await Promise.all([
                     fetch(coreUrl).catch(() => null),
                     fetch(userUrl).catch(() => null)
@@ -410,25 +475,23 @@ const Express = (() => {
                 const coreJson = coreRes && coreRes.ok ? await coreRes.json() : {};
                 const userJson = userRes && userRes.ok ? await userRes.json() : {};
 
-                // Hierarchy: User Lang > User Default > Core Lang > Core Default
+                // Merge: Core Default -> Core Lang -> User Default -> User Lang
                 const coreDefault = coreJson['_default'] || {};
-                const coreLang = coreJson[currentLang] || coreJson['en'] || {};
-                const userLangData = userJson[currentLang] || userJson['en'] || {};
+                const coreLang = coreJson[userLang] || coreJson['en'] || {};
+                const userLangData = userJson[userLang] || userJson['en'] || {};
                 const userDefault = userJson['_default'] || {};
 
                 langData = { ...coreDefault, ...coreLang, ...userDefault, ...userLangData };
+                
                 return langData;
 
             } catch (e) {
-                console.warn('Express Data Load Warning:', e);
-                // Even on error, we should allow operation with fallback
+                console.error('Express Data Load Error:', e);
                 langData = FALLBACK_MSGS;
                 return langData;
             }
         },
-        get() {
-            return langData;
-        }
+        get() { return langData; }
     };
 
     const Security = {
@@ -436,18 +499,13 @@ const Express = (() => {
         
         init(siteKey) {
             if (!siteKey) return;
-            // Define global callback if not exists
             window.onloadTurnstileCallback = () => this.render(siteKey);
-            
-            if (typeof turnstile !== 'undefined') {
-                this.render(siteKey);
-            } else {
-                // If script not loaded yet, wait for onload callback
-            }
+            if (typeof turnstile !== 'undefined') this.render(siteKey);
         },
 
         render(siteKey) {
             if (this.widgetId) return;
+            // Ensure container exists
             let container = document.getElementById('turnstile-container');
             if (!container) {
                 container = document.createElement('div');
@@ -461,39 +519,35 @@ const Express = (() => {
                     size: 'invisible'
                 });
             } catch (e) {
-                console.warn('Turnstile render deferred:', e);
+                console.warn('Turnstile render failed (script might be loading):', e);
             }
         },
 
         async getToken() {
-            // Check if configured
-            if (!config.TURNSTILE_SITE_KEY) return null;
-
-            // Wait for Turnstile load
+            // Wait for Turnstile ready
             let retries = 0;
-            while (typeof turnstile === 'undefined' && retries < 20) {
+            while (typeof turnstile === 'undefined' && retries < 30) {
                 await new Promise(r => setTimeout(r, 100));
                 retries++;
             }
             
-            // Re-attempt render if needed
-            if (!this.widgetId && typeof turnstile !== 'undefined') {
+            if (!this.widgetId && typeof turnstile !== 'undefined' && config.TURNSTILE_SITE_KEY) {
                 this.render(config.TURNSTILE_SITE_KEY);
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 500));
             }
 
             if (!this.widgetId) {
+                // If not configured, return null (skip)
+                if (!config.TURNSTILE_SITE_KEY) return null;
                 console.error('Turnstile widget failed to initialize.');
-                return null; // Fail open or closed depending on policy? Usually fail closed if key exists.
+                return null; 
             }
             
             return new Promise((resolve, reject) => {
                 try {
                     turnstile.execute(this.widgetId, {
                         callback: (token) => resolve(token),
-                        'error-callback': () => {
-                            reject(new Error(Util.getText('ex_error_captcha')));
-                        }
+                        'error-callback': () => reject(new Error(Util.getText('ex_error_captcha')))
                     });
                 } catch (e) {
                     reject(e);
@@ -509,36 +563,46 @@ const Express = (() => {
     };
 
     const API = {
-        async post(endpoint, body, btnElement = null, options = {}) {
+        // V4: Type A (Worker) or Type B (Custom) or Demo
+        async post(endpointKey, body, btnElement = null, options = {}) {
             if (btnElement) UI.Loader.show(btnElement);
             
-            // Demo Mode Handler
+            // 1. Demo Mode Check
             if (options.demoMode || config.demo_mode) {
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         if (btnElement) UI.Loader.hide(btnElement);
-                        const demoMsg = Util.getText(options.demoKey || 'ex_success_desc');
+                        const demoMsg = Util.getText(options.demoKey || 'ex_success_demo');
                         resolve({ success: true, message: demoMsg, found: false }); 
-                    }, 1200);
+                    }, 1000);
                 });
             }
 
             try {
-                // Security Check
+                // 2. Security Check (Turnstile)
                 const token = await Security.getToken();
                 if (config.TURNSTILE_SITE_KEY && !token) {
                     throw new Error(Util.getText('ex_error_captcha'));
                 }
                 if (token) body['cf-turnstile-response'] = token;
 
-                // Path Injection
-                const currentPath = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
-                body['__assets_path'] = currentPath;
+                // 3. Resolve Endpoint
+                let url;
+                if (config.API_HOST) {
+                    // Type A: Cloudflare Workers Standard
+                    url = `${config.API_HOST.replace(/\/$/, '')}/api/${endpointKey}`;
+                } else if (config.API_ENDPOINT) {
+                    // Type B: Custom Backend (Direct)
+                    url = config.API_ENDPOINT;
+                    body['__action'] = endpointKey; // Tell backend what to do
+                } else {
+                    throw new Error("Configuration Error: API_HOST or API_ENDPOINT missing.");
+                }
 
-                // Determine Endpoint (Host vs Local)
-                const targetUrl = config.API_HOST ? `${config.API_HOST}${endpoint}` : endpoint;
+                // Append Context
+                body['__assets_path'] = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
 
-                const response = await fetch(targetUrl, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
@@ -562,14 +626,16 @@ const Express = (() => {
         }
     };
 
-    // [Tier 1 Lifecycle] Ready (Passive Init)
-    const ready = async (siteConfig) => {
-        if (isInitialized) return getExports();
+    // -------------------------------------------------------------------------
+    // 5. Initialization
+    // -------------------------------------------------------------------------
+    const init = async (siteConfig) => {
+        if (isInitialized) return;
         config = siteConfig || {};
         
         UI.init();
         
-        // Language detection & Load
+        // Language Logic
         const urlParams = new URLSearchParams(window.location.search);
         let lang = urlParams.get('lang');
 
@@ -585,37 +651,38 @@ const Express = (() => {
         document.documentElement.lang = lang;
         await Data.load(lang);
         
-        // Turnstile Script Injection (if needed)
+        // Security Init
         if (config.TURNSTILE_SITE_KEY) {
-            if (!document.querySelector('script[src*="turnstile/v0/api.js"]')) {
-                const script = document.createElement('script');
-                script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback';
-                script.async = true;
-                script.defer = true;
-                document.head.appendChild(script);
-            }
+            const script = document.createElement('script');
+            script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback';
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
             Security.init(config.TURNSTILE_SITE_KEY);
         }
 
         UI.Lightbox.init();
         isInitialized = true;
         
-        return getExports();
+        return {
+            config,
+            Util,
+            UI,
+            API,
+            Data,
+            Canvas,
+            Security,
+            Effects: {} // Registry for Tier 3 effects
+        };
     };
 
-    const getExports = () => ({
-        config,
-        Util,
+    return {
+        init,
         UI,
+        Util,
         API,
         Data,
         Canvas,
-        Security,
-        Effects: {} // Registry for custom effects
-    });
-
-    return {
-        ready, // Public Entry Point
-        ...getExports() // Expose statics for convenience if needed
+        Effects: {}
     };
 })();

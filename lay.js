@@ -1,16 +1,16 @@
 /*
-    Version: 3.3.0 (V3 Refactored)
+    Version: 3.0.0 (V3 Refactored)
     Framework: User Configuration (Tier 3)
-    Last Modified: 2025-11-24
+    Last Modified: 2025-11-23
     Author: Maxim
     Theme: CHUU - Pastel Dream
 */
 
 const siteConfig = {
-    // [Tier 1] Core Essentials
+    // [기본 설정]
     language: 'ko',
 
-    // [Tier 2] Canvas & Visuals
+    // [캔버스 헤더 설정]
     canvas_effect: 'heartEffect',
     canvas_image_type: 'cover',
     canvas_image_path: './section/home/',
@@ -20,18 +20,17 @@ const siteConfig = {
     canvas_indicators: true,
     canvas_overlay: 'dotted',
 
-    // [Tier 2] Actions (Header Icons)
+    // [아이콘 버튼] Profile, Request, Search 연결
     icon_buttons: [
         { name: 'Profile', icon: 'mail', url: '#profile' },
         { name: 'Search', icon: 'search', url: '#search' },
-        { name: 'Request', icon: 'auto_awesome', url: '#demo' }
-    ],
+        { name: 'Request', icon: 'auto_awesome', url: '#request' }
+    ]
     
-    // [Tier 1] API & Dev
-    demo_mode: true // V3.3 Standard: Activates demo API mocking
+    // [API 설정] Demo Mode이므로 API Path 및 Turnstile Key 불필요
 };
 
-// [Custom Effect] Heart Effect (Ported for V3)
+// [커스텀 이펙트] 하트 효과 (V3 Migration)
 const heartEffect = {
     canvas: null,
     ctx: null,
@@ -43,33 +42,31 @@ const heartEffect = {
     height: 0,
     heartBaseColors: [ [224, 187, 228], [255, 181, 197], [255, 244, 224], [201, 134, 150] ],
     numberOfHearts: 40,
+    boundAnimate: null,
+    boundOnMouseMove: null,
+    boundOnMouseOut: null,
+    boundOnResize: null,
 
     init: function(headerEl) {
         this.headerElement = headerEl;
         this.canvas = document.createElement('canvas');
-        this.canvas.className = 'ex-canvas__effect'; // Use Core class
+        this.canvas.id = 'ce-bg-canvas';
         this.ctx = this.canvas.getContext('2d');
-        this.headerElement.appendChild(this.canvas); // Append to ensure it's on top of background
+        this.headerElement.prepend(this.canvas);
 
-        this.resize();
-        this.createHearts();
-        
-        // Bind methods
-        this.boundAnimate = this.animate.bind(this);
-        this.boundOnMouseMove = this.onMouseMove.bind(this);
-        this.boundOnMouseOut = this.onMouseOut.bind(this);
-        this.boundOnResize = this.resize.bind(this);
-
-        this.addListeners();
-        this.animate();
-    },
-
-    resize: function() {
-        if (!this.headerElement || !this.canvas) return;
         this.width = this.headerElement.clientWidth;
         this.height = this.headerElement.clientHeight;
         this.canvas.width = this.width;
         this.canvas.height = this.height;
+
+        this.boundAnimate = this.animate.bind(this);
+        this.boundOnMouseMove = this.onMouseMove.bind(this);
+        this.boundOnMouseOut = this.onMouseOut.bind(this);
+        this.boundOnResize = this.onResize.bind(this);
+        
+        this.createHearts();
+        this.addListeners();
+        this.animate();
     },
 
     addListeners: function() {
@@ -100,42 +97,41 @@ const heartEffect = {
     createHearts: function() {
         this.hearts = [];
         for (let i = 0; i < this.numberOfHearts; i++) {
-            this.hearts.push(this.createHeart());
-        }
-    },
-
-    createHeart: function() {
-        let size = (Math.random() * 20) + 10;
-        let x = Math.random() * this.width;
-        let y = Math.random() * this.height;
-        let directionX = (Math.random() * 0.6) - 0.3;
-        let directionY = (Math.random() * 0.6) - 0.3;
-        const baseColor = this.heartBaseColors[Math.floor(Math.random() * this.heartBaseColors.length)];
-        const alpha = Math.random() * 0.5 + 0.3;
-        let color = `rgba(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]}, ${alpha})`;
-        let rotation = (Math.random() - 0.5) * 0.8;
-        
-        return {
-            x, y, directionX, directionY, size, color, rotation,
-            draw: (heart) => this.drawHeart(heart.x, heart.y, heart.size, heart.color, heart.rotation),
-            update: (heart) => {
-                if (heart.x > this.width + heart.size || heart.x < -heart.size) { heart.x = (heart.directionX > 0) ? -heart.size : this.width + heart.size; }
-                if (heart.y > this.height + heart.size || heart.y < -heart.size) { heart.y = (heart.directionY > 0) ? -heart.size : this.height + heart.size; }
-                
-                if (this.mouse.x !== null) {
-                    let dx = this.mouse.x - heart.x;
-                    let dy = this.mouse.y - heart.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < this.mouse.radius + heart.size) { 
-                        heart.x -= dx / 20; 
-                        heart.y -= dy / 20; 
+            let size = (Math.random() * 20) + 10;
+            let x = Math.random() * this.width;
+            let y = Math.random() * this.height;
+            let directionX = (Math.random() * 0.6) - 0.3;
+            let directionY = (Math.random() * 0.6) - 0.3;
+            const baseColor = this.heartBaseColors[Math.floor(Math.random() * this.heartBaseColors.length)];
+            const alpha = Math.random() * 0.5 + 0.3;
+            let color = `rgba(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]}, ${alpha})`;
+            let rotation = (Math.random() - 0.5) * 0.8;
+            
+            this.hearts.push({
+                x, y, directionX, directionY, size, color, rotation,
+                draw: function() {
+                    heartEffect.drawHeart(this.x, this.y, this.size, this.color, this.rotation);
+                },
+                update: function() {
+                    if (this.x > heartEffect.width + this.size || this.x < -this.size) { this.x = (this.directionX > 0) ? -this.size : heartEffect.width + this.size; }
+                    if (this.y > heartEffect.height + this.size || this.y < -this.size) { this.y = (this.directionY > 0) ? -this.size : heartEffect.height + this.size; }
+                    
+                    if (heartEffect.mouse.x !== null) {
+                        let dx = heartEffect.mouse.x - this.x;
+                        let dy = heartEffect.mouse.y - this.y;
+                        let distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < heartEffect.mouse.radius + this.size) { 
+                            this.x -= dx / 20; 
+                            this.y -= dy / 20; 
+                        }
                     }
+                    
+                    this.x += this.directionX; 
+                    this.y += this.directionY;
+                    this.draw();
                 }
-                heart.x += heart.directionX; 
-                heart.y += heart.directionY;
-                heart.draw(heart);
-            }
-        };
+            });
+        }
     },
     
     animate: function() {
@@ -143,35 +139,37 @@ const heartEffect = {
         this.animationFrameId = requestAnimationFrame(this.boundAnimate);
         this.ctx.clearRect(0, 0, this.width, this.height);
         
-        this.hearts.forEach(heart => heart.update(heart));
+        this.hearts.forEach(heart => heart.update.call(heart));
 
-        // Sparkles logic
         if (Math.random() > 0.9) {
             let x = Math.random() * this.width;
             let y = Math.random() * this.height;
             let size = Math.random() * 2 + 1;
             let opacity = Math.random() * 0.5 + 0.5;
             this.sparkles.push({
-                x, y, size, opacity, life: 1, initialOpacity: opacity,
-                draw: (s) => {
-                    this.ctx.strokeStyle = `rgba(255, 255, 224, ${s.opacity})`;
-                    this.ctx.lineWidth = s.size;
+                x, y, size, opacity, life: 1,
+                initialOpacity: opacity,
+                draw: () => {
+                    if (!this.ctx) return;
+                    this.ctx.strokeStyle = `rgba(255, 255, 224, ${this.opacity})`;
+                    this.ctx.lineWidth = this.size;
                     this.ctx.beginPath();
-                    this.ctx.moveTo(s.x - s.size, s.y);
-                    this.ctx.lineTo(s.x + s.size, s.y);
-                    this.ctx.moveTo(s.x, s.y - s.size);
-                    this.ctx.lineTo(s.x, s.y + s.size);
+                    this.ctx.moveTo(this.x - this.size, this.y);
+                    this.ctx.lineTo(this.x + this.size, this.y);
+                    this.ctx.moveTo(this.x, this.y - this.size);
+                    this.ctx.lineTo(this.x, this.y + this.size);
                     this.ctx.stroke();
                 },
-                update: (s) => {
-                    s.life -= 0.03;
-                    s.opacity = s.life > 0 ? s.life * s.initialOpacity : 0;
-                    s.draw(s);
+                update: () => {
+                    this.life -= 0.03;
+                    this.opacity = this.life > 0 ? this.life * this.initialOpacity : 0;
+                    this.draw();
                 }
             });
         }
+
         for (let i = this.sparkles.length - 1; i >= 0; i--) {
-            this.sparkles[i].update(this.sparkles[i]);
+            this.sparkles[i].update.call(this.sparkles[i]);
             if (this.sparkles[i].life <= 0) { this.sparkles.splice(i, 1); }
         }
     },
@@ -183,18 +181,37 @@ const heartEffect = {
         this.mouse.y = event.clientY - rect.top;
     },
     
-    onMouseOut: function() { this.mouse.x = null; this.mouse.y = null; }
+    onMouseOut: function() {
+        this.mouse.x = null;
+        this.mouse.y = null;
+    },
+
+    onResize: function() {
+        if (!this.headerElement || !this.canvas) return;
+        this.width = this.headerElement.clientWidth;
+        this.height = this.headerElement.clientHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.createHearts();
+    },
+
+    destroy: function() {
+        cancelAnimationFrame(this.animationFrameId);
+        this.headerElement.removeEventListener('mousemove', this.boundOnMouseMove);
+        this.headerElement.removeEventListener('mouseout', this.boundOnMouseOut);
+        window.removeEventListener('resize', this.boundOnResize);
+        if (this.canvas) this.canvas.remove();
+        this.hearts = [];
+        this.sparkles = [];
+    }
 };
 
-// [Active Controller Entry Point]
+// V3 Initialization
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof PE_V3 !== 'undefined') {
-        // 1. Register Custom Effect
         PE_V3.registerEffect('heartEffect', heartEffect);
-        
-        // 2. Initialize App with Config
         PE_V3.init(siteConfig);
     } else {
-        console.error("Page Express V3 (Tier 2) not loaded.");
+        console.error("Page Express V3 libraries not loaded.");
     }
 });
