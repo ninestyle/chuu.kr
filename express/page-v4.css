@@ -1,6 +1,6 @@
 /*
     Page Express V4 Framework Style
-    Version: 4.0.0 (Tier 2 Space)
+    Version: 4.2.0 (Architecture Refactoring: Structure & Base Design)
     Last Modified: 2025-12-07
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
@@ -19,7 +19,7 @@
     --text-accent: var(--ex-color-accent, #007AFF);
     --border-card: var(--ex-color-border, #E0E0E0);
     
-    /* [Page Specific Variables] */
+    /* [Page Specific Variables - Default] */
     --bg-navbar-animated: linear-gradient(45deg, #f5f5f5, #ffffff, #f5f5f5, #e0e0e0);
     --bg-footer: #222222;
     --bg-card: #FFFFFF;
@@ -173,7 +173,8 @@ a:hover {
     padding-block: 100px; 
     padding-inline: 0;
     text-align: center; 
-    overflow-x: hidden;
+    overflow-x: hidden; /* Fallback */
+    overflow-x: clip;   /* Modern Fix for Double Scrollbar */
     transition: background-color 0.3s ease;
     position: relative;
     background-color: var(--bg-primary);
@@ -250,30 +251,36 @@ a:hover {
     transition: background-color 0.3s ease;
 }
 
-/* --- Buttons --- */
-.pe-button {
+/* --- Buttons (Base Structure) --- */
+.pe-button, 
+.pe-form__submit {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 20px;
+    padding: 15px 30px;
     background-color: var(--bg-button);
     color: var(--text-button);
-    border-radius: 8px;
-    font-size: 1.2rem;
+    border-radius: 8px; /* Default Radius */
+    font-size: 1.1rem;
     font-weight: 700;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     word-break: keep-all;
     white-space: nowrap;
-    border: none;
+    border: 2px solid transparent;
     cursor: pointer;
+    /* Auto width based on text content */
+    width: auto; 
 }
-.pe-button:hover {
+.pe-button:hover,
+.pe-form__submit:hover {
     background-color: var(--bg-button-hover);
     transform: translateY(-3px);
     color: var(--text-button);
 }
+.pe-button .material-symbols-outlined { margin-right: 8px; font-size: 1.2rem; }
+
 .pe-button-group {
     display: flex;
     justify-content: center;
@@ -282,7 +289,7 @@ a:hover {
     margin-block-start: 40px;
 }
 
-/* --- Grid & Cards --- */
+/* --- Grid System (Base Structure) --- */
 .pe-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -290,7 +297,9 @@ a:hover {
 }
 .pe-grid--cols-1 { max-width: 840px; grid-template-columns: 1fr; margin-inline: auto; }
 .pe-grid--cols-2 { max-width: 840px; grid-template-columns: repeat(2, 1fr); margin-inline: auto; }
+.pe-grid--cols-3 { max-width: 1100px; grid-template-columns: repeat(3, 1fr); margin-inline: auto; }
 
+/* --- Card (Base Design) --- */
 .pe-card {
     background: var(--bg-card);
     border-radius: 12px;
@@ -380,6 +389,25 @@ a:hover {
 .pe-price-info__label { font-size: 0.8rem; color: var(--text-secondary); margin-block-end: 5px; }
 .pe-price-info__value { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); }
 
+/* --- Profile List (Base Structure) --- */
+.pe-profile-list {
+    max-width: 700px;
+    margin-block-start: 40px;
+    margin-inline: auto;
+    border-block-start: 1px solid var(--border-card);
+}
+.pe-profile-list__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 16px;
+    padding-inline: 10px;
+    border-block-end: 1px solid var(--border-card);
+}
+.pe-profile-list__label { font-weight: 600; font-size: 1rem; color: var(--text-headings); }
+.pe-profile-list__value { font-size: 1rem; color: var(--text-secondary); text-decoration: none; font-weight: 400; }
+.pe-profile-list__item a.pe-profile-list__value:hover { color: var(--text-accent); text-decoration: underline; }
+
 /* --- FAQ --- */
 .pe-faq-container {
     max-width: 800px;
@@ -447,7 +475,7 @@ a:hover {
 .pe-form__char-counter { font-size: 0.85rem; color: var(--text-secondary); text-align: right; }
 .pe-form__status { display: none; margin-top: 10px; font-size: 0.95rem; }
 
-/* --- Slider --- */
+/* --- Slider & Controls (Base Structure) --- */
 .pe-slider__wrapper {
     display: flex;
     overflow-x: auto;
@@ -460,14 +488,42 @@ a:hover {
 .pe-slider__wrapper::-webkit-scrollbar { display: none; }
 .pe-slider__item { scroll-snap-align: center; flex: 0 0 calc(100% / 3 - 20px); min-width: 300px; }
 .pe-slider__nav { display: flex; justify-content: center; gap: 15px; margin-block-start: 30px; }
+
+/* Standard Control Button Design */
 .pe-slider__nav-button {
-    background-color: var(--bg-lang-switcher);
-    width: 45px; height: 45px; border-radius: 50%;
+    background-color: var(--bg-card);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--border-card);
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px var(--shadow-card);
+    color: var(--text-secondary);
 }
-.pe-slider__nav-button:hover { background-color: var(--bg-lang-switcher-hover); }
-.pe-slider__nav-button.disabled { opacity: 0.4; cursor: not-allowed; }
+.pe-slider__nav-button:hover {
+    background-color: var(--bg-lang-switcher-hover);
+    transform: scale(1.1);
+}
+.pe-slider__nav-button.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Play/Pause Animation Keyframes (Tier 2 Standard) */
+@keyframes pe-spin-border {
+    0% { border-color: var(--ex-color-primary); transform: rotate(0deg); }
+    100% { border-color: var(--ex-color-accent); transform: rotate(360deg); }
+}
+.pe-slider__nav-button.is-playing {
+    border-top-color: transparent;
+    border-right-color: transparent;
+    animation: pe-spin-border 1.5s linear infinite;
+    color: var(--text-headings);
+    border-width: 2px;
+}
 
 /* --- Nav & Header --- */
 .pe-nav {
@@ -524,6 +580,8 @@ a:hover {
 
 /* --- Footer & ToTop --- */
 .pe-footer { background: var(--bg-footer); color: var(--text-footer); text-align: center; padding: 30px 0; font-size: 0.9rem; }
+.pe-footer p { margin: 5px 0; line-height: 1.4; } /* Standard Gap */
+
 #to-top-btn {
     position: fixed; bottom: 30px; right: 30px;
     width: 50px; height: 50px; border-radius: 50%;
@@ -539,7 +597,7 @@ a:hover {
 @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 @media(max-width: 768px) {
     .pe-section { padding-block: 60px; }
-    .pe-grid { grid-template-columns: 1fr; }
+    .pe-grid, .pe-grid--cols-2, .pe-grid--cols-3 { grid-template-columns: 1fr; }
     .pe-slider__item { flex-basis: calc(100% / 2 - 15px); }
 }
 @media(max-width: 600px) { .pe-slider__item { flex-basis: 90%; } }

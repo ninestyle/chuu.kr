@@ -1,5 +1,5 @@
 /*
-    Version: 4.1.0 (UX Enhancement: Design & Controls)
+    Version: 4.2.0 (Architecture Refactoring: Theme Only)
     Framework: Express Series V4
     Theme: CHUU - Pastel Dream
     Last Modified: 2025-12-07
@@ -16,7 +16,7 @@
    --ex-color-surface: #FEF7F9;      /* Surface: Very Soft Pink */
    --ex-color-text: #614B51;         /* Body Text: Deep Rose Brown */
    --ex-color-border: #FCEFF2;       /* Borders */
-   --ex-color-success: #88CC88;      /* Soft Green for Success */
+   --ex-color-success: #88CC88;      /* Soft Green */
 
    /* [Tier 3 Custom Variables] */
    --bg-navbar-animated: linear-gradient(45deg, #fef7f9, #ffffff, #fef7f9, #fdeff2);
@@ -97,7 +97,7 @@
    }
 }
 
-/* [1] Global Typography & Reset */
+/* Typography Overrides (Theme Specific) */
 body, .pe-card__title, .pe-process-item__title {
    font-family: 'Gowun Dodum', sans-serif;
    font-weight: 400;
@@ -117,13 +117,13 @@ body, .pe-card__title, .pe-process-item__title {
 .pe-header__subtitle { font-family: 'Gowun Dodum', sans-serif; }
 .pe-section h2 { font-family: 'Poppins', sans-serif; font-weight: 600; }
 
-/* [2] Canvas Image Filter (Tone Down) */
+/* Canvas Image Filter (Tone Down) */
 .pe-header .ex-canvas__image, 
 .pe-header .ex-canvas__slide {
-    filter: brightness(0.7); /* Darken bg for text readability */
+    filter: brightness(0.7); 
 }
 
-/* [3] Parallax & Divider Fix */
+/* Parallax Section Effect */
 .pe-section--parallax {
     background-attachment: fixed;
     background-position: center;
@@ -131,12 +131,39 @@ body, .pe-card__title, .pe-process-item__title {
     background-size: cover;
 }
 
+/* Theme Button Radius & Color Override */
+.pe-button, 
+.pe-form__submit {
+    border-radius: 50px; /* CHUU Specific */
+    box-shadow: 0 4px 15px rgba(224, 187, 228, 0.4);
+}
+.pe-button:hover,
+.pe-form__submit:hover {
+    box-shadow: 0 8px 20px rgba(201, 134, 150, 0.5);
+}
+
+/* Slider Controls Theme */
+.pe-slider__nav-button {
+    border: 2px solid var(--border-card);
+}
+.pe-slider__nav-button:hover {
+    background-color: var(--text-accent);
+    color: #FFF;
+    border-color: var(--text-accent);
+}
+
+/* Search Result Theme Color */
+.pe-search-form .pe-form__status {
+    color: var(--ex-color-success) !important; 
+    border-color: var(--ex-color-success) !important;
+}
+
+/* Section Dividers (SVG Wave - Theme Asset) */
 .pe-section.section-divider {
    position: relative;
    padding-top: 0;
    padding-bottom: 200px;
-   /* [Fix] Prevent double scrollbars */
-   overflow: visible; 
+   /* Fix: Prevent double scrollbars handled in Tier 2, but theme divider needs height */
 }
 
 .pe-section.section-divider::after {
@@ -164,137 +191,9 @@ body, .pe-card__title, .pe-process-item__title {
    }
 }
 
-/* [4] Grid System */
-.pe-grid--cols-1 { max-width: 840px; grid-template-columns: 1fr; margin-inline: auto; }
-.pe-grid--cols-2 { max-width: 840px; grid-template-columns: repeat(2, 1fr); margin-inline: auto; }
-.pe-grid--cols-3 { max-width: 1100px; grid-template-columns: repeat(3, 1fr); margin-inline: auto; }
-
-/* [5] Profile List Styling */
-.pe-profile-list {
-    max-width: 700px;
-    margin-block-start: 40px;
-    margin-inline: auto;
-    border-block-start: 1px solid var(--border-card);
-}
-
-.pe-profile-list__item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-block: 16px;
-    padding-inline: 10px;
-    border-block-end: 1px solid var(--border-card);
-}
-
-.pe-profile-list__label {
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--text-headings);
-}
-
-.pe-profile-list__value {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-weight: 400;
-}
-
-.pe-profile-list__item a.pe-profile-list__value:hover {
-    color: var(--text-accent);
-    text-decoration: underline;
-}
-
-/* [6] Button Styling (Consolidated) */
-.pe-button, 
-.pe-form__submit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 30px;
-    background-color: var(--bg-button);
-    color: var(--text-button);
-    border-radius: 50px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(224, 187, 228, 0.4);
-    border: 2px solid transparent;
-    cursor: pointer;
-}
-
-.pe-button:hover,
-.pe-form__submit:hover {
-    background-color: var(--bg-button-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(201, 134, 150, 0.5);
-    color: #FFF;
-}
-
-.pe-button .material-symbols-outlined { margin-right: 8px; font-size: 1.2rem; }
-
-/* [7] Slider Controls Styling & Animations */
-.pe-slider__nav-button {
-    background-color: var(--bg-card);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid var(--border-card);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px var(--shadow-card);
-    color: var(--text-secondary);
-}
-
-.pe-slider__nav-button:hover {
-    background-color: var(--text-accent);
-    color: #FFF;
-    border-color: var(--text-accent);
-    transform: scale(1.1);
-}
-
-.pe-slider__nav-button.disabled {
-    opacity: 0.3;
-    pointer-events: none;
-    cursor: not-allowed;
-}
-
-/* Play/Pause Button Animation */
-@keyframes spin-border {
-    0% { border-color: var(--ex-color-primary); transform: rotate(0deg); }
-    100% { border-color: var(--ex-color-accent); transform: rotate(360deg); }
-}
-
-.pe-slider__nav-button.is-playing {
-    border-top-color: transparent;
-    border-right-color: transparent;
-    animation: spin-border 1.5s linear infinite;
-    color: var(--text-headings);
-}
-
-/* [8] Fix Search Result Color & Footer Gap */
-.pe-search-form .pe-form__status {
-    color: var(--ex-color-success) !important; 
-    border-color: var(--ex-color-success) !important;
-}
-
-.pe-footer p {
-    margin: 5px 0; /* Reduced Gap */
-    line-height: 1.4;
-}
-
 /* Adjustments for Dynamic Section */
 .pe-section--dynamic.section-divider::after { display: none; }
 .pe-section#cookies { padding-top: 100px; }
 .pe-section#demo { padding: 0 0 100px 0; }
 .pe-product-list__item--options { flex-direction: column; align-items: flex-start; gap: 5px; }
 .pe-product-list__item--options .pe-product-list__value { text-align: left; margin-inline-start: 0; }
-
-/* Responsive Grid */
-@media(max-width: 768px) {
-    .pe-grid--cols-2, 
-    .pe-grid--cols-3 { grid-template-columns: 1fr; }
-}

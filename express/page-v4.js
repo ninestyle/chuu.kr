@@ -1,6 +1,6 @@
 /*
     Page Express Framework V4
-    Version: 4.0.0 (Tier 2 Space)
+    Version: 4.2.0 (Architecture Refactoring: Logic Upgrade)
     Last Modified: 2025-12-07
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
@@ -68,13 +68,12 @@ const PE_V4 = (() => {
 
             this.bindForm('.pe-contact-form', 'conn.contact', 'contactCooldown', 60000, (res, statusEl, form) => {
                 statusEl.textContent = res.message;
-                statusEl.style.color = 'var(--ex-color-success)';
+                statusEl.style.color = 'var(--ex-color-success)'; 
                 form.reset();
                 const counter = form.querySelector('.pe-form__char-counter');
                 if(counter) counter.textContent = '0/1024';
             });
 
-            // Textarea Counter
             const textarea = core.Util.$('.pe-form__textarea');
             const counter = core.Util.$('.pe-form__char-counter');
             if (textarea && counter) {
@@ -90,12 +89,11 @@ const PE_V4 = (() => {
             const statusEl = form.querySelector('.pe-form__status');
             const cooldown = core.Util.createCooldown(cooldownKey, cooldownTime);
             
-            // Resolve API Endpoint (Worker vs Custom)
             let endpoint = '';
             if (config.API_HOST) {
                 endpoint = `${config.API_HOST.replace(/\/$/, '')}/api/${apiPath}`;
             } else {
-                endpoint = config.API_ENDPOINT || ''; // Default to Custom PHP
+                endpoint = config.API_ENDPOINT || ''; 
             }
 
             form.addEventListener('submit', async (e) => {
@@ -137,7 +135,6 @@ const PE_V4 = (() => {
             currentLangData = core.Data.get();
             if (!currentLangData) return;
 
-            // 1. Text & Attributes
             core.Util.$$('[data-lang]').forEach(el => {
                 const key = el.dataset.lang;
                 const text = core.Util.getText(key);
@@ -147,7 +144,6 @@ const PE_V4 = (() => {
             core.Util.$$('[data-lang-href]').forEach(el => el.href = core.Util.getText(el.dataset.langHref));
             core.Util.$$('[data-lang-placeholder]').forEach(el => el.placeholder = core.Util.getText(el.dataset.langPlaceholder));
 
-            // 2. Dynamic Lists (Product, FAQ)
             core.Util.$$('[data-content-type]').forEach(container => {
                 const type = container.dataset.contentType;
                 const prefix = container.dataset.prefix;
@@ -176,7 +172,6 @@ const PE_V4 = (() => {
                 container.innerHTML = html;
             });
 
-            // 3. Lang Switcher State
             const switcher = core.Util.$('#lang-switcher');
             if (switcher) {
                 switcher.querySelectorAll('button').forEach(btn => {
@@ -186,7 +181,6 @@ const PE_V4 = (() => {
         },
 
         setupInteractions() {
-            // Lang Switcher Click
             const switcher = core.Util.$('#lang-switcher');
             if (switcher) {
                 switcher.addEventListener('click', async (e) => {
@@ -205,7 +199,6 @@ const PE_V4 = (() => {
                 });
             }
 
-            // Smooth Scroll
             core.Util.$$('a[href^="#"]:not([data-lang-href])').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -217,7 +210,6 @@ const PE_V4 = (() => {
                 });
             });
 
-            // Lightbox
             core.Util.$$('.js-lightbox-trigger').forEach(el => {
                 el.addEventListener('click', (e) => {
                     const img = e.currentTarget.querySelector('img');
@@ -225,7 +217,6 @@ const PE_V4 = (() => {
                 });
             });
 
-            // To Top Button
             const toTop = core.Util.$('#to-top-btn');
             if (toTop) {
                 window.addEventListener('scroll', () => {
@@ -235,7 +226,6 @@ const PE_V4 = (() => {
         },
 
         setupObservers() {
-            // Fade In
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -246,7 +236,6 @@ const PE_V4 = (() => {
             }, { rootMargin: '0px 0px -100px 0px' });
             core.Util.$$('.js-fade-in').forEach(el => observer.observe(el));
 
-            // Image Parallax
             const images = core.Util.$$('.pe-header .ex-canvas__image');
             if(images.length > 0) {
                 window.addEventListener('scroll', () => {
@@ -258,40 +247,83 @@ const PE_V4 = (() => {
         }
     };
 
-    // [Tier 2] Slider
+    // [Tier 2] Slider (Logic Enhanced)
     const sliderManager = {
         init() {
             core.Util.$$('.js-content-slider').forEach(slider => {
                 const wrapper = slider.querySelector('.pe-slider__wrapper');
-                const prev = slider.querySelector('.pe-slider--prev');
-                const next = slider.querySelector('.pe-slider--next');
+                const prevBtn = slider.querySelector('.pe-slider--prev');
+                const nextBtn = slider.querySelector('.pe-slider--next');
+                const playPauseBtn = slider.querySelector('.pe-slider--play-pause');
+                
                 if (!wrapper) return;
 
-                const scrollAmt = wrapper.querySelector('.pe-slider__item')?.offsetWidth + 30 || 300;
-                
-                const move = (dir) => wrapper.scrollBy({ left: dir * scrollAmt, behavior: 'smooth' });
-                if (prev) prev.addEventListener('click', () => move(-1));
-                if (next) next.addEventListener('click', () => move(1));
+                let autoPlayInterval = null;
+                let isPlaying = false;
 
-                // Auto Play
-                let interval = setInterval(() => {
-                    if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 10) {
-                        wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+                const getScrollAmt = () => (wrapper.querySelector('.pe-slider__item')?.offsetWidth || 300) + 30;
+
+                const updateButtons = () => {
+                    if (!prevBtn || !nextBtn) return;
+                    const tolerance = 10;
+                    const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+                    
+                    if (wrapper.scrollLeft <= tolerance) {
+                        prevBtn.classList.add('disabled');
                     } else {
-                        move(1);
+                        prevBtn.classList.remove('disabled');
                     }
-                }, 4000);
 
-                slider.addEventListener('mouseenter', () => clearInterval(interval));
-                slider.addEventListener('mouseleave', () => {
-                    interval = setInterval(() => {
-                        if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 10) {
+                    if (wrapper.scrollLeft >= maxScroll - tolerance) {
+                        nextBtn.classList.add('disabled');
+                    } else {
+                        nextBtn.classList.remove('disabled');
+                    }
+                };
+
+                const scroll = (direction) => {
+                    wrapper.scrollBy({ left: direction * getScrollAmt(), behavior: 'smooth' });
+                };
+
+                const startAutoPlay = () => {
+                    if (isPlaying || !playPauseBtn) return;
+                    isPlaying = true;
+                    playPauseBtn.classList.add('is-playing'); // Trigger spin animation
+                    playPauseBtn.querySelector('.material-symbols-outlined').textContent = 'pause'; // Change icon
+                    
+                    autoPlayInterval = setInterval(() => {
+                        const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+                        if (wrapper.scrollLeft >= maxScroll - 10) {
                             wrapper.scrollTo({ left: 0, behavior: 'smooth' });
                         } else {
-                            move(1);
+                            scroll(1);
                         }
                     }, 4000);
-                });
+                };
+
+                const stopAutoPlay = () => {
+                    if (!isPlaying || !playPauseBtn) return;
+                    isPlaying = false;
+                    playPauseBtn.classList.remove('is-playing'); // Stop spin
+                    playPauseBtn.querySelector('.material-symbols-outlined').textContent = 'play_arrow'; // Restore icon
+                    clearInterval(autoPlayInterval);
+                };
+
+                const toggleAutoPlay = () => {
+                    if (isPlaying) stopAutoPlay();
+                    else startAutoPlay();
+                };
+
+                wrapper.addEventListener('scroll', updateButtons, { passive: true });
+                if (prevBtn) prevBtn.addEventListener('click', () => { stopAutoPlay(); scroll(-1); });
+                if (nextBtn) nextBtn.addEventListener('click', () => { stopAutoPlay(); scroll(1); });
+                if (playPauseBtn) playPauseBtn.addEventListener('click', toggleAutoPlay);
+
+                wrapper.addEventListener('touchstart', stopAutoPlay, { passive: true });
+                wrapper.addEventListener('mouseenter', stopAutoPlay);
+                
+                updateButtons();
+                startAutoPlay();
             });
         }
     };
@@ -299,11 +331,9 @@ const PE_V4 = (() => {
     const init = async (siteConfig) => {
         if (typeof Express === 'undefined') return console.error('Express Core Missing');
         
-        // 1. Core Init
         core = await Express.init(siteConfig);
         config = core.config;
 
-        // 2. Canvas Init
         const header = core.Util.$('.pe-header');
         if (header) {
             core.Canvas.init(header, {
@@ -317,7 +347,6 @@ const PE_V4 = (() => {
             });
         }
 
-        // 3. Components Init
         uiManager.init();
         formHandler.init();
         contentRenderer.render();
@@ -325,7 +354,6 @@ const PE_V4 = (() => {
         contentRenderer.setupObservers();
         sliderManager.init();
 
-        // 4. Register Effects Helper
         return {
             registerEffect: (name, effect) => {
                 if (core.Effects) core.Effects[name] = { init: effect };
