@@ -1,5 +1,5 @@
 /*
-    Version: 4.0.3 (Enhancement: UI/UX & Design Polish)
+    Version: 4.1.0 (UX Enhancement: Design & Controls)
     Framework: Express Series V4
     Theme: CHUU - Pastel Dream
     Last Modified: 2025-12-07
@@ -97,7 +97,7 @@
    }
 }
 
-/* Typography Overrides */
+/* [1] Global Typography & Reset */
 body, .pe-card__title, .pe-process-item__title {
    font-family: 'Gowun Dodum', sans-serif;
    font-weight: 400;
@@ -117,7 +117,13 @@ body, .pe-card__title, .pe-process-item__title {
 .pe-header__subtitle { font-family: 'Gowun Dodum', sans-serif; }
 .pe-section h2 { font-family: 'Poppins', sans-serif; font-weight: 600; }
 
-/* --- [New] Parallax Section Effect --- */
+/* [2] Canvas Image Filter (Tone Down) */
+.pe-header .ex-canvas__image, 
+.pe-header .ex-canvas__slide {
+    filter: brightness(0.7); /* Darken bg for text readability */
+}
+
+/* [3] Parallax & Divider Fix */
 .pe-section--parallax {
     background-attachment: fixed;
     background-position: center;
@@ -125,11 +131,12 @@ body, .pe-card__title, .pe-process-item__title {
     background-size: cover;
 }
 
-/* --- [Fix] Section Divider Gap --- */
 .pe-section.section-divider {
    position: relative;
    padding-top: 0;
    padding-bottom: 200px;
+   /* [Fix] Prevent double scrollbars */
+   overflow: visible; 
 }
 
 .pe-section.section-divider::after {
@@ -157,12 +164,12 @@ body, .pe-card__title, .pe-process-item__title {
    }
 }
 
-/* --- [New] Grid System Overrides --- */
+/* [4] Grid System */
 .pe-grid--cols-1 { max-width: 840px; grid-template-columns: 1fr; margin-inline: auto; }
 .pe-grid--cols-2 { max-width: 840px; grid-template-columns: repeat(2, 1fr); margin-inline: auto; }
 .pe-grid--cols-3 { max-width: 1100px; grid-template-columns: repeat(3, 1fr); margin-inline: auto; }
 
-/* --- [New] Profile List Styling (pe-profile-list) --- */
+/* [5] Profile List Styling */
 .pe-profile-list {
     max-width: 700px;
     margin-block-start: 40px;
@@ -197,8 +204,9 @@ body, .pe-card__title, .pe-process-item__title {
     text-decoration: underline;
 }
 
-/* --- [New] Button Styling (pe-button) --- */
-.pe-button {
+/* [6] Button Styling (Consolidated) */
+.pe-button, 
+.pe-form__submit {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -212,27 +220,26 @@ body, .pe-card__title, .pe-process-item__title {
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(224, 187, 228, 0.4);
     border: 2px solid transparent;
+    cursor: pointer;
 }
 
-.pe-button:hover {
+.pe-button:hover,
+.pe-form__submit:hover {
     background-color: var(--bg-button-hover);
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(201, 134, 150, 0.5);
     color: #FFF;
 }
 
-.pe-button .material-symbols-outlined {
-    margin-right: 8px;
-    font-size: 1.2rem;
-}
+.pe-button .material-symbols-outlined { margin-right: 8px; font-size: 1.2rem; }
 
-/* --- [New] Slider Controls Styling --- */
+/* [7] Slider Controls Styling & Animations */
 .pe-slider__nav-button {
     background-color: var(--bg-card);
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 1px solid var(--border-card);
+    border: 2px solid var(--border-card);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -249,9 +256,27 @@ body, .pe-card__title, .pe-process-item__title {
     transform: scale(1.1);
 }
 
-/* --- [Fix] Search Result Color & Footer Gap --- */
+.pe-slider__nav-button.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Play/Pause Button Animation */
+@keyframes spin-border {
+    0% { border-color: var(--ex-color-primary); transform: rotate(0deg); }
+    100% { border-color: var(--ex-color-accent); transform: rotate(360deg); }
+}
+
+.pe-slider__nav-button.is-playing {
+    border-top-color: transparent;
+    border-right-color: transparent;
+    animation: spin-border 1.5s linear infinite;
+    color: var(--text-headings);
+}
+
+/* [8] Fix Search Result Color & Footer Gap */
 .pe-search-form .pe-form__status {
-    /* Success Green Override */
     color: var(--ex-color-success) !important; 
     border-color: var(--ex-color-success) !important;
 }
