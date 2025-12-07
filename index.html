@@ -1,5 +1,5 @@
 <!--
-    Version: 4.0.2 (Fix: Animation Gap Issue)
+    Version: 4.0.3 (Enhancement: UI/UX & Design Polish)
     Framework: Express Series V4
     Project: CHUU.KR - Custom Cakes & Cookies
     Last Modified: 2025-12-07
@@ -64,8 +64,7 @@
     </header>
 
     <main>
-        <!-- 1. Overview: Always First -->
-        <!-- Fix: Moved js-fade-in to pe-container to prevent background gap -->
+        <!-- 1. Overview -->
         <section id="overview" class="pe-section">
             <div class="pe-container js-fade-in">
                 <h2>
@@ -77,8 +76,8 @@
             </div>
         </section>
 
-        <!-- Promotion -->
-        <section id="promotion" class="pe-section pe-section--dynamic" style="background-image: url('./section/promotion/bg.jpg');">
+        <!-- Promotion (Parallax Background) -->
+        <section id="promotion" class="pe-section pe-section--dynamic pe-section--parallax" style="background-image: url('./section/promotion/bg.jpg');">
             <div class="pe-overlay pe-overlay--dotted"></div>
             <div class="pe-container js-fade-in">
                 <div class="pe-grid pe-grid--cols-1">
@@ -90,6 +89,12 @@
                             <span class="pe-card__tag">Event</span>
                             <h3 class="pe-card__title" data-lang="promotion_01_title"></h3>
                             <p class="pe-card__description" data-lang="promotion_01_desc"></p>
+                            <div class="pe-button-group" style="margin-top: 20px; justify-content: flex-start;">
+                                <a href="#cakes" class="pe-button">
+                                    <span translate="no" class="material-symbols-outlined notranslate">arrow_forward</span>
+                                    <span>View Cakes</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,7 +109,7 @@
 
                 <div class="pe-slider js-content-slider">
                     <div class="pe-slider__wrapper">
-                        <!-- Cookie Items -->
+                        <!-- Cookie Items 1~6 -->
                         <div class="pe-slider__item">
                             <div class="pe-card">
                                 <div class="pe-card__image-wrapper js-lightbox-trigger"><img src="./section/cookies/01.jpg" alt="Cookie 01" class="pe-card__image"></div>
@@ -136,6 +141,10 @@
                                        <span class="pe-price-info__label" data-lang="cookies_price_label_3pack"></span>
                                        <span class="pe-price-info__value" data-lang="cookies_02_price_3pack"></span>
                                    </div>
+                                    <div class="pe-price-info__item">
+                                        <span class="pe-price-info__label" data-lang="cookies_price_label_6pack"></span>
+                                        <span class="pe-price-info__value" data-lang="cookies_02_price_6pack"></span>
+                                    </div>
                                </div>
                             </div>
                         </div>
@@ -151,12 +160,74 @@
                                        <span class="pe-price-info__label" data-lang="cookies_price_label_10pack"></span>
                                        <span class="pe-price-info__value" data-lang="cookies_03_price_10pack"></span>
                                    </div>
+                                    <div class="pe-price-info__item">
+                                        <span class="pe-price-info__label" data-lang="cookies_price_label_20pack"></span>
+                                        <span class="pe-price-info__value" data-lang="cookies_03_price_20pack"></span>
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="pe-slider__item">
+                            <div class="pe-card">
+                                <div class="pe-card__image-wrapper js-lightbox-trigger"><img src="./section/cookies/04.jpg" alt="Cookie 04" class="pe-card__image"></div>
+                                <div class="pe-card__content">
+                                    <h3 class="pe-card__title" data-lang="cookies_04_title"></h3>
+                                    <p class="pe-card__description" data-lang="cookies_04_desc"></p>
+                                </div>
+                                <div class="pe-price-info">
+                                    <div class="pe-price-info__item">
+                                       <span class="pe-price-info__label" data-lang="cookies_price_label_3pack"></span>
+                                       <span class="pe-price-info__value" data-lang="cookies_04_price_3pack"></span>
+                                   </div>
+                                    <div class="pe-price-info__item">
+                                        <span class="pe-price-info__label" data-lang="cookies_price_label_6pack"></span>
+                                        <span class="pe-price-info__value" data-lang="cookies_04_price_6pack"></span>
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="pe-slider__item">
+                            <div class="pe-card">
+                                <div class="pe-card__image-wrapper js-lightbox-trigger"><img src="./section/cookies/05.jpg" alt="Cookie 05" class="pe-card__image"></div>
+                                <div class="pe-card__content">
+                                    <h3 class="pe-card__title" data-lang="cookies_05_title"></h3>
+                                    <p class="pe-card__description" data-lang="cookies_05_desc"></p>
+                                </div>
+                                <div class="pe-price-info">
+                                    <div class="pe-price-info__item">
+                                       <span class="pe-price-info__label" data-lang="cookies_price_label_3pack"></span>
+                                       <span class="pe-price-info__value" data-lang="cookies_05_price_3pack"></span>
+                                   </div>
+                                    <div class="pe-price-info__item">
+                                        <span class="pe-price-info__label" data-lang="cookies_price_label_6pack"></span>
+                                        <span class="pe-price-info__value" data-lang="cookies_05_price_6pack"></span>
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="pe-slider__item">
+                            <div class="pe-card">
+                                <div class="pe-card__image-wrapper js-lightbox-trigger"><img src="./section/cookies/06.jpg" alt="Cookie 06" class="pe-card__image"></div>
+                                <div class="pe-card__content">
+                                    <h3 class="pe-card__title" data-lang="cookies_06_title"></h3>
+                                    <p class="pe-card__description" data-lang="cookies_06_desc"></p>
+                                </div>
+                                <div class="pe-price-info">
+                                    <div class="pe-price-info__item">
+                                       <span class="pe-price-info__label" data-lang="cookies_price_label_3pack"></span>
+                                       <span class="pe-price-info__value" data-lang="cookies_06_price_3pack"></span>
+                                   </div>
+                                    <div class="pe-price-info__item">
+                                        <span class="pe-price-info__label" data-lang="cookies_price_label_6pack"></span>
+                                        <span class="pe-price-info__value" data-lang="cookies_06_price_6pack"></span>
+                                    </div>
                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="pe-slider__nav">
                         <button class="pe-slider__nav-button pe-slider--prev" aria-label="Previous"><span class="material-symbols-outlined">arrow_back</span></button>
+                        <button class="pe-slider__nav-button pe-slider--play-pause" aria-label="Play/Pause"><span class="material-symbols-outlined">play_arrow</span></button>
                         <button class="pe-slider__nav-button pe-slider--next" aria-label="Next"><span class="material-symbols-outlined">arrow_forward</span></button>
                     </div>
                 </div>
@@ -173,7 +244,7 @@
             <div class="pe-container js-fade-in">
                 <h2><span translate="no" class="material-symbols-outlined notranslate">brush</span><span data-lang="cakes_title"></span></h2>
                 <p class="pe-section__description" data-lang="cakes_desc"></p>
-                <div class="pe-grid">
+                <div class="pe-grid pe-grid--cols-3">
                     <div class="pe-card">
                         <div class="pe-card__image-wrapper js-lightbox-trigger"><img src="./section/cakes/01.jpg" alt="Lettering Cake" class="pe-card__image"></div>
                         <div class="pe-card__content">
@@ -188,7 +259,34 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Additional cakes skipped for brevity, structure identical -->
+                    <div class="pe-card">
+                        <div class="pe-card__image-wrapper js-lightbox-trigger"><img src="./section/cakes/02.jpg" alt="Photo Cake" class="pe-card__image"></div>
+                        <div class="pe-card__content">
+                            <h3 class="pe-card__title" data-lang="cakes_photo_title"></h3>
+                            <p class="pe-card__description" data-lang="cakes_photo_desc"></p>
+                            <div class="pe-product-list" data-content-type="product" data-prefix="cake_photo_option" data-dynamic-area></div>
+                        </div>
+                        <div class="pe-price-info">
+                            <div class="pe-price-info__item">
+                                <span class="pe-price-info__label" data-lang="pricing_base_fee_label"></span>
+                                <span class="pe-price-info__value" data-lang="cake_photo_base_price"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pe-card">
+                        <div class="pe-card__image-wrapper js-lightbox-trigger"><img src="./section/cakes/03.jpg" alt="3D Cake" class="pe-card__image"></div>
+                        <div class="pe-card__content">
+                            <h3 class="pe-card__title" data-lang="cakes_3d_title"></h3>
+                            <p class="pe-card__description" data-lang="cakes_3d_desc"></p>
+                            <div class="pe-product-list" data-content-type="product" data-prefix="cake_3d_option" data-dynamic-area></div>
+                        </div>
+                        <div class="pe-price-info">
+                            <div class="pe-price-info__item">
+                                <span class="pe-price-info__label" data-lang="pricing_base_fee_label"></span>
+                                <span class="pe-price-info__value" data-lang="cake_3d_base_price"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="pe-faq-container">
                     <h3 class="pe-faq-title" data-lang="faq_title">FAQ</h3>
@@ -265,14 +363,15 @@
             <div class="pe-container js-fade-in">
                 <h2><span translate="no" class="material-symbols-outlined notranslate">contact_mail</span><span data-lang="profile_title"></span></h2>
                 <p class="pe-section__description" data-lang="profile_desc"></p>
-                <div class="pe-contact-list">
-                    <div class="pe-contact-list__item">
-                        <strong class="pe-contact-list__label" data-lang="contact_label_name"></strong>
-                        <span class="pe-contact-list__value" data-lang="rep_name"></span>
+                <!-- Updated Class Name: pe-profile-list -->
+                <div class="pe-profile-list">
+                    <div class="pe-profile-list__item">
+                        <strong class="pe-profile-list__label" data-lang="contact_label_name"></strong>
+                        <span class="pe-profile-list__value" data-lang="rep_name"></span>
                     </div>
-                    <div class="pe-contact-list__item">
-                        <strong class="pe-contact-list__label" data-lang="contact_label_email"></strong>
-                        <a href="mailto:chuu@chuu.kr" class="pe-contact-list__value" data-lang="email_address" data-lang-href="email_href"></a>
+                    <div class="pe-profile-list__item">
+                        <strong class="pe-profile-list__label" data-lang="contact_label_email"></strong>
+                        <a href="mailto:chuu@chuu.kr" class="pe-profile-list__value" data-lang="email_address" data-lang-href="email_href"></a>
                     </div>
                 </div>
                 <p class="pe-demo-msg" data-lang="ex_demo_msg_profile"></p>
@@ -288,7 +387,6 @@
                 </h2>
                 <p class="pe-section__description" data-lang="ex_contact_desc"></p>
 
-                <!-- V4 Strict Form -->
                 <form class="pe-form pe-contact-form" autocomplete="off" data-demo-mode="true">
                     <input type="email" name="email" required class="pe-form__input" data-lang-placeholder="ex_placeholder_email" placeholder="Email">
                     <div class="pe-form__textarea-wrapper">

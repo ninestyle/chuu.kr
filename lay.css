@@ -1,5 +1,5 @@
 /*
-    Version: 4.0.1 (Fix: Section Divider Gap)
+    Version: 4.0.3 (Enhancement: UI/UX & Design Polish)
     Framework: Express Series V4
     Theme: CHUU - Pastel Dream
     Last Modified: 2025-12-07
@@ -16,6 +16,7 @@
    --ex-color-surface: #FEF7F9;      /* Surface: Very Soft Pink */
    --ex-color-text: #614B51;         /* Body Text: Deep Rose Brown */
    --ex-color-border: #FCEFF2;       /* Borders */
+   --ex-color-success: #88CC88;      /* Soft Green for Success */
 
    /* [Tier 3 Custom Variables] */
    --bg-navbar-animated: linear-gradient(45deg, #fef7f9, #ffffff, #fef7f9, #fdeff2);
@@ -116,7 +117,15 @@ body, .pe-card__title, .pe-process-item__title {
 .pe-header__subtitle { font-family: 'Gowun Dodum', sans-serif; }
 .pe-section h2 { font-family: 'Poppins', sans-serif; font-weight: 600; }
 
-/* Section Dividers (SVG Wave) */
+/* --- [New] Parallax Section Effect --- */
+.pe-section--parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* --- [Fix] Section Divider Gap --- */
 .pe-section.section-divider {
    position: relative;
    padding-top: 0;
@@ -126,7 +135,7 @@ body, .pe-card__title, .pe-process-item__title {
 .pe-section.section-divider::after {
    content: '';
    position: absolute;
-   left: 0; bottom: 0; width: 100%; height: 80px;
+   left: 0; bottom: -1px; width: 100%; height: 80px;
    background-repeat: no-repeat;
    background-size: 100% 100%;
 }
@@ -148,9 +157,119 @@ body, .pe-card__title, .pe-process-item__title {
    }
 }
 
+/* --- [New] Grid System Overrides --- */
+.pe-grid--cols-1 { max-width: 840px; grid-template-columns: 1fr; margin-inline: auto; }
+.pe-grid--cols-2 { max-width: 840px; grid-template-columns: repeat(2, 1fr); margin-inline: auto; }
+.pe-grid--cols-3 { max-width: 1100px; grid-template-columns: repeat(3, 1fr); margin-inline: auto; }
+
+/* --- [New] Profile List Styling (pe-profile-list) --- */
+.pe-profile-list {
+    max-width: 700px;
+    margin-block-start: 40px;
+    margin-inline: auto;
+    border-block-start: 1px solid var(--border-card);
+}
+
+.pe-profile-list__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 16px;
+    padding-inline: 10px;
+    border-block-end: 1px solid var(--border-card);
+}
+
+.pe-profile-list__label {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-headings);
+}
+
+.pe-profile-list__value {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.pe-profile-list__item a.pe-profile-list__value:hover {
+    color: var(--text-accent);
+    text-decoration: underline;
+}
+
+/* --- [New] Button Styling (pe-button) --- */
+.pe-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    background-color: var(--bg-button);
+    color: var(--text-button);
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(224, 187, 228, 0.4);
+    border: 2px solid transparent;
+}
+
+.pe-button:hover {
+    background-color: var(--bg-button-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(201, 134, 150, 0.5);
+    color: #FFF;
+}
+
+.pe-button .material-symbols-outlined {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+/* --- [New] Slider Controls Styling --- */
+.pe-slider__nav-button {
+    background-color: var(--bg-card);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--border-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px var(--shadow-card);
+    color: var(--text-secondary);
+}
+
+.pe-slider__nav-button:hover {
+    background-color: var(--text-accent);
+    color: #FFF;
+    border-color: var(--text-accent);
+    transform: scale(1.1);
+}
+
+/* --- [Fix] Search Result Color & Footer Gap --- */
+.pe-search-form .pe-form__status {
+    /* Success Green Override */
+    color: var(--ex-color-success) !important; 
+    border-color: var(--ex-color-success) !important;
+}
+
+.pe-footer p {
+    margin: 5px 0; /* Reduced Gap */
+    line-height: 1.4;
+}
+
 /* Adjustments for Dynamic Section */
 .pe-section--dynamic.section-divider::after { display: none; }
 .pe-section#cookies { padding-top: 100px; }
 .pe-section#demo { padding: 0 0 100px 0; }
 .pe-product-list__item--options { flex-direction: column; align-items: flex-start; gap: 5px; }
 .pe-product-list__item--options .pe-product-list__value { text-align: left; margin-inline-start: 0; }
+
+/* Responsive Grid */
+@media(max-width: 768px) {
+    .pe-grid--cols-2, 
+    .pe-grid--cols-3 { grid-template-columns: 1fr; }
+}
