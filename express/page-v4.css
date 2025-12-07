@@ -459,7 +459,8 @@ a:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    text-align: left;
+    text-align: center;
+    align-items: center;
 }
 .pe-form__input,
 .pe-form__textarea {
@@ -479,6 +480,7 @@ a:hover {
     box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
 }
 .pe-form__textarea { resize: vertical; min-height: 120px; }
+.pe-form__textarea-wrapper { width: 100%; }
 .pe-form__char-counter { font-size: 0.85rem; color: var(--text-secondary); text-align: right; }
 .pe-form__status { display: none; margin-top: 10px; font-size: 0.95rem; }
 
