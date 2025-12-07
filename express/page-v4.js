@@ -1,122 +1,241 @@
-A/*
-    Tier 2: Page Express Framework (Space)
-    Version: 4.0.1 (Hotfix: Global Scope & Failsafe)
-    Role: Interaction, Navigation, Hydration
+/*
+    Page Express Framework V4
+    Version: 4.0.0 (Tier 2 Space)
     Last Modified: 2025-12-07
+    Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
 */
-
-(function() {
+const PE_V4 = (() => {
     'use strict';
 
     let core = null;
-    let config = {};
-    
-    // -------------------------------------------------------------------------
-    // 1. UI Manager
-    // -------------------------------------------------------------------------
-    const UIManager = {
+    let config = {}; 
+    let currentLangData = {};
+
+    // [Tier 2] UI Manager
+    const uiManager = {
         init() {
-            this.setupNav();
             this.injectIconButtons();
+            this.setupHeaderParallax();
         },
-
-        setupNav() {
-            const nav = document.querySelector('.pe-nav');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) nav.classList.add('is-scrolled');
-                else nav.classList.remove('is-scrolled');
-            }, { passive: true });
-
-            const langSwitcher = document.getElementById('lang-switcher');
-            if (langSwitcher) {
-                langSwitcher.addEventListener('click', async (e) => {
-                    const btn = e.target.closest('button[data-lang-set]');
-                    if (btn) {
-                        const lang = btn.dataset.langSet;
-                        await core.Data.load(lang);
-                        langSwitcher.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.langSet === lang));
-                        this.renderLanguage();
-                        document.documentElement.lang = lang;
-                    }
-                });
-            }
-        },
-
-        renderLanguage() {
-            const data = core.Data.get();
-            if (!data) return;
-
-            core.Util.$$('[data-lang]').forEach(el => {
-                const key = el.dataset.lang;
-                if (data[key]) {
-                    if (el.classList.contains('render-as-html')) el.innerHTML = core.Util.processText(data[key]);
-                    else el.textContent = core.Util.processText(data[key]);
-                }
-            });
-
-            core.Util.$$('[data-lang-href]').forEach(el => {
-                el.href = core.Util.getText(el.dataset.langHref);
-            });
-            core.Util.$$('[data-lang-placeholder]').forEach(el => {
-                el.placeholder = core.Util.getText(el.dataset.langPlaceholder);
-            });
-        },
-
         injectIconButtons() {
             const container = core.Util.$('.pe-header__content');
             if (!container || !config.icon_buttons || config.icon_buttons.length === 0) return;
 
-            let buttonGroup = container.querySelector('.ce-button-group');
-            if (!buttonGroup) {
-                buttonGroup = document.createElement('div');
-                buttonGroup.className = 'ce-button-group';
-                container.appendChild(buttonGroup);
-            } else {
-                buttonGroup.innerHTML = '';
-            }
-
+            const buttonGroup = document.createElement('div');
+            buttonGroup.className = 'ce-button-group';
+            
             config.icon_buttons.forEach(btn => {
                 const el = document.createElement('a');
-                el.href = btn.url;
                 el.className = 'ce-button-group__icon';
-                el.innerHTML = `<span translate="no" class="material-symbols-outlined notranslate">${btn.icon}</span>`;
-                
-                if (btn.url.startsWith('http')) {
+                el.href = btn.url;
+                el.ariaLabel = btn.name;
+                if (!btn.url.startsWith('#')) {
                     el.target = '_blank';
                     el.rel = 'noopener noreferrer';
                 }
+                el.innerHTML = `<span translate="no" class="material-symbols-outlined notranslate">${btn.icon}</span>`;
                 buttonGroup.appendChild(el);
+            });
+            container.appendChild(buttonGroup);
+        },
+        setupHeaderParallax() {
+            const content = core.Util.$('.js-parallax-content');
+            const home = core.Util.$('.pe-header');
+            if (!content || !home) return;
+
+            const onMove = (e) => {
+                const x = (e.touches ? e.touches[0].clientX : e.clientX);
+                const y = (e.touches ? e.touches[0].clientY : e.clientY);
+                content.style.transform = `translate(${(x - window.innerWidth/2)/50}px, ${(y - window.innerHeight/2)/50}px)`;
+            };
+            home.addEventListener('mousemove', onMove);
+            home.addEventListener('touchmove', onMove, { passive: true });
+            home.addEventListener('mouseout', () => content.style.transform = '');
+            home.addEventListener('touchend', () => content.style.transform = '');
+        }
+    };
+
+    // [Tier 2] Form Handler
+    const formHandler = {
+        init() {
+            this.bindForm('.pe-search-form', 'conn.search', 'searchCooldown', 30000, (res, statusEl) => {
+                const html = res.found ? 
+                    `<p>Search: <strong>${res.key}</strong></p><div>${res.value}</div>` : 
+                    `<p>${res.message}</p>`;
+                statusEl.innerHTML = html;
+            });
+
+            this.bindForm('.pe-contact-form', 'conn.contact', 'contactCooldown', 60000, (res, statusEl, form) => {
+                statusEl.textContent = res.message;
+                statusEl.style.color = 'var(--ex-color-success)';
+                form.reset();
+                const counter = form.querySelector('.pe-form__char-counter');
+                if(counter) counter.textContent = '0/1024';
+            });
+
+            // Textarea Counter
+            const textarea = core.Util.$('.pe-form__textarea');
+            const counter = core.Util.$('.pe-form__char-counter');
+            if (textarea && counter) {
+                textarea.addEventListener('input', () => counter.textContent = `${textarea.value.length}/1024`);
+            }
+        },
+
+        bindForm(selector, apiPath, cooldownKey, cooldownTime, successCallback) {
+            const form = core.Util.$(selector);
+            if (!form) return;
+
+            const button = form.querySelector('.pe-form__submit');
+            const statusEl = form.querySelector('.pe-form__status');
+            const cooldown = core.Util.createCooldown(cooldownKey, cooldownTime);
+            
+            // Resolve API Endpoint (Worker vs Custom)
+            let endpoint = '';
+            if (config.API_HOST) {
+                endpoint = `${config.API_HOST.replace(/\/$/, '')}/api/${apiPath}`;
+            } else {
+                endpoint = config.API_ENDPOINT || ''; // Default to Custom PHP
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                statusEl.style.display = 'block';
+                statusEl.style.color = '';
+
+                const isDemo = form.dataset.demoMode === 'true';
+                if (!isDemo && cooldown.isActive()) {
+                    statusEl.textContent = `Please wait ${cooldown.getRemaining()}s...`;
+                    statusEl.style.color = 'var(--ex-color-warning)';
+                    return;
+                }
+
+                try {
+                    const formData = new FormData(form);
+                    const payload = Object.fromEntries(formData.entries());
+                    
+                    const result = await core.API.post(endpoint, payload, button, {
+                        demoMode: isDemo,
+                        demoKey: apiPath === 'conn.search' ? 'ex_search_not_found_demo' : 'ex_contact_success_demo'
+                    });
+
+                    if (!isDemo) cooldown.start();
+                    successCallback(result, statusEl, form);
+
+                } catch (error) {
+                    statusEl.textContent = error.message;
+                    statusEl.style.color = 'var(--ex-color-error)';
+                }
             });
         }
     };
 
-    // -------------------------------------------------------------------------
-    // 2. Interaction
-    // -------------------------------------------------------------------------
-    const Interaction = {
-        init() {
-            this.setupSmoothScroll();
-            this.setupFadeIn();
-            this.setupToTop();
-            this.setupContentSliders();
+    // [Tier 2] Content Renderer
+    const contentRenderer = {
+        render() {
+            const lang = document.documentElement.lang;
+            currentLangData = core.Data.get();
+            if (!currentLangData) return;
+
+            // 1. Text & Attributes
+            core.Util.$$('[data-lang]').forEach(el => {
+                const key = el.dataset.lang;
+                const text = core.Util.getText(key);
+                if (el.classList.contains('render-as-html')) el.innerHTML = text;
+                else el.textContent = text;
+            });
+            core.Util.$$('[data-lang-href]').forEach(el => el.href = core.Util.getText(el.dataset.langHref));
+            core.Util.$$('[data-lang-placeholder]').forEach(el => el.placeholder = core.Util.getText(el.dataset.langPlaceholder));
+
+            // 2. Dynamic Lists (Product, FAQ)
+            core.Util.$$('[data-content-type]').forEach(container => {
+                const type = container.dataset.contentType;
+                const prefix = container.dataset.prefix;
+                let html = '';
+
+                for (let i = 1; i < 50; i++) {
+                    const idx = String(i).padStart(2, '0');
+                    if (type === 'product') {
+                        const label = currentLangData[`${prefix}_${idx}`];
+                        const val = currentLangData[`${prefix}_${idx}_price`];
+                        if (!label || !val) break;
+                        html += `<div class="pe-product-list__item">
+                                    <span class="pe-product-list__label">${label}</span>
+                                    <span class="pe-product-list__value">${val}</span>
+                                 </div>`;
+                    } else if (type === 'faq') {
+                        const q = currentLangData[`${prefix}_${idx}_q`];
+                        const a = currentLangData[`${prefix}_${idx}_a`];
+                        if (!q || !a) break;
+                        html += `<div class="pe-faq-item">
+                                    <div class="pe-faq-item__question">${q}</div>
+                                    <div class="pe-faq-item__answer">${a}</div>
+                                 </div>`;
+                    }
+                }
+                container.innerHTML = html;
+            });
+
+            // 3. Lang Switcher State
+            const switcher = core.Util.$('#lang-switcher');
+            if (switcher) {
+                switcher.querySelectorAll('button').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.langSet === lang);
+                });
+            }
         },
 
-        setupSmoothScroll() {
-            core.Util.$$('a[href^="#"]:not([href="#"])').forEach(anchor => {
-                anchor.addEventListener('click', (e) => {
+        setupInteractions() {
+            // Lang Switcher Click
+            const switcher = core.Util.$('#lang-switcher');
+            if (switcher) {
+                switcher.addEventListener('click', async (e) => {
+                    const btn = e.target.closest('button[data-lang-set]');
+                    if (btn) {
+                        const newLang = btn.dataset.langSet;
+                        localStorage.setItem('preferredLanguage', newLang);
+                        const url = new URL(window.location);
+                        url.searchParams.set('lang', newLang);
+                        history.pushState({}, '', url);
+                        
+                        document.documentElement.lang = newLang;
+                        await core.Data.load(newLang);
+                        this.render();
+                    }
+                });
+            }
+
+            // Smooth Scroll
+            core.Util.$$('a[href^="#"]:not([data-lang-href])').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const targetId = anchor.getAttribute('href');
-                    const target = core.Util.$(targetId);
+                    const target = core.Util.$(this.getAttribute('href'));
                     if (target) {
                         target.scrollIntoView({ behavior: 'smooth' });
-                        history.pushState(null, null, targetId);
+                        history.pushState(null, null, this.getAttribute('href'));
                     }
                 });
             });
+
+            // Lightbox
+            core.Util.$$('.js-lightbox-trigger').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const img = e.currentTarget.querySelector('img');
+                    if(img) core.UI.Lightbox.open(img.src);
+                });
+            });
+
+            // To Top Button
+            const toTop = core.Util.$('#to-top-btn');
+            if (toTop) {
+                window.addEventListener('scroll', () => {
+                    toTop.classList.toggle('visible', window.scrollY > 300);
+                });
+            }
         },
 
-        setupFadeIn() {
+        setupObservers() {
+            // Fade In
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -125,178 +244,95 @@ A/*
                     }
                 });
             }, { rootMargin: '0px 0px -100px 0px' });
-
             core.Util.$$('.js-fade-in').forEach(el => observer.observe(el));
-        },
 
-        setupToTop() {
-            const btn = core.Util.$('#to-top-btn');
-            if (!btn) return;
-            window.addEventListener('scroll', () => {
-                btn.classList.toggle('visible', window.scrollY > 300);
-            }, { passive: true });
-        },
+            // Image Parallax
+            const images = core.Util.$$('.pe-header .ex-canvas__image');
+            if(images.length > 0) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY < window.innerHeight) {
+                        images.forEach(img => img.style.transform = `translateY(${window.scrollY * 0.5}px)`);
+                    }
+                });
+            }
+        }
+    };
 
-        setupContentSliders() {
+    // [Tier 2] Slider
+    const sliderManager = {
+        init() {
             core.Util.$$('.js-content-slider').forEach(slider => {
                 const wrapper = slider.querySelector('.pe-slider__wrapper');
-                const prevBtn = slider.querySelector('.pe-slider--prev');
-                const nextBtn = slider.querySelector('.pe-slider--next');
+                const prev = slider.querySelector('.pe-slider--prev');
+                const next = slider.querySelector('.pe-slider--next');
                 if (!wrapper) return;
 
-                const scrollAmount = wrapper.querySelector('.pe-slider__item')?.offsetWidth + 20 || 320;
+                const scrollAmt = wrapper.querySelector('.pe-slider__item')?.offsetWidth + 30 || 300;
+                
+                const move = (dir) => wrapper.scrollBy({ left: dir * scrollAmt, behavior: 'smooth' });
+                if (prev) prev.addEventListener('click', () => move(-1));
+                if (next) next.addEventListener('click', () => move(1));
 
-                if (prevBtn) prevBtn.addEventListener('click', () => wrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' }));
-                if (nextBtn) nextBtn.addEventListener('click', () => wrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' }));
-            });
-        }
-    };
-
-    // -------------------------------------------------------------------------
-    // 3. Hydration
-    // -------------------------------------------------------------------------
-    const Hydration = {
-        init() {
-            this.hydrateForms();
-            this.renderDynamicContent();
-        },
-
-        hydrateForms() {
-            core.Util.$$('.pe-form').forEach(form => {
-                const isDemo = form.dataset.demoMode === 'true' || config.demo_mode;
-                const statusEl = form.querySelector('.pe-form__status');
-                const btn = form.querySelector('.pe-form__submit');
-
-                form.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    let isValid = true;
-                    form.querySelectorAll('[required]').forEach(input => {
-                        if (!input.value.trim()) { isValid = false; input.focus(); }
-                    });
-                    if (!isValid) return;
-
-                    let endpoint = 'conn.contact';
-                    if (form.classList.contains('pe-search-form')) endpoint = 'conn.search';
-                    
-                    const formData = new FormData(form);
-                    const payload = Object.fromEntries(formData.entries());
-
-                    try {
-                        const result = await core.API.post(endpoint, payload, btn, {
-                            demoMode: isDemo,
-                            demoKey: endpoint === 'conn.search' ? 'ex_search_not_found_demo' : 'ex_success_demo'
-                        });
-
-                        if (statusEl) {
-                            statusEl.style.display = 'block';
-                            statusEl.innerHTML = result.found ? `<strong>${result.key}</strong>: ${result.value}` : result.message;
-                            statusEl.style.color = result.success ? 'var(--ex-color-success)' : 'var(--ex-color-error)';
-                        }
-                        if (result.success && !result.found) form.reset();
-
-                    } catch (err) {
-                        if (statusEl) {
-                            statusEl.style.display = 'block';
-                            statusEl.textContent = err.message;
-                            statusEl.style.color = 'var(--ex-color-error)';
-                        }
+                // Auto Play
+                let interval = setInterval(() => {
+                    if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 10) {
+                        wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        move(1);
                     }
+                }, 4000);
+
+                slider.addEventListener('mouseenter', () => clearInterval(interval));
+                slider.addEventListener('mouseleave', () => {
+                    interval = setInterval(() => {
+                        if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 10) {
+                            wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+                        } else {
+                            move(1);
+                        }
+                    }, 4000);
                 });
-
-                const textarea = form.querySelector('textarea');
-                const counter = form.querySelector('.pe-form__char-counter');
-                if (textarea && counter) {
-                    textarea.addEventListener('input', () => {
-                        counter.textContent = `${textarea.value.length}/${textarea.maxLength}`;
-                    });
-                }
-            });
-        },
-
-        renderDynamicContent() {
-            const containers = core.Util.$$('[data-content-type]');
-            const data = core.Data.get();
-            if (!containers.length || !data) return;
-
-            containers.forEach(container => {
-                const type = container.dataset.contentType;
-                const prefix = container.dataset.prefix;
-                let html = '';
-
-                for (let i = 1; i <= 50; i++) {
-                    const idx = String(i).padStart(2, '0');
-                    const labelKey = `${prefix}_${idx}`;
-                    let exists = false;
-                    if (type === 'faq') exists = !!data[`${prefix}_${idx}_q`];
-                    else exists = !!data[labelKey];
-
-                    if (!exists) {
-                        if (i > 1) break;
-                        continue;
-                    }
-
-                    if (type === 'faq') {
-                        const q = core.Util.getText(`${prefix}_${idx}_q`);
-                        const a = core.Util.getText(`${prefix}_${idx}_a`);
-                        html += `<div class="pe-faq-item"><div class="pe-faq-item__question">${q}</div><div class="pe-faq-item__answer">${a}</div></div>`;
-                    } else if (type === 'product') {
-                        const label = core.Util.getText(labelKey);
-                        const value = core.Util.getText(`${prefix}_${idx}_price`);
-                        const mod = core.Util.getText(`${prefix}_${idx}_modifier`);
-                        const modClass = mod ? ` pe-product-list__item--${mod}` : '';
-                        html += `<div class="pe-product-list__item${modClass}"><span class="pe-product-list__label">${label}</span><span class="pe-product-list__value">${value}</span></div>`;
-                    }
-                }
-                if (html) container.innerHTML = html;
             });
         }
     };
 
-    // -------------------------------------------------------------------------
-    // 4. Initialization (With Failsafe)
-    // -------------------------------------------------------------------------
     const init = async (siteConfig) => {
-        try {
-            if (typeof window.Express === 'undefined') {
-                throw new Error('Express Core (Tier 1) is missing or failed to load.');
-            }
+        if (typeof Express === 'undefined') return console.error('Express Core Missing');
+        
+        // 1. Core Init
+        core = await Express.init(siteConfig);
+        config = core.config;
 
-            // Initialize Core
-            core = await window.Express.init(siteConfig);
-            config = core.config;
-
-            // Run Modules
-            UIManager.renderLanguage();
-            UIManager.init();
-            Interaction.init();
-            Hydration.init();
-
-            // Canvas Init
-            const header = core.Util.$('.pe-header');
-            if (header) {
-                core.Canvas.init(header, {
-                    overlay: config.canvas_overlay,
-                    image_type: config.canvas_image_type,
-                    image_count: config.canvas_image_count,
-                    image_path: config.canvas_image_path,
-                    image_slide: config.canvas_image_slide,
-                    image_format: config.canvas_image_format,
-                    effect: config.canvas_effect
-                });
-            }
-
-        } catch (e) {
-            console.error('[Page Express] Initialization Failed:', e);
-            // [FAILSAFE] Emergency Reveal
-            // If JS fails, force content to be visible so site is not blank
-            document.querySelectorAll('.js-fade-in').forEach(el => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
+        // 2. Canvas Init
+        const header = core.Util.$('.pe-header');
+        if (header) {
+            core.Canvas.init(header, {
+                overlay: config.canvas_overlay,
+                image_type: config.canvas_image_type,
+                image_count: config.canvas_image_count,
+                image_path: config.canvas_image_path,
+                image_slide: config.canvas_image_slide,
+                image_format: config.canvas_image_format,
+                effect: config.canvas_effect
             });
         }
+
+        // 3. Components Init
+        uiManager.init();
+        formHandler.init();
+        contentRenderer.render();
+        contentRenderer.setupInteractions();
+        contentRenderer.setupObservers();
+        sliderManager.init();
+
+        // 4. Register Effects Helper
+        return {
+            registerEffect: (name, effect) => {
+                if (core.Effects) core.Effects[name] = { init: effect };
+                else window[name] = effect;
+            }
+        };
     };
 
-    // [Fix] Explicitly assign to window
-    window.PE_V4 = { init };
-
+    return { init };
 })();
