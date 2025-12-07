@@ -117,20 +117,6 @@ body, .pe-card__title, .pe-process-item__title {
 .pe-header__subtitle { font-family: 'Gowun Dodum', sans-serif; }
 .pe-section h2 { font-family: 'Poppins', sans-serif; font-weight: 600; }
 
-/* Canvas Image Filter (Tone Down) */
-.pe-header .ex-canvas__image, 
-.pe-header .ex-canvas__slide {
-    filter: brightness(0.7); 
-}
-
-/* Parallax Section Effect */
-.pe-section--parallax {
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
 /* Theme Button Radius & Color Override */
 .pe-button, 
 .pe-form__submit {
@@ -192,7 +178,7 @@ body, .pe-card__title, .pe-process-item__title {
 }
 
 /* Adjustments for Dynamic Section */
-.pe-section--dynamic.section-divider::after { display: none; }
+.pe-section--parallax.section-divider::after { display: none; }
 .pe-section#cookies { padding-top: 100px; }
 .pe-section#demo { padding: 0 0 100px 0; }
 .pe-product-list__item--options { flex-direction: column; align-items: flex-start; gap: 5px; }

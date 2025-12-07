@@ -136,6 +136,7 @@ input, select, textarea, button {
     object-position: center;
     opacity: 0;
     transition: opacity 1.5s ease-in-out;
+    filter: brightness(0.7);
     z-index: 1;
 }
 .ex-canvas__image.is-active,

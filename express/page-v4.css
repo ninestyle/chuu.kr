@@ -184,6 +184,13 @@ a:hover {
     background-color: var(--bg-secondary);
 }
 
+.pe-section--parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .pe-section__description {
     color: var(--text-secondary);
     font-size: 1.1rem;
