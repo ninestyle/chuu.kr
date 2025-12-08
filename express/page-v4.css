@@ -1,7 +1,7 @@
 /*
     Page Express V4 Framework Style
-    Version: 4.2.0 (Architecture Refactoring: Structure & Base Design)
-    Last Modified: 2025-12-07
+    Version: 4.2.1 (Patch: Overlay & Z-index Fix)
+    Last Modified: 2025-12-08
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
 */
@@ -166,7 +166,10 @@ a:hover {
 .pe-container { 
     max-width: 1100px; 
     margin-inline: auto; 
-    padding-inline: 20px; 
+    padding-inline: 20px;
+    /* [Fix] Ensure content sits above overlay */
+    position: relative;
+    z-index: 2;
 }
 
 .pe-section { 
@@ -189,6 +192,8 @@ a:hover {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    /* Ensure background is behind overlay */
+    z-index: 0;
 }
 
 .pe-section__description {
@@ -210,6 +215,23 @@ a:hover {
     background-color: var(--bg-lang-switcher);
 }
 
+/* [New] Overlay System */
+.pe-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Above background (0), below content (2) */
+    background-color: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+}
+
+.pe-overlay--dotted {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-color: rgba(0, 0, 0, 0.2); /* Darken bg slightly for readability */
+}
+
 .js-fade-in { 
     opacity: 0; 
     transform: translateY(80px) scale(0.98); 
@@ -218,6 +240,10 @@ a:hover {
 .js-fade-in.is-visible { 
     opacity: 1; 
     transform: translateY(0) scale(1); 
+}
+
+.js-lightbox-trigger {
+    cursor: pointer;
 }
 
 /* =================================================================
