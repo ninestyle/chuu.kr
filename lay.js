@@ -24,9 +24,9 @@ const siteConfig = {
     
     canvas_image_type: 'cover',
     canvas_image_count: 3,
+    canvas_image_slide: 6,
     canvas_image_path: './section/home/',
     canvas_image_format: 'jpg',
-    canvas_image_slide: 6,
 
     // Interaction
     icon_buttons: [
@@ -55,10 +55,18 @@ window.heartEffect = {
     init: function(container) {
         // V4 passes the container (div.ex-canvas)
         this.container = container;
-        this.canvas = document.createElement('canvas');
-        this.canvas.className = 'ex-canvas__effect'; // V4 Standard Class
+        
+        // [Fix] Try to find existing canvas first
+        this.canvas = this.container.querySelector('.ex-canvas__effect');
+        
+        // Only create if it doesn't exist
+        if (!this.canvas) {
+            this.canvas = document.createElement('canvas');
+            this.canvas.className = 'ex-canvas__effect';
+            this.container.appendChild(this.canvas);
+        }
+
         this.ctx = this.canvas.getContext('2d');
-        this.container.appendChild(this.canvas);
 
         this.resize();
         this.createHearts();

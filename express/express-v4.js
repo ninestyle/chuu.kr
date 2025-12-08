@@ -1,7 +1,8 @@
 /*
     Express Core Engine V4
-    Version: 4.0.0 (Tier 1 Infrastructure)
-    Last Modified: 2025-12-07
+    Version: 4.1.1 (Patch: Slide Indicators & Binding Fix)
+    Tier 1 Infrastructure
+    Last Modified: 2025-12-08
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
 */
@@ -85,6 +86,37 @@ const Express = (() => {
     const UI = {
         init() {
             this.initDemoLinks();
+            this.checkResolution();
+            window.addEventListener('resize', () => this.checkResolution());
+        },
+
+        // [Feature] Minimum Resolution Warning
+        checkResolution() {
+            const minW = 300, minH = 400;
+            const isSmall = window.innerWidth < minW || window.innerHeight < minH;
+            let warning = document.getElementById('fullscreen-warning');
+
+            if (isSmall) {
+                if (!warning) {
+                    warning = document.createElement('div');
+                    warning.id = 'fullscreen-warning';
+                    // User provided structure
+                    warning.innerHTML = `
+                        <div class="warning-content">
+                            <span translate="no" class="material-symbols-outlined notranslate">smartphone</span>
+                            <p>For the best experience, please use a larger screen.</p>
+                            <div class="size-info">
+                                <span>Width: <strong>&gt; 300px</strong></span>
+                                <span>Height: <strong>&gt; 400px</strong></span>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(warning);
+                }
+                warning.classList.remove('ex-hidden');
+            } else {
+                if (warning) warning.classList.add('ex-hidden');
+            }
         },
 
         initDemoLinks() {
@@ -258,14 +290,46 @@ const Express = (() => {
                 const userDefault = userJson['_default'] || {};
 
                 langData = { ...coreDefault, ...coreLang, ...userDefault, ...userLangData };
+                
+                // [Fix] Apply Binding automatically after load
+                this.apply();
+                
                 return langData;
             } catch (e) {
                 console.error('Express Data Load Error:', e);
                 langData = FALLBACK_MSGS;
+                this.apply(); 
                 return langData;
             }
         },
-        get() { return langData; }
+        
+        get() { return langData; },
+
+        // [New] Bind Data to DOM (V4 Standard)
+        apply() {
+            // 1. Text Content Binding (data-lang="key")
+            Util.$$('[data-lang]').forEach(el => {
+                const key = el.dataset.lang;
+                const text = Util.getText(key);
+                if (text && text !== key) el.innerText = text;
+            });
+
+            // 2. Attribute Binding (Explicit: Placeholder, etc)
+            // Fix: Directly check attribute value to ensure correct binding
+            const bindAttrs = ['placeholder', 'title', 'alt', 'aria-label', 'href', 'content'];
+            bindAttrs.forEach(attr => {
+                const selector = `[data-lang-${attr}]`;
+                Util.$$(selector).forEach(el => {
+                    const key = el.getAttribute(`data-lang-${attr}`);
+                    if (key) {
+                        const text = Util.getText(key);
+                        if (text && text !== key) {
+                            el.setAttribute(attr, text);
+                        }
+                    }
+                });
+            });
+        }
     };
 
     // [Canvas Module]
@@ -324,6 +388,7 @@ const Express = (() => {
         },
 
         initSlideshow(layer, options) {
+            // 1. Setup Slides
             const slideWrapper = document.createElement('div');
             slideWrapper.className = 'ex-canvas__slider';
             const slides = [document.createElement('img'), document.createElement('img')];
@@ -332,15 +397,42 @@ const Express = (() => {
                 slideWrapper.appendChild(img);
             });
             layer.appendChild(slideWrapper);
-
+        
+            // 2. Setup Indicators (New Feature)
+            const indicatorWrapper = document.createElement('div');
+            indicatorWrapper.className = 'ex-canvas__indicators';
+            const indicators = [];
+            
+            // Generate dots equal to image count (Max 10 to prevent overflow)
+            const dotCount = Math.min(options.image_count, 10);
+            for(let i=0; i < dotCount; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'ex-canvas__indicator';
+                indicatorWrapper.appendChild(dot);
+                indicators.push(dot);
+            }
+            layer.appendChild(indicatorWrapper);
+        
             const order = Util.createShuffleList(options.image_count);
             let idx = 0;
+            
+            const updateIndicators = (currentIdx) => {
+                indicators.forEach((dot, i) => {
+                    if (i === currentIdx) dot.classList.add('is-active');
+                    else dot.classList.remove('is-active');
+                });
+            };
+
             const run = (isFirst) => {
+                // Map the shuffled index back to indicator index (0 ~ dotCount-1)
+                const indicatorIdx = idx % dotCount;
+                updateIndicators(indicatorIdx);
+
                 const imgNum = order[idx];
                 const imgSrc = `${options.image_path}${imgNum}.${options.image_format || 'jpg'}`;
                 const active = slides.find(s => s.classList.contains('is-active'));
                 const next = slides.find(s => !s.classList.contains('is-active')) || slides[0];
-
+        
                 if (isFirst) {
                     next.src = imgSrc;
                     next.classList.add('is-active');
@@ -353,6 +445,7 @@ const Express = (() => {
                 }
                 idx = (idx + 1) % order.length;
             };
+            
             run(true);
             setInterval(() => run(false), options.image_slide * 1000);
         }

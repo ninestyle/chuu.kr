@@ -183,3 +183,45 @@ body, .pe-card__title, .pe-process-item__title {
 .pe-section#demo { padding: 0 0 100px 0; }
 .pe-product-list__item--options { flex-direction: column; align-items: flex-start; gap: 5px; }
 .pe-product-list__item--options .pe-product-list__value { text-align: left; margin-inline-start: 0; }
+
+/* [4. Custom UI Override - Header Icon Buttons] */
+.pe-header__content .ce-button-group__icon {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+    .pe-header__content .ce-button-group__icon {
+        background-color: rgba(255, 255, 255, 0.65);
+        color: var(--ex-color-primary); /* #C98696 */
+        border-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .pe-header__content .ce-button-group__icon:hover {
+        background-color: var(--ex-color-primary);
+        color: #FFFFFF;
+        border-color: var(--ex-color-primary);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(201, 134, 150, 0.4);
+    }
+}
+
+/* --- 다크 모드 (Dark Mode) 문제 해결 --- */
+@media (prefers-color-scheme: dark) {
+    .pe-header__content .ce-button-group__icon {
+        background-color: rgba(40, 30, 35, 0.6); 
+        color: var(--ex-color-primary);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .pe-header__content .ce-button-group__icon:hover {
+        background-color: var(--ex-color-accent);
+        color: #3B3037;
+        border-color: var(--ex-color-accent);
+        transform: translateY(-3px);
+        box-shadow: 0 0 20px rgba(224, 187, 228, 0.5); 
+    }
+}
