@@ -1,7 +1,7 @@
 /*
-    Page Express Framework V4
-    Version: 4.2.0 (Architecture Refactoring: Logic Upgrade)
-    Last Modified: 2025-12-07
+    Version: Page Express 4.2.1 (Diet & Core Integration)
+    Last Modified: 2025-12-09 14:40:00 (KST)
+    File Name: page-v4.js
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
 */
@@ -12,7 +12,6 @@ const PE_V4 = (() => {
     let config = {}; 
     let currentLangData = {};
 
-    // [Tier 2] UI Manager
     const uiManager = {
         init() {
             this.injectIconButtons();
@@ -56,7 +55,6 @@ const PE_V4 = (() => {
         }
     };
 
-    // [Tier 2] Form Handler
     const formHandler = {
         init() {
             this.bindForm('.pe-search-form', 'conn.search', 'searchCooldown', 30000, (res, statusEl) => {
@@ -70,15 +68,7 @@ const PE_V4 = (() => {
                 statusEl.textContent = res.message;
                 statusEl.style.color = 'var(--ex-color-success)'; 
                 form.reset();
-                const counter = form.querySelector('.pe-form__char-counter');
-                if(counter) counter.textContent = '0/1024';
             });
-
-            const textarea = core.Util.$('.pe-form__textarea');
-            const counter = core.Util.$('.pe-form__char-counter');
-            if (textarea && counter) {
-                textarea.addEventListener('input', () => counter.textContent = `${textarea.value.length}/1024`);
-            }
         },
 
         bindForm(selector, apiPath, cooldownKey, cooldownTime, successCallback) {
@@ -128,7 +118,6 @@ const PE_V4 = (() => {
         }
     };
 
-    // [Tier 2] Content Renderer
     const contentRenderer = {
         render() {
             const lang = document.documentElement.lang;
@@ -247,7 +236,6 @@ const PE_V4 = (() => {
         }
     };
 
-    // [Tier 2] Slider (Logic Enhanced)
     const sliderManager = {
         init() {
             core.Util.$$('.js-content-slider').forEach(slider => {
@@ -288,8 +276,8 @@ const PE_V4 = (() => {
                 const startAutoPlay = () => {
                     if (isPlaying || !playPauseBtn) return;
                     isPlaying = true;
-                    playPauseBtn.classList.add('is-playing'); // Trigger spin animation
-                    playPauseBtn.querySelector('.material-symbols-outlined').textContent = 'pause'; // Change icon
+                    playPauseBtn.classList.add('is-playing');
+                    playPauseBtn.querySelector('.material-symbols-outlined').textContent = 'pause';
                     
                     autoPlayInterval = setInterval(() => {
                         const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
@@ -304,8 +292,8 @@ const PE_V4 = (() => {
                 const stopAutoPlay = () => {
                     if (!isPlaying || !playPauseBtn) return;
                     isPlaying = false;
-                    playPauseBtn.classList.remove('is-playing'); // Stop spin
-                    playPauseBtn.querySelector('.material-symbols-outlined').textContent = 'play_arrow'; // Restore icon
+                    playPauseBtn.classList.remove('is-playing');
+                    playPauseBtn.querySelector('.material-symbols-outlined').textContent = 'play_arrow';
                     clearInterval(autoPlayInterval);
                 };
 
