@@ -1,23 +1,21 @@
 /*
-    Version: 5.0.0 (Theme: Sweet Cream & Berry)
+    Version: 4.0.3
     Framework: Express Series V4
     Theme: CHUU - Vintage Kitsch & Creamy
-    Last Modified: 2025-12-09
+    Last Modified: 2025-12-09 18:35
     Author: Maxim
 */
 
 :root {
-   /* [Light Mode: Sweet Cream & Berry] */
-   --ex-color-primary: #FF8BA7;      /* Primary: Strawberry Milk Pink */
-   --ex-color-secondary: #FFC3A0;    /* Secondary: Peach Butter */
-   --ex-color-accent: #FFD1DC;       /* Accent: Pastel Pink */
-   --ex-color-bg: #FFF9F5;           /* Background: Warm Vanilla Cream */
-   --ex-color-surface: #FFFFFF;      /* Surface: White */
-   --ex-color-text: #5D4037;         /* Text: Chocolate Brown */
-   --ex-color-border: #FFDEE9;       /* Border: Soft Pink Line */
-   --ex-color-success: #98DDCA;      /* Success: Mint Cream */
+   --ex-color-primary: #FF8BA7;
+   --ex-color-secondary: #FFC3A0;
+   --ex-color-accent: #FFD1DC;
+   --ex-color-bg: #FFF9F5;
+   --ex-color-surface: #FFFFFF;
+   --ex-color-text: #5D4037;
+   --ex-color-border: #FFDEE9;
+   --ex-color-success: #98DDCA;
 
-   /* [Tier 3 Custom Variables] */
    --bg-navbar-animated: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255, 249, 245, 0.95));
    
    --bg-card: #FFFFFF;
@@ -29,9 +27,8 @@
    --bg-lang-switcher-active: #FF8BA7;
    
    --bg-offer-badge: #FF6B8B;
-   --bg-overlay: rgba(93, 64, 55, 0.05); /* Chocolate Tint */
+   --bg-overlay: rgba(93, 64, 55, 0.05);
    
-   /* Mapping */
    --text-headings: #5D4037;
    --text-secondary: #8D6E63;
    --text-accent: #FF6B8B;
@@ -57,16 +54,14 @@
 
 @media (prefers-color-scheme: dark) {
    :root {
-       /* [Dark Mode: Deep Cocoa & Berry Mousse] */
-       --ex-color-primary: #FFB7B2;      /* Primary: Salmon Pink */
-       --ex-color-secondary: #BCAAA4;    /* Secondary: Grayish Brown */
-       --ex-color-accent: #E1BEE7;       /* Accent: Taro Purple */
-       --ex-color-bg: #2D242C;           /* Background: Dark Cocoa */
-       --ex-color-surface: #3E323A;      /* Surface: Milk Chocolate */
-       --ex-color-text: #FCE4EC;         /* Text: Berry White */
+       --ex-color-primary: #FFB7B2;
+       --ex-color-secondary: #BCAAA4;
+       --ex-color-accent: #E1BEE7;
+       --ex-color-bg: #2D242C;
+       --ex-color-surface: #3E323A;
+       --ex-color-text: #FCE4EC;
        --ex-color-border: #4E3B42;
 
-       /* [Tier 3 Custom - Dark] */
        --bg-navbar-animated: rgba(45, 36, 44, 0.95);
        --bg-card: #3E323A;
        --bg-button: #FFB7B2;
@@ -104,7 +99,6 @@
    }
 }
 
-/* Typography Overrides */
 body, .pe-card__title, .pe-process-item__title {
    font-family: 'Gowun Dodum', sans-serif;
    font-weight: 400;
@@ -118,13 +112,11 @@ body, .pe-card__title, .pe-process-item__title {
    text-transform: uppercase;
    color: #FFFFFF;
    letter-spacing: 2px;
-   /* Soft Strawberry Shadow */
    text-shadow: 3px 3px 0px rgba(255, 139, 167, 1), 6px 6px 0px rgba(255, 195, 160, 1);
 }
 
 @media (prefers-color-scheme: dark) {
     .pe-header .home-logo {
-        /* Cocoa Shadow for Dark Mode */
         text-shadow: 3px 3px 0px rgba(62, 50, 58, 1), 6px 6px 0px rgba(255, 183, 178, 0.5);
     }
 }
@@ -143,22 +135,19 @@ body, .pe-card__title, .pe-process-item__title {
     color: var(--text-headings);
 }
 
-/* Button Styling - Round & Cute */
 .pe-button, 
 .pe-form__submit {
     border-radius: 50px;
     font-weight: 700;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     padding: 14px 36px;
     letter-spacing: 0.5px;
 }
 
-/* Light Mode Shadow - Pastel */
 .pe-button, .pe-form__submit {
     box-shadow: 0 4px 0px #FF6B8B;
     transform: translateY(0);
 }
-/* Dark Mode Shadow */
 @media (prefers-color-scheme: dark) {
     .pe-button, .pe-form__submit {
         box-shadow: 0 4px 0px #BC8F8F;
@@ -177,7 +166,6 @@ body, .pe-card__title, .pe-process-item__title {
     box-shadow: 0 2px 0px #E91E63;
 }
 
-/* Slider Controls Theme */
 .pe-slider__nav-button {
     border: 2px solid var(--ex-color-bg);
     color: var(--ex-color-secondary);
@@ -190,11 +178,10 @@ body, .pe-card__title, .pe-process-item__title {
     border-color: var(--ex-color-primary);
 }
 
-/* Card Style - Soft & Clean */
 .pe-card {
     border-radius: 24px;
     border: 1px solid transparent;
-    box-shadow: 0 10px 30px rgba(93, 64, 55, 0.03); /* Soft Brown Shadow */
+    box-shadow: 0 10px 30px rgba(93, 64, 55, 0.03);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: var(--bg-card);
 }
@@ -203,9 +190,7 @@ body, .pe-card__title, .pe-process-item__title {
     border-color: var(--ex-color-border);
 }
 
-/* Light Mode Card Hover */
 .pe-card:hover { box-shadow: 0 20px 40px rgba(255, 139, 167, 0.15); }
-/* Dark Mode Card Hover */
 @media (prefers-color-scheme: dark) {
     .pe-card:hover { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
 }
@@ -218,7 +203,6 @@ body, .pe-card__title, .pe-process-item__title {
     font-weight: 700;
 }
 
-/* Section Divider */
 .pe-section.section-divider {
    position: relative;
    padding-top: 100px;
@@ -234,8 +218,11 @@ body, .pe-card__title, .pe-process-item__title {
    opacity: 1;
 }
 
-/* Wavy Divider - Warm Cream to Pink (Light) */
-/* Update Fill color to match --ex-color-bg (#FFF9F5) */
+/* Fix: Dynamic Background for Alternate Sections */
+.pe-section.to-primary {
+    background-color: var(--bg-footer);
+}
+
 .pe-section.section-divider.to-primary::after {
    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%23FFF9F5;'%3E%3C/path%3E%3C/svg%3E");
    transform: scaleY(-1);
@@ -245,8 +232,6 @@ body, .pe-card__title, .pe-process-item__title {
    transform: scaleY(-1);
 }
 
-/* Wavy Divider - Dark Cocoa (Dark) */
-/* Update Fill color to match --ex-color-bg (#2D242C) and footer (#261E25) */
 @media (prefers-color-scheme: dark) {
    .pe-section.section-divider.to-primary::after {
        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%232D242C;'%3E%3C/path%3E%3C/svg%3E");
@@ -256,7 +241,6 @@ body, .pe-card__title, .pe-process-item__title {
    }
 }
 
-/* Dynamic Section Adjustments */
 .pe-section--parallax.section-divider::after { display: none; }
 .pe-section#cookies { padding-top: 100px; }
 .pe-section#demo { padding: 100px 0; }
