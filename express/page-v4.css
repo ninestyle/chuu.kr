@@ -507,8 +507,8 @@ a:hover {
 }
 .pe-form__textarea { resize: vertical; min-height: 120px; }
 .pe-form__textarea-wrapper { width: 100%; }
-.pe-form__char-counter { font-size: 0.85rem; color: var(--text-secondary); text-align: right; }
 .pe-form__status { display: none; margin-top: 10px; font-size: 0.95rem; }
+.ex-counter { font-size: 0.85rem; color: var(--text-secondary); text-align: right; }
 
 /* --- Slider & Controls (Base Structure) --- */
 .pe-slider__wrapper {
