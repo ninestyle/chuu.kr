@@ -1,109 +1,108 @@
 /*
-    Version: 4.5.0 (Theme Refactoring: Pure Lovely)
+    Version: 4.7.0 (Final Theme: Vibrant Lovely & Chic Dark)
     Framework: Express Series V4
-    Theme: CHUU - Pure Lovely
+    Theme: CHUU - Vibrant Lovely
     Last Modified: 2025-12-09
     Author: Maxim
 */
 
 :root {
-   /* [V4 Core Mapping - Light: Pure Pink & Warm Brown] */
-   /* 기존의 탁한 장미색(Dusty)을 버리고, 맑고 화사한 핑크로 변경 */
-   --ex-color-primary: #FF99AC;      /* Primary: Lovely Pink (생기있는 핑크) */
-   --ex-color-secondary: #8D6E63;    /* Secondary: Warm Cocoa (따뜻한 코코아) */
-   --ex-color-accent: #FFC4D0;       /* Accent: Soft Petal Pink */
-   --ex-color-bg: #FFFEFE;           /* Background: Pure White */
-   --ex-color-surface: #FFF5F7;      /* Surface: Very Pale Pink */
-   --ex-color-text: #5D4037;         /* Text: Dark Chocolate */
-   --ex-color-border: #FFE4E9;       /* Border: Pink Mist */
-   --ex-color-success: #A5D6A7;      /* Fresh Mint */
+   /* [V4 Core Mapping - Light: Blooming Pink (화사하고 생기있게)] */
+   --ex-color-primary: #FF5C8D;      /* Primary: Deep Lovely Pink (진한 핑크로 변경) */
+   --ex-color-secondary: #70585E;    /* Secondary: Warm Cocoa Gray (따뜻한 회색) */
+   --ex-color-accent: #FF8FAB;       /* Accent: Azalea Pink */
+   --ex-color-bg: #FFF5F8;           /* Background: Pale Rose (완전 흰색 X) */
+   --ex-color-surface: #FFFFFF;      /* Surface: White (카드 배경은 깨끗하게) */
+   --ex-color-text: #4A3B3E;         /* Text: Deep Brown Black (가독성 확보) */
+   --ex-color-border: #FFC4D6;       /* Border: Pink Line */
+   --ex-color-success: #81C784;      /* Soft Green */
 
    /* [Tier 3 Custom Variables] */
-   /* Lovely Gradient: 맑고 깨끗한 느낌 */
-   --bg-navbar-animated: linear-gradient(120deg, #fff5f7, #ffffff, #ffebee, #fff5f7);
+   /* Gradient: 더 풍부한 색감 */
+   --bg-navbar-animated: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,240,245,0.9));
    
    --bg-card: #FFFFFF;
-   --bg-button: #FF99AC;
-   --bg-button-hover: #F06292;       /* 진한 핑크로 호버 */
+   --bg-button: #FF5C8D;
+   --bg-button-hover: #FF3366;       /* 호버 시 더 강렬하게 */
    
    --bg-lang-switcher: #FFE4E9;
-   --bg-lang-switcher-hover: #FFC4D0;
-   --bg-lang-switcher-active: #FF99AC;
+   --bg-lang-switcher-hover: #FFC4D6;
+   --bg-lang-switcher-active: #FF5C8D;
    
-   --bg-offer-badge: #FF99AC;
-   --bg-overlay: rgba(93, 64, 55, 0.03);
+   --bg-offer-badge: #FF3366;
+   --bg-overlay: rgba(74, 59, 62, 0.05);
    
    /* Mapping for Page Framework */
-   --text-headings: var(--ex-color-text);
-   --text-secondary: var(--ex-color-secondary);
-   --text-accent: #F06292; /* Vivid Pink for Links */
+   --text-headings: #4A3B3E;
+   --text-secondary: #70585E;
+   --text-accent: #FF3366;
    
-   --text-navbar: #5D4037;
-   --text-lang-switcher: #5D4037;
+   --text-navbar: #4A3B3E;
+   --text-lang-switcher: #4A3B3E;
    --text-lang-switcher-active: #FFFFFF;
    --text-button: #FFFFFF;
-   --text-section-title-icon: #FF99AC;
+   --text-section-title-icon: #FF5C8D;
    --text-header-title: #FFFFFF;
-   --text-header-subtitle: #FFFFFF; /* 배경 제거로 흰색 텍스트 강조 */
-   --text-footer: #8D6E63;
+   --text-header-subtitle: #FFFFFF;
+   --text-footer: #8D7B80;
    
    --bg-footer: #FFF0F5;
-   --border-card: #FFE4E9;
-   --border-navbar-bottom: rgba(255, 153, 172, 0.15);
-   --border-section-heading-underline: #FFC4D0;
+   --border-card: #FFEBF0;
+   --border-navbar-bottom: rgba(255, 92, 141, 0.2);
+   --border-section-heading-underline: #FF8FAB;
    
    /* CE Button Override */
-   --ce-canvas-rgb: 255, 255, 255;
-   --ce-text-color: #5D4037;
-   --ce-input-bg-color: rgba(255, 255, 255, 0.8);
+   --ce-canvas-rgb: 255, 92, 141;
+   --ce-text-color: #FFFFFF;
+   --ce-input-bg-color: rgba(255, 92, 141, 0.3);
 }
 
 @media (prefers-color-scheme: dark) {
    :root {
-       /* [V4 Core Mapping - Dark: Deep Brown & Pink] */
-       --ex-color-primary: #FF80AB;      /* Primary: Bright Pink */
-       --ex-color-secondary: #D7CCC8;    /* Secondary: Light Cocoa */
-       --ex-color-accent: #FF4081;       /* Accent: Deep Pink */
-       --ex-color-bg: #3E2723;           /* Background: Dark Chocolate */
-       --ex-color-surface: #4E342E;      /* Surface: Cocoa */
-       --ex-color-text: #FFF8E1;         /* Text: Milk Cream */
-       --ex-color-border: #5D4037;
+       /* [V4 Core Mapping - Dark: Chic Black & Neon Pink (Keep this vibe)] */
+       --ex-color-primary: #FF80AB;      /* Primary: Neon Pink */
+       --ex-color-secondary: #B0BEC5;    /* Secondary: Blueish Gray */
+       --ex-color-accent: #FF4081;       /* Accent: Hot Pink */
+       --ex-color-bg: #121212;           /* Background: True Dark */
+       --ex-color-surface: #1E1E1E;      /* Surface: Dark Gray */
+       --ex-color-text: #E0E0E0;         /* Text: Light Gray */
+       --ex-color-border: #333333;
 
        /* [Tier 3 Custom - Dark] */
-       --bg-navbar-animated: linear-gradient(120deg, #3e2723, #4e342e, #3e2723);
-       --bg-card: #4E342E;
+       --bg-navbar-animated: rgba(30, 30, 30, 0.95);
+       --bg-card: #1E1E1E;
        --bg-button: #FF80AB;
        --bg-button-hover: #FF4081;
        
-       --bg-lang-switcher: #5D4037;
-       --bg-lang-switcher-hover: #6D4C41;
+       --bg-lang-switcher: #333333;
+       --bg-lang-switcher-hover: #424242;
        --bg-lang-switcher-active: #FF80AB;
        
-       --bg-offer-badge: #FF80AB;
-       --bg-overlay: rgba(0, 0, 0, 0.4);
+       --bg-offer-badge: #FF4081;
+       --bg-overlay: rgba(0, 0, 0, 0.5);
 
-       --text-headings: #FF80AB;
-       --text-secondary: #D7CCC8;
-       --text-accent: #FF4081;
+       --text-headings: #FFFFFF;
+       --text-secondary: #B0BEC5;
+       --text-accent: #FF80AB;
        
-       --text-navbar: #FFF8E1;
-       --text-lang-switcher: #FFF8E1;
-       --text-lang-switcher-active: #3E2723;
+       --text-navbar: #FFFFFF;
+       --text-lang-switcher: #E0E0E0;
+       --text-lang-switcher-active: #121212;
        
-       --text-button: #3E2723;
-       --text-offer-badge: #3E2723;
+       --text-button: #121212;
+       --text-offer-badge: #FFFFFF;
        --text-section-title-icon: #FF80AB;
        --text-header-title: #FFFFFF;
        --text-header-subtitle: #FF80AB;
-       --text-footer: #D7CCC8;
+       --text-footer: #757575;
        
-       --bg-footer: #2D201D;
-       --border-card: #5D4037;
-       --border-navbar-bottom: #5D4037;
+       --bg-footer: #121212;
+       --border-card: #333333;
+       --border-navbar-bottom: #333333;
        --border-section-heading-underline: #FF4081;
        
-       --ce-canvas-rgb: 255, 128, 171;
-       --ce-input-bg-color: rgba(62, 39, 35, 0.7);
+       --ce-canvas-rgb: 255, 64, 129;
+       --ce-input-bg-color: rgba(255, 255, 255, 0.1);
    }
 }
 
@@ -120,35 +119,34 @@ body, .pe-card__title, .pe-process-item__title {
    line-height: 1;
    text-transform: uppercase;
    color: #FFFFFF;
-   /* Clean Shadow for Fresh Look */
-   text-shadow: 2px 2px 15px rgba(255, 153, 172, 0.6);
-   letter-spacing: 1px;
+   /* Clean & Lovely Shadow */
+   text-shadow: 0 0 20px rgba(255, 112, 150, 0.6), 0 0 40px rgba(255, 112, 150, 0.3);
+   letter-spacing: 2px;
 }
 
 @media (prefers-color-scheme: dark) {
     .pe-header .home-logo {
-        text-shadow: 0 0 20px rgba(255, 128, 171, 0.5);
+        text-shadow: 0 0 20px rgba(255, 128, 171, 0.8), 0 0 50px rgba(255, 64, 129, 0.5);
     }
 }
 
 .pe-nav__logo { font-family: 'Fredoka One', cursive; letter-spacing: 1px; font-weight: 400; }
 
-/* [Sub-title Modification] 배경 제거 & 텍스트만 깔끔하게 */
 .pe-header__subtitle { 
     font-family: 'Gowun Dodum', sans-serif; 
-    font-size: 1.35rem; /* 사이즈 살짝 키움 */
-    background-color: transparent; /* 배경 제거 */
+    font-size: 1.35rem; 
+    background-color: transparent; 
     padding: 0; 
     border-radius: 0; 
-    display: block; /* 인라인 블록 해제 */
+    display: block; 
     margin-top: 20px;
     backdrop-filter: none;
     box-shadow: none;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.3); /* 가독성을 위한 그림자 */
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3); 
     font-weight: 400;
 }
 @media (prefers-color-scheme: dark) { 
-    .pe-header__subtitle { background-color: transparent; color: #FF80AB; } 
+    .pe-header__subtitle { color: #FF80AB; text-shadow: 0 0 10px rgba(255, 64, 129, 0.5); } 
 }
 
 .pe-section h2 { 
@@ -157,19 +155,19 @@ body, .pe-card__title, .pe-process-item__title {
     letter-spacing: -0.5px;
 }
 
-/* Theme UI: Lovely Button */
+/* Theme UI: Lovely Chic Button */
 .pe-button, 
 .pe-form__submit {
     border-radius: 50px;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(255, 153, 172, 0.3); /* 핑크빛 그림자 */
+    box-shadow: 0 4px 15px rgba(255, 92, 141, 0.4);
     transition: all 0.3s ease;
     padding: 14px 32px;
 }
 .pe-button:hover,
 .pe-form__submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 153, 172, 0.5);
+    box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5);
     background-color: var(--bg-button-hover);
 }
 
@@ -185,21 +183,31 @@ body, .pe-card__title, .pe-process-item__title {
     color: #FFF;
     border-color: var(--ex-color-primary);
     transform: none;
-    opacity: 0.9;
+    opacity: 1;
 }
 
-/* Card Style - Fresh & Clean */
+/* Card Style - More Depth for Light Mode */
 .pe-card {
-    border-radius: 16px;
+    border-radius: 20px;
     border: 1px solid var(--ex-color-border);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 25px rgba(255, 196, 214, 0.25); /* 라이트 모드 그림자 강화 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .pe-card:hover {
     transform: translateY(-5px);
     border-color: var(--ex-color-primary);
-    box-shadow: 0 10px 30px rgba(255, 153, 172, 0.2);
+    box-shadow: 0 15px 40px rgba(255, 92, 141, 0.3);
 }
+
+@media (prefers-color-scheme: dark) {
+    .pe-card {
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    .pe-card:hover {
+        box-shadow: 0 15px 40px rgba(255, 64, 129, 0.15);
+    }
+}
+
 .pe-card__tag {
     border-radius: 6px;
     font-size: 0.7rem;
@@ -207,10 +215,10 @@ body, .pe-card__title, .pe-process-item__title {
     padding: 5px 10px;
 }
 
-/* Section Dividers (Clean Wave) */
+/* [User Request] Section Divider Override */
 .pe-section.section-divider {
    position: relative;
-   padding-top: 80px;
+   padding-top: 100px;
    padding-bottom: 180px;
 }
 
@@ -220,31 +228,31 @@ body, .pe-card__title, .pe-process-item__title {
    left: 0; bottom: -1px; width: 100%; height: 60px;
    background-repeat: no-repeat;
    background-size: 100% 100%;
-   opacity: 0.9;
+   opacity: 1;
 }
 
 /* Wavy Divider - White/Pink Transition */
 .pe-section.section-divider.to-primary::after {
-   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%23FFFEFE;'%3E%3C/path%3E%3C/svg%3E");
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%23FFF5F8;'%3E%3C/path%3E%3C/svg%3E");
    transform: scaleY(-1);
 }
 .pe-section.section-divider.to-secondary::after {
-   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%23FFF5F7;'%3E%3C/path%3E%3C/svg%3E");
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%23FFF0F5;'%3E%3C/path%3E%3C/svg%3E");
    transform: scaleY(-1);
 }
 
 @media (prefers-color-scheme: dark) {
    .pe-section.section-divider.to-primary::after {
-       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%233E2723;'%3E%3C/path%3E%3C/svg%3E");
+       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%23121212;'%3E%3C/path%3E%3C/svg%3E");
    }
    .pe-section.section-divider.to-secondary::after {
-       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%234E342E;'%3E%3C/path%3E%3C/svg%3E");
+       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' style='fill:%231E1E1E;'%3E%3C/path%3E%3C/svg%3E");
    }
 }
 
 /* Adjustments for Dynamic Section */
 .pe-section--parallax.section-divider::after { display: none; }
 .pe-section#cookies { padding-top: 100px; }
-.pe-section#demo { padding: 0 0 100px 0; }
+.pe-section#demo { padding: 100px 0; }
 .pe-product-list__item--options { flex-direction: column; align-items: flex-start; gap: 5px; }
 .pe-product-list__item--options .pe-product-list__value { text-align: left; margin-inline-start: 0; }
