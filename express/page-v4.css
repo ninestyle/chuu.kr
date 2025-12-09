@@ -606,12 +606,12 @@ a:hover {
 .ce-button-group__icon {
     width: 3.5rem; height: 3.5rem; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    background-color: var(--ce-input-bg-color);
-    color: var(--ce-text-color);
+    background-color: var(--bg-button);
+    color: var(--text-button);
     backdrop-filter: blur(12px);
     transition: transform 0.2s;
 }
-.ce-button-group__icon:hover { transform: translateY(-3px); background-color: var(--text-accent); }
+.ce-button-group__icon:hover { transform: translateY(-3px); background-color: var(--bg-button-hover); color: var(--text-button); }
 
 /* --- Footer & ToTop --- */
 .pe-footer { background: var(--bg-footer); color: var(--text-footer); text-align: center; padding: 30px 0; font-size: 0.9rem; }
