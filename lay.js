@@ -1,7 +1,7 @@
 /*
-    Version: 4.1.0 (Tier 3 Refactor)
+    Version: 5.0.0 (Theme: Sweet Cream & Berry)
     Framework: Express Series V4
-    Theme: CHUU - Sweet Wonderland
+    Theme: CHUU - Vintage Kitsch & Creamy
     Last Modified: 2025-12-09
     Author: Maxim
 */
@@ -10,7 +10,7 @@
 const siteConfig = {
     // Core Essentials
     language: 'ko',
-    theme_color: '#FF8FA3', // Strawberry Pink
+    theme_color: '#FF8BA7', // Strawberry Milk Pink
     
     // API Strategy (Demo Mode)
     // API_HOST: '', 
@@ -19,7 +19,7 @@ const siteConfig = {
 
     // Visual Engine
     canvas_target: '#home',
-    canvas_effect: 'heartEffect', // Custom Effect Name
+    canvas_effect: 'heartEffect', 
     canvas_overlay: 'dotted',
     
     canvas_image_type: 'cover',
@@ -37,7 +37,7 @@ const siteConfig = {
     scroll_smooth: true
 };
 
-// [2. Custom Effect Plugin] Heart Effect (Sweet Wonderland Ver.)
+// [2. Custom Effect Plugin] Heart Effect (Vintage Pastel Palette)
 window.heartEffect = {
     canvas: null,
     ctx: null,
@@ -47,10 +47,9 @@ window.heartEffect = {
     mouse: { x: null, y: null, radius: 100 },
     width: 0,
     height: 0,
-    // [Sweet Wonderland Palette]
-    // Strawberry Pink, Butter Yellow, Soft Mint, White
-    heartBaseColors: [ [255, 143, 163], [255, 241, 118], [165, 214, 167], [255, 255, 255] ],
-    numberOfHearts: 40,
+    // [Palette] Strawberry, Butter Yellow, Cream, Mint (Soft & Tasty)
+    heartBaseColors: [ [255, 139, 167], [255, 209, 220], [255, 245, 157], [178, 235, 242] ],
+    numberOfHearts: 45,
 
     init: function(container) {
         this.container = container;
@@ -113,7 +112,7 @@ window.heartEffect = {
     },
 
     createHeart: function() {
-        const size = (Math.random() * 20) + 12; // Slightly larger
+        const size = (Math.random() * 20) + 12; 
         const x = Math.random() * this.width;
         const y = Math.random() * this.height;
         const directionX = (Math.random() * 0.6) - 0.3;
@@ -147,7 +146,7 @@ window.heartEffect = {
             this.drawHeart(h.x, h.y, h.size, h.color, h.rotation);
         });
 
-        if (Math.random() > 0.94) { // More sparkles
+        if (Math.random() > 0.94) { 
             this.sparkles.push({
                 x: Math.random() * this.width,
                 y: Math.random() * this.height,
