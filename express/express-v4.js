@@ -1,8 +1,7 @@
 /*
-    Express Core Engine V4
-    Version: 4.1.1 (Patch: Slide Indicators & Binding Fix)
-    Tier 1 Infrastructure
-    Last Modified: 2025-12-08
+    Version: Express 4.7.0 (Fix: File Validation Visuals)
+    Last Modified: 2025-12-09 15:55:00 (KST)
+    File Name: express-v4.js
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
 */
@@ -13,15 +12,14 @@ const Express = (() => {
     let langData = {};
     let isInitialized = false;
 
-    // [Default Messages]
     const FALLBACK_MSGS = {
         ex_error_network: "Network Error",
         ex_error_unknown: "Unknown Error",
+        ex_error_required: "Please fill in all required fields.",
         ex_btn_confirm: "OK",
         ex_btn_cancel: "Cancel"
     };
 
-    // [Utility Module]
     const Util = {
         $(selector, parent = document) { return parent.querySelector(selector); },
         $$(selector, parent = document) { return parent.querySelectorAll(selector); },
@@ -55,6 +53,56 @@ const Express = (() => {
             return langData[key] ? this.processText(langData[key]) : (FALLBACK_MSGS[key] || key);
         },
 
+        // [Centralized Error Class Management for Inputs]
+        checkRequired(formElement) {
+            let isValid = true;
+            const requiredElements = formElement.querySelectorAll('[required]');
+            
+            requiredElements.forEach(el => {
+                let isFilled = false;
+                
+                if (el.type === 'checkbox' || el.type === 'radio') {
+                    isFilled = el.checked;
+                } else if (el.tagName === 'SELECT') {
+                    isFilled = el.value && el.value.trim() !== '';
+                } else {
+                    isFilled = el.value && el.value.trim() !== '';
+                }
+
+                if (!isFilled) {
+                    isValid = false;
+                    el.classList.add('has-error');
+                    
+                    const eventType = (el.type === 'checkbox' || el.type === 'radio' || el.tagName === 'SELECT') ? 'change' : 'input';
+                    el.addEventListener(eventType, function removeError() {
+                        if (
+                            (this.type === 'checkbox' && this.checked) || 
+                            (this.type !== 'checkbox' && this.value.trim() !== '')
+                        ) {
+                            this.classList.remove('has-error');
+                            this.removeEventListener(eventType, removeError);
+                        }
+                    });
+                }
+            });
+
+            if (!isValid) {
+                UI.Toast.show(this.getText('ex_error_required'), 'error');
+            }
+
+            return isValid;
+        },
+        
+        // [New] Universal Error Class Toggle for Containers (e.g., File Wrapper)
+        toggleErrorClass(element, shouldShowError) {
+            if (!element) return;
+            if (shouldShowError) {
+                element.classList.add('has-error');
+            } else {
+                element.classList.remove('has-error');
+            }
+        },
+
         createCooldown(key, duration = 30000) {
             return {
                 isActive() {
@@ -82,15 +130,149 @@ const Express = (() => {
         }
     };
 
-    // [UI Module]
+    const Security = {
+        widgetId: null,
+        
+        init(siteKey) {
+            if (!siteKey) return;
+            window.onloadTurnstileCallback = () => this.render(siteKey);
+            if (typeof turnstile !== 'undefined') this.render(siteKey);
+        },
+
+        render(siteKey) {
+            if (this.widgetId) return;
+            const container = document.createElement('div');
+            container.id = 'turnstile-container';
+            document.body.appendChild(container);
+            try {
+                this.widgetId = turnstile.render('#turnstile-container', { sitekey: siteKey, size: 'invisible' });
+            } catch (e) { console.warn('Turnstile render failed:', e); }
+        },
+
+        async getToken() {
+            if (!this.widgetId) return null;
+            return new Promise((resolve, reject) => {
+                try {
+                    turnstile.execute(this.widgetId, {
+                        callback: (token) => resolve(token),
+                        'error-callback': () => reject(new Error(Util.getText('ex_error_captcha')))
+                    });
+                } catch (e) { reject(e); }
+            });
+        },
+
+        reset() {
+            if (this.widgetId && typeof turnstile !== 'undefined') {
+                try { turnstile.reset(this.widgetId); } catch(e) {}
+            }
+        },
+
+        sanitize(input) {
+            if (typeof input !== 'string') return input;
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#x27;',
+                "/": '&#x2F;'
+            };
+            const reg = /[&<>"'/]/ig;
+            return input.replace(reg, (match) => (map[match]));
+        },
+
+        cleanData(data) {
+            if (data instanceof FormData) {
+                const cleanFD = new FormData();
+                for (const [key, value] of data.entries()) {
+                    if (typeof value === 'string') {
+                        cleanFD.append(key, this.sanitize(value));
+                    } else {
+                        cleanFD.append(key, value);
+                    }
+                }
+                return cleanFD;
+            } else if (typeof data === 'object' && data !== null) {
+                const cleanObj = {};
+                for (const key in data) {
+                    if (typeof data[key] === 'string') {
+                        cleanObj[key] = this.sanitize(data[key]);
+                    } else {
+                        cleanObj[key] = data[key];
+                    }
+                }
+                return cleanObj;
+            }
+            return data;
+        }
+    };
+
+    const Validation = {
+        LIMITS: {
+            INPUT: 100,
+            TEXTAREA: 5000
+        },
+
+        init() {
+            const inputs = document.querySelectorAll('input:not([type="hidden"]):not([type="submit"]):not([type="button"]), textarea');
+            inputs.forEach(el => this.applyLimits(el));
+        },
+
+        applyLimits(el) {
+            const isTextarea = el.tagName === 'TEXTAREA';
+            const max = isTextarea ? this.LIMITS.TEXTAREA : this.LIMITS.INPUT;
+
+            const currentMax = parseInt(el.getAttribute('maxlength'));
+            if (!currentMax || currentMax > max) {
+                el.setAttribute('maxlength', max);
+            }
+
+            if (isTextarea) {
+                this.injectCounter(el, max);
+            }
+        },
+
+        injectCounter(textarea, max) {
+            if (textarea.nextElementSibling && textarea.nextElementSibling.classList.contains('ex-counter')) return;
+
+            const counter = document.createElement('div');
+            counter.className = 'ex-counter';
+            counter.innerText = `0 / ${max}`;
+            
+            textarea.parentNode.insertBefore(counter, textarea.nextSibling);
+
+            textarea.addEventListener('input', () => {
+                const len = textarea.value.length;
+                counter.innerText = `${len} / ${max}`;
+                
+                if (len >= max) {
+                    counter.classList.add('is-limit');
+                    counter.classList.remove('is-warning');
+                } else if (len >= max * 0.9) {
+                    counter.classList.add('is-warning');
+                    counter.classList.remove('is-limit');
+                } else {
+                    counter.classList.remove('is-warning', 'is-limit');
+                }
+            });
+        }
+    };
+
     const UI = {
         init() {
             this.initDemoLinks();
             this.checkResolution();
+            this.enforceAutocompleteOff();
             window.addEventListener('resize', () => this.checkResolution());
         },
+        
+        enforceAutocompleteOff() {
+            const inputs = document.querySelectorAll('input:not([autocomplete])');
+            inputs.forEach(input => {
+                input.setAttribute('autocomplete', 'off');
+            });
+        },
 
-        // [Feature] Minimum Resolution Warning
         checkResolution() {
             const minW = 300, minH = 400;
             const isSmall = window.innerWidth < minW || window.innerHeight < minH;
@@ -100,7 +282,6 @@ const Express = (() => {
                 if (!warning) {
                     warning = document.createElement('div');
                     warning.id = 'fullscreen-warning';
-                    // User provided structure
                     warning.innerHTML = `
                         <div class="warning-content">
                             <span translate="no" class="material-symbols-outlined notranslate">smartphone</span>
@@ -251,7 +432,7 @@ const Express = (() => {
 
         Lightbox: {
             init() {
-                // Tier 2 or 3 triggers UI.Lightbox.open() explicitly
+                
             },
             open(src) {
                 const overlay = document.createElement('div');
@@ -269,7 +450,6 @@ const Express = (() => {
         }
     };
 
-    // [Data Module]
     const Data = {
         async load(userLang) {
             const coreUrl = './express/express-v4.json';
@@ -291,9 +471,7 @@ const Express = (() => {
 
                 langData = { ...coreDefault, ...coreLang, ...userDefault, ...userLangData };
                 
-                // [Fix] Apply Binding automatically after load
                 this.apply();
-                
                 return langData;
             } catch (e) {
                 console.error('Express Data Load Error:', e);
@@ -305,17 +483,13 @@ const Express = (() => {
         
         get() { return langData; },
 
-        // [New] Bind Data to DOM (V4 Standard)
         apply() {
-            // 1. Text Content Binding (data-lang="key")
             Util.$$('[data-lang]').forEach(el => {
                 const key = el.dataset.lang;
                 const text = Util.getText(key);
                 if (text && text !== key) el.innerText = text;
             });
 
-            // 2. Attribute Binding (Explicit: Placeholder, etc)
-            // Fix: Directly check attribute value to ensure correct binding
             const bindAttrs = ['placeholder', 'title', 'alt', 'aria-label', 'href', 'content'];
             bindAttrs.forEach(attr => {
                 const selector = `[data-lang-${attr}]`;
@@ -332,7 +506,6 @@ const Express = (() => {
         }
     };
 
-    // [Canvas Module]
     const Canvas = {
         init(container, options = {}) {
             if (!container) return;
@@ -352,7 +525,6 @@ const Express = (() => {
                 canvasLayer.appendChild(overlay);
             }
 
-            // Image Handler
             if (options.image_count > 0 && options.image_path && options.image_type !== 'none') {
                 if (options.image_slide > 0 && options.image_count > 1) {
                     this.initSlideshow(canvasLayer, options);
@@ -361,18 +533,15 @@ const Express = (() => {
                 }
             }
 
-            // Effect Handler (Built-in or Custom)
             const effectName = options.effect;
             if (effectName) {
                 const effectCanvas = document.createElement('canvas');
                 effectCanvas.className = 'ex-canvas__effect';
                 canvasLayer.appendChild(effectCanvas);
                 
-                // 1. Check if registered in Express.Effects
                 if (Express.Effects && Express.Effects[effectName]) {
                     Express.Effects[effectName].init(canvasLayer);
                 } 
-                // 2. Check global window (Legacy/Simple support)
                 else if (typeof window[effectName] === 'object' && window[effectName].init) {
                     window[effectName].init(canvasLayer);
                 }
@@ -388,7 +557,6 @@ const Express = (() => {
         },
 
         initSlideshow(layer, options) {
-            // 1. Setup Slides
             const slideWrapper = document.createElement('div');
             slideWrapper.className = 'ex-canvas__slider';
             const slides = [document.createElement('img'), document.createElement('img')];
@@ -398,12 +566,10 @@ const Express = (() => {
             });
             layer.appendChild(slideWrapper);
         
-            // 2. Setup Indicators (New Feature)
             const indicatorWrapper = document.createElement('div');
             indicatorWrapper.className = 'ex-canvas__indicators';
             const indicators = [];
             
-            // Generate dots equal to image count (Max 10 to prevent overflow)
             const dotCount = Math.min(options.image_count, 10);
             for(let i=0; i < dotCount; i++) {
                 const dot = document.createElement('span');
@@ -424,7 +590,6 @@ const Express = (() => {
             };
 
             const run = (isFirst) => {
-                // Map the shuffled index back to indicator index (0 ~ dotCount-1)
                 const indicatorIdx = idx % dotCount;
                 updateIndicators(indicatorIdx);
 
@@ -451,48 +616,12 @@ const Express = (() => {
         }
     };
 
-    // [Security Module]
-    const Security = {
-        widgetId: null,
-        init(siteKey) {
-            if (!siteKey) return;
-            window.onloadTurnstileCallback = () => this.render(siteKey);
-            // If API already loaded
-            if (typeof turnstile !== 'undefined') this.render(siteKey);
-        },
-        render(siteKey) {
-            if (this.widgetId) return;
-            const container = document.createElement('div');
-            container.id = 'turnstile-container';
-            document.body.appendChild(container);
-            try {
-                this.widgetId = turnstile.render('#turnstile-container', { sitekey: siteKey, size: 'invisible' });
-            } catch (e) { console.warn('Turnstile render failed:', e); }
-        },
-        async getToken() {
-            if (!this.widgetId) return null;
-            return new Promise((resolve, reject) => {
-                try {
-                    turnstile.execute(this.widgetId, {
-                        callback: (token) => resolve(token),
-                        'error-callback': () => reject(new Error(Util.getText('ex_error_captcha')))
-                    });
-                } catch (e) { reject(e); }
-            });
-        },
-        reset() {
-            if (this.widgetId && typeof turnstile !== 'undefined') {
-                try { turnstile.reset(this.widgetId); } catch(e) {}
-            }
-        }
-    };
-
-    // [API Module]
     const API = {
         async post(endpoint, body, btnElement = null, options = {}) {
+            if (btnElement && btnElement.disabled) return;
+
             if (btnElement) UI.Loader.show(btnElement);
 
-            // Mock Response for Demo Mode
             if (config.demo_mode || options.demoMode) {
                 return new Promise((resolve) => {
                     setTimeout(() => {
@@ -507,21 +636,27 @@ const Express = (() => {
             }
 
             try {
-                // Turnstile Token Injection
                 if (config.TURNSTILE_SITE_KEY) {
                     const token = await Security.getToken();
                     if (!token) throw new Error(Util.getText('ex_error_captcha'));
-                    body['cf-turnstile-response'] = token;
+                    if (body instanceof FormData) {
+                        body.append('cf-turnstile-response', token);
+                    } else {
+                        body['cf-turnstile-response'] = token;
+                    }
                 }
 
-                // V4 Path Injection
                 const currentPath = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
-                body['__assets_path'] = currentPath;
+                if (body instanceof FormData) {
+                    body.append('__assets_path', currentPath);
+                } else {
+                    body['__assets_path'] = currentPath;
+                }
 
                 const response = await fetch(endpoint, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body)
+                    headers: body instanceof FormData ? undefined : { 'Content-Type': 'application/json' },
+                    body: body instanceof FormData ? body : JSON.stringify(body)
                 });
 
                 const result = await response.json();
@@ -538,14 +673,14 @@ const Express = (() => {
         }
     };
 
-    // [Initialization]
     const init = async (siteConfig) => {
         if (isInitialized) return;
         config = siteConfig || {};
         
         UI.init();
         
-        // Language Logic (Priority: URL > LocalStorage > Browser > Config)
+        Validation.init();
+        
         const urlParams = new URLSearchParams(window.location.search);
         let lang = urlParams.get('lang');
 
@@ -560,7 +695,6 @@ const Express = (() => {
         document.documentElement.lang = lang;
         await Data.load(lang);
         
-        // Security Init
         if (config.TURNSTILE_SITE_KEY) {
             const script = document.createElement('script');
             script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback';
@@ -580,7 +714,7 @@ const Express = (() => {
             Data,
             Canvas,
             Security,
-            Effects: {} // Registry for Tier 3 effects
+            Effects: {} 
         };
     };
 

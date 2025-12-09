@@ -1,13 +1,13 @@
 /*
-    Express Series V4 Core Style (Facility)
-    Version: 4.1.1 (Patch: Slide Indicators)
-    Last Modified: 2025-12-08
+    Version: Express 4.6.0 (Security Update)
+    Last Modified: 2025-12-09 14:35:00 (KST)
+    File Name: express-v4.css
     Author: Maxim
     License: © 2025 Maxim. All Rights Reserved.
 */
 
 :root {
-    /* [Light Mode - Default] */
+    /* Light Mode */
     --ex-color-primary: #000000;
     --ex-color-secondary: #555555;
     --ex-color-accent: #333333;
@@ -48,6 +48,16 @@
         --ex-color-text: #E0E0E0;
         --ex-color-text-light: #888888;
     }
+
+    input[type="date"] {
+        background-image: 
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23AAAAAA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E"),
+            linear-gradient(to left, rgba(255,255,255,0.1) 50px, transparent 50px) !important;
+    }
+
+    input[type="checkbox"]:checked {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") !important;
+    }
 }
 
 *, *::before, *::after {
@@ -67,7 +77,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* --- V4 Strict Input Reset --- */
 input, select, textarea, button {
     appearance: none;
     -webkit-appearance: none;
@@ -82,14 +91,113 @@ input, select, textarea, button {
     padding: 0;
 }
 
-/* Helper Classes */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--ex-color-bg) inset !important;
+    -webkit-text-fill-color: var(--ex-color-text) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.has-error {
+    border-color: var(--ex-color-error) !important;
+    animation: ex-shake 0.4s ease;
+}
+
+@keyframes ex-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+label:has(+ [required])::after {
+    content: "*";
+    color: var(--ex-color-error);
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+input[type="checkbox"], 
+input[type="radio"] {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--ex-color-border);
+    background-color: var(--ex-color-surface);
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    margin-right: 8px;
+}
+
+input[type="checkbox"] { border-radius: 4px; }
+input[type="radio"] { border-radius: 50%; }
+
+input[type="checkbox"]:checked {
+    background-color: var(--ex-color-primary);
+    border-color: var(--ex-color-primary);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-size: 80% 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+input[type="radio"]:checked {
+    border-color: var(--ex-color-primary);
+    background-image: radial-gradient(circle, var(--ex-color-primary) 50%, transparent 50%);
+}
+
+input[type="checkbox"].has-error,
+input[type="radio"].has-error {
+    border-color: var(--ex-color-error);
+    box-shadow: 0 0 0 1px var(--ex-color-error);
+}
+
+input[type="date"] {
+    position: relative;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E"),
+        linear-gradient(to left, rgba(0,0,0,0.05) 50px, transparent 50px);
+    background-position: center right 15px, center right;
+    background-size: 20px 20px, 100% 100%;
+    background-repeat: no-repeat;
+    padding-right: 50px !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 5;
+}
+
 .ex-hidden { display: none !important; }
 .ex-visible { display: block !important; }
 .ex-flex-center { display: flex; justify-content: center; align-items: center; }
 .ex-text-center { text-align: center; }
 .ex-no-scroll { overflow: hidden !important; }
 
-/* Loader */
+/* Security Counter UI */
+.ex-counter {
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--ex-color-text-light);
+    margin-top: 4px;
+    opacity: 0.8;
+    transition: color 0.2s ease;
+}
+.ex-counter.is-warning { color: var(--ex-color-warning); opacity: 1; font-weight: 500; }
+.ex-counter.is-limit { color: var(--ex-color-error); opacity: 1; font-weight: 700; }
+
 .ex-loader {
     display: inline-block;
     width: 24px;
@@ -100,9 +208,15 @@ input, select, textarea, button {
     animation: ex-spin 0.8s linear infinite;
     vertical-align: middle;
 }
+
+button .ex-loader,
+a[role="button"] .ex-loader {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: #FFFFFF;
+}
+
 @keyframes ex-spin { to { transform: rotate(360deg); } }
 
-/* Canvas Layer */
 .ex-canvas {
     position: absolute;
     inset: 0;
@@ -152,7 +266,6 @@ input, select, textarea, button {
     z-index: 1;
 }
 
-/* Indicators (New) */
 .ex-canvas__indicators {
     position: absolute;
     bottom: 7%;
@@ -175,7 +288,6 @@ input, select, textarea, button {
     transform: scale(1.2);
 }
 
-/* Modals */
 .ex-overlay {
     position: fixed;
     inset: 0;
@@ -227,7 +339,6 @@ input, select, textarea, button {
 .ex-btn--secondary { background-color: var(--ex-color-surface); color: var(--ex-color-text); border: 1px solid var(--ex-color-border); }
 .ex-btn--secondary:hover { background-color: var(--ex-color-border); }
 
-/* Toasts */
 .ex-toast-container {
     position: fixed;
     bottom: 20px;
@@ -258,7 +369,6 @@ input, select, textarea, button {
 .ex-toast--success { border-left: 4px solid var(--ex-color-success); }
 .ex-toast--error { border-left: 4px solid var(--ex-color-error); }
 
-/* Lightbox */
 .ex-lightbox {
     position: fixed;
     inset: 0;
@@ -289,14 +399,12 @@ input, select, textarea, button {
 }
 .ex-lightbox__close:hover { opacity: 1; }
 
-/* Turnstile Container */
 #turnstile-container {
     position: absolute;
     top: -9999px;
     left: -9999px;
 }
 
-/* [Feature] Fullscreen Warning */
 #fullscreen-warning {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.85);
