@@ -1,8 +1,8 @@
 /*
-    Version: 4.0.0 (Tier 3 Interior)
+    Version: 4.1.0 (Tier 3 Refactor)
     Framework: Express Series V4
-    Theme: CHUU - Pastel Dream
-    Last Modified: 2025-12-07
+    Theme: CHUU - Sweet Wonderland
+    Last Modified: 2025-12-09
     Author: Maxim
 */
 
@@ -10,7 +10,7 @@
 const siteConfig = {
     // Core Essentials
     language: 'ko',
-    theme_color: '#C98696',
+    theme_color: '#FF8FA3', // Strawberry Pink
     
     // API Strategy (Demo Mode)
     // API_HOST: '', 
@@ -37,8 +37,7 @@ const siteConfig = {
     scroll_smooth: true
 };
 
-// [2. Custom Effect Plugin] Heart Effect (V4 Refactor)
-// Must be global or registered via PE_V4
+// [2. Custom Effect Plugin] Heart Effect (Sweet Wonderland Ver.)
 window.heartEffect = {
     canvas: null,
     ctx: null,
@@ -48,18 +47,15 @@ window.heartEffect = {
     mouse: { x: null, y: null, radius: 100 },
     width: 0,
     height: 0,
-    // Pastel Palette
-    heartBaseColors: [ [224, 187, 228], [255, 181, 197], [255, 244, 224], [201, 134, 150] ],
-    numberOfHearts: 35,
+    // [Sweet Wonderland Palette]
+    // Strawberry Pink, Butter Yellow, Soft Mint, White
+    heartBaseColors: [ [255, 143, 163], [255, 241, 118], [165, 214, 167], [255, 255, 255] ],
+    numberOfHearts: 40,
 
     init: function(container) {
-        // V4 passes the container (div.ex-canvas)
         this.container = container;
-        
-        // [Fix] Try to find existing canvas first
         this.canvas = this.container.querySelector('.ex-canvas__effect');
         
-        // Only create if it doesn't exist
         if (!this.canvas) {
             this.canvas = document.createElement('canvas');
             this.canvas.className = 'ex-canvas__effect';
@@ -67,17 +63,14 @@ window.heartEffect = {
         }
 
         this.ctx = this.canvas.getContext('2d');
-
         this.resize();
         this.createHearts();
         
-        // Bind events
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
         this.onResize = this.resize.bind(this);
         this.animate = this.animate.bind(this);
 
-        // The parent .pe-header handles mouse events mostly, but we bind to window/canvas for safety
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('mouseout', this.onMouseOut);
         window.addEventListener('resize', this.onResize);
@@ -120,7 +113,7 @@ window.heartEffect = {
     },
 
     createHeart: function() {
-        const size = (Math.random() * 20) + 10;
+        const size = (Math.random() * 20) + 12; // Slightly larger
         const x = Math.random() * this.width;
         const y = Math.random() * this.height;
         const directionX = (Math.random() * 0.6) - 0.3;
@@ -136,13 +129,10 @@ window.heartEffect = {
         if (!this.ctx) return;
         this.ctx.clearRect(0, 0, this.width, this.height);
         
-        // Draw Hearts
         this.hearts.forEach(h => {
-            // Update
             if (h.x > this.width + h.size || h.x < -h.size) h.x = (h.directionX > 0) ? -h.size : this.width + h.size;
             if (h.y > this.height + h.size || h.y < -h.size) h.y = (h.directionY > 0) ? -h.size : this.height + h.size;
             
-            // Mouse Interaction
             if (this.mouse.x !== null) {
                 const dx = this.mouse.x - h.x;
                 const dy = this.mouse.y - h.y;
@@ -154,16 +144,14 @@ window.heartEffect = {
             }
             h.x += h.directionX;
             h.y += h.directionY;
-            
             this.drawHeart(h.x, h.y, h.size, h.color, h.rotation);
         });
 
-        // Random Sparkles
-        if (Math.random() > 0.95) {
+        if (Math.random() > 0.94) { // More sparkles
             this.sparkles.push({
                 x: Math.random() * this.width,
                 y: Math.random() * this.height,
-                size: Math.random() * 2 + 1,
+                size: Math.random() * 3 + 1,
                 life: 1,
                 opacity: 1
             });
