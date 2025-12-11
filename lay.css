@@ -218,7 +218,6 @@ body, .pe-card__title, .pe-process-item__title {
    opacity: 1;
 }
 
-/* Fix: Dynamic Background for Alternate Sections */
 .pe-section.to-primary {
     background-color: var(--bg-footer);
 }

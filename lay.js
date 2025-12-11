@@ -6,18 +6,11 @@
     Author: Maxim
 */
 
-// [1. Configuration]
 const siteConfig = {
-    // Core Essentials
     language: 'ko',
-    theme_color: '#FF8BA7', // Strawberry Milk Pink
-    
-    // API Strategy (Demo Mode)
-    // API_HOST: '', 
-    API_ENDPOINT: './upload.php', 
+    theme_color: '#FF8BA7',
     demo_mode: true,
 
-    // Visual Engine
     canvas_target: '#home',
     canvas_effect: 'heartEffect', 
     canvas_overlay: 'dotted',
@@ -28,7 +21,6 @@ const siteConfig = {
     canvas_image_path: './section/home/',
     canvas_image_format: 'jpg',
 
-    // Interaction
     icon_buttons: [
         { name: 'Profile', icon: 'mail', url: '#profile' },
         { name: 'Search', icon: 'search', url: '#search' },
@@ -37,7 +29,6 @@ const siteConfig = {
     scroll_smooth: true
 };
 
-// [2. Custom Effect Plugin] Heart Effect (Vintage Pastel Palette)
 window.heartEffect = {
     canvas: null,
     ctx: null,
@@ -47,7 +38,6 @@ window.heartEffect = {
     mouse: { x: null, y: null, radius: 100 },
     width: 0,
     height: 0,
-    // [Palette] Strawberry, Butter Yellow, Cream, Mint (Soft & Tasty)
     heartBaseColors: [ [255, 139, 167], [255, 209, 220], [255, 245, 157], [178, 235, 242] ],
     numberOfHearts: 45,
 
@@ -186,7 +176,6 @@ window.heartEffect = {
     }
 };
 
-// [3. Start Engine]
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof PE_V4 !== 'undefined') {
         PE_V4.init(siteConfig);
