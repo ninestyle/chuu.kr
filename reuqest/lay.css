@@ -1,0 +1,144 @@
+/*
+    Tier 3: User Custom Style
+    Version: CHUU V4.3
+    Description: Compact Density & Smart Sticky Price
+*/
+
+/* 1. Variable Overriding */
+:root {
+    --ex-color-bg: #FEF7F9;
+    --ex-color-surface: #FFFFFF;
+    
+    --ex-color-text: #614B51;
+    --ex-color-secondary: #8C7B80;
+    --ex-color-border: #FCEFF2;
+    
+    --ex-color-primary: #E0BBE4;
+    --ex-color-accent: #957DAD;
+    --ex-color-danger: #ff3b30;
+
+    --fe-radius: 12px;
+    --fe-input-height: 48px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ex-color-bg: #3B3037;
+        --ex-color-surface: #4A3E45;
+        --ex-color-text: #F5EAF0;
+        --ex-color-secondary: #D9CAD4;
+        --ex-color-border: #5C4E56;
+        
+        --ex-color-primary: #E0BBE4;
+        --ex-color-accent: #E0BBE4;
+    }
+}
+
+/* 2. Global Typography */
+body {
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 3. Layout Density Optimization */
+.fe-container {
+    max-width: 540px; 
+}
+
+/* Card Density */
+.fe-card {
+    padding: 1.5rem 1.25rem; /* Tighter padding */
+    margin-bottom: 1.25rem;   /* Distinct separation between sections */
+    border: 1px solid var(--ex-color-border);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.02);
+}
+
+/* Field Grouping */
+.fe-group {
+    margin-bottom: 1.25rem; /* Consistent spacing between fields */
+}
+
+/* Label & Input Relationship */
+.fe-label {
+    margin-bottom: 6px; /* Closer to input */
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ex-color-secondary);
+}
+
+/* Note Text */
+.fe-note {
+    font-size: 0.8rem;
+    color: var(--ex-color-secondary);
+    margin: -0.75rem 0 1rem 0;
+    line-height: 1.4;
+    opacity: 0.8;
+}
+
+.fe-note.delivery_note {
+    margin: 0;
+}
+
+/* Cookie List Density */
+.cookie-list {
+    gap: 0.8rem; /* Tighter grid gap */
+}
+.cookie-list .fe-group {
+    margin-bottom: 0.5em; /* Remove bottom margin inside grid */
+}
+
+/* 4. Smart Sticky Price Bar */
+.price-sticky-bar {
+    position: sticky;
+    bottom: 20px; /* Floats 20px from bottom viewport */
+    z-index: 100;
+    
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    border: 1px solid var(--ex-color-primary);
+    border-radius: var(--fe-radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Dark mode support for sticky bar */
+@media (prefers-color-scheme: dark) {
+    .price-sticky-bar {
+        background-color: rgba(60, 50, 55, 0.95);
+    }
+}
+
+.price-content {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.price-label {
+    font-size: 1rem;
+    color: var(--ex-color-secondary);
+    font-weight: 500;
+}
+
+.price-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--ex-color-text);
+    line-height: 1;
+}
+.price-value.active {
+    color: var(--ex-color-accent);
+}
+
+.price-note {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.75rem;
+    color: var(--ex-color-secondary);
+    opacity: 0.8;
+}

@@ -1,0 +1,227 @@
+<!--
+    Version: Express 4.3 - Reference Standard
+    Last Modified: 2025-12-13 17:00 (KST)
+    File Name: index.html
+    Project Name: CHUU ORDER FORM
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>CHUU Order</title>
+    
+    <link rel="icon" href="https://www.chuu.kr/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- [Tier 1] Express Core -->
+    <link rel="stylesheet" href="https://cdn.dam.so/_inc/express/v4/express-v4.css">
+    <script src="https://cdn.dam.so/_inc/express/v4/express-v4.js"></script>
+
+    <!-- [Tier 2] Form Express -->
+    <link rel="stylesheet" href="https://cdn.dam.so/_inc/express/v4/form-v4.css">
+    <script src="https://cdn.dam.so/_inc/express/v4/form-v4.js"></script>
+
+    <!-- [Tier 3] User Custom -->
+    <link rel="stylesheet" href="./lay.css">
+    <script src="./lay.js" defer></script>
+</head>
+<body>
+
+<div class="fe-app">
+    <div class="fe-container">
+        <header class="fe-header">
+            <h1 class="fe-header__title" data-lang="site_title"></h1>
+            <p class="fe-header__desc" data-lang="home_subtitle"></p>
+            
+            <nav class="fe-lang-switcher">
+                <a href="?lang=ko" class="fe-lang-btn">KO</a>
+                <a href="?lang=en" class="fe-lang-btn">EN</a>
+            </nav>
+        </header>
+
+        <form id="order-form" class="fe-form" novalidate>
+            
+            <!-- 1. Customer Info -->
+            <div class="fe-card">
+                <div class="fe-card__header">
+                    <h2 data-lang="customer_info_title"></h2>
+                    <span class="fe-card__badge">Profile</span>
+                </div>
+                
+                <div class="profile-list">
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="customer_name">Name</label>
+                        <input type="text" name="name" class="fe-input" required>
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="customer_contact">Contact</label>
+                        <input type="tel" name="contact" class="fe-input" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Cake Order (Unified) -->
+            <div class="fe-card" id="card-cake">
+                <div class="fe-card__header">
+                    <h2 data-lang="cake_order_title"></h2>
+                    <span class="fe-card__badge">Custom</span>
+                </div>
+
+                <div class="cake-list">
+                <!-- Type & Size -->
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cake_type"></label>
+                        <select name="cake_type" id="cake_type" class="fe-select" required>
+                            <option value="" data-lang="cake_type_none" data-price="0"></option>
+                            <option value="lettering" data-lang="cakes_lettering_title" data-price="55"></option>
+                            <option value="photo" data-lang="cakes_photo_title" data-price="65"></option>
+                            <option value="3d" data-lang="cakes_3d_title" data-price="85"></option>
+                        </select>
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cake_size_label"></label>
+                        <select name="cake_size" class="fe-select" required>
+                            <option value="lunchbox" data-lang="opt_size_lunchbox" data-price="0"></option>
+                            <option value="size_1" data-lang="opt_size_1" data-price="15"></option>
+                            <option value="size_2" data-lang="opt_size_2" data-price="25"></option>
+                        </select>
+                    </div>
+
+                <!-- Flavor & Cream -->
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cake_flavor_label"></label>
+                        <select name="cake_flavor" class="fe-select">
+                            <option value="vanilla" data-lang="opt_flavor_vanilla" data-price="0"></option>
+                            <option value="choco" data-lang="opt_flavor_choco" data-price="3"></option>
+                            <option value="carrot" data-lang="opt_flavor_carrot" data-price="4"></option>
+                            <option value="redvelvet" data-lang="opt_flavor_redvelvet" data-price="5"></option>
+                        </select>
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cake_cream_label"></label>
+                        <select name="cake_cream" class="fe-select">
+                            <option value="fresh" data-lang="opt_cream_fresh" data-price="0"></option>
+                            <option value="cheese" data-lang="opt_cream_cheese" data-price="4"></option>
+                        </select>
+                    </div>
+
+                    <!-- Design Details -->
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cake_details_label"></label>
+                        <textarea name="cake_details" class="fe-textarea" rows="3" data-lang-placeholder="cake_details_placeholder"></textarea>
+                    </div>
+
+                    <!-- Reference File (Condition: Hidden for Lettering) -->
+                    <div class="fe-group hidden" id="group-file">
+                        <label class="fe-label" data-lang="photo_upload"></label>
+                        <div class="fe-file-wrapper">
+                            <input type="file" name="attachments[]" class="fe-file-input" multiple accept="image/*">
+                            <div class="fe-file-label" data-lang="ex_file_default_label"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 3. Cookie Order (Quantity Input) -->
+            <div class="fe-card">
+                <div class="fe-card__header">
+                    <h2 data-lang="cookie_order_title"></h2>
+                    <span class="fe-card__badge">Add-on</span>
+                </div>
+                
+                <div class="cookie-list">
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cookies_01_title"></label>
+                        <input type="number" name="cookie_01_qty" class="fe-input" min="0" data-lang-placeholder="cookies_desc" data-unit-price="3.5">
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cookies_02_title"></label>
+                        <input type="number" name="cookie_02_qty" class="fe-input" min="0" placeholder="0" data-unit-price="3.5">
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cookies_03_title"></label>
+                        <input type="number" name="cookie_03_qty" class="fe-input" min="0" placeholder="0" data-unit-price="4.0">
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cookies_04_title"></label>
+                        <input type="number" name="cookie_04_qty" class="fe-input" min="0" placeholder="0" data-unit-price="4.0">
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cookies_05_title"></label>
+                        <input type="number" name="cookie_05_qty" class="fe-input" min="0" placeholder="0" data-unit-price="4.5">
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="cookies_06_title"></label>
+                        <input type="number" name="cookie_06_qty" class="fe-input" min="0" placeholder="0" data-unit-price="4.5">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Pickup & Delivery -->
+            <div class="fe-card">
+                <div class="fe-card__header">
+                    <h2 data-lang="pickup_delivery_title"></h2>
+                    <span class="fe-card__badge">Delivery</span>
+                </div>
+                
+                <div class="pickup-list">
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="pickup_method"></label>
+                        <select name="pickup_method" id="pickup_method" class="fe-select">
+                            <option value="pickup" data-lang="store_pickup"></option>
+                            <option value="delivery" data-lang="delivery"></option>
+                        </select>
+                    </div>
+                    <div class="fe-group">
+                        <label class="fe-label" data-lang="desired_date"></label>
+                        <input type="date" name="pickup_date" class="fe-input" required>
+                    </div>
+                     <div class="fe-group hidden" id="group-address">
+                        <label class="fe-label" data-lang="delivery_address"></label>
+                        <input type="text" name="address" class="fe-input" data-lang-placeholder="delivery_address_ph">
+                        <p class="fe-note delivery_note" data-lang="delivery_note"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Additional Message -->
+            <div class="fe-card">
+                <div class="fe-card__header">
+                    <h2 data-lang="additional_requests_title"></h2>
+                    <span class="fe-card__badge">Requests</span>
+                </div>
+                <textarea class="fe-textarea" name="message" rows="3"></textarea>
+            </div>
+
+            <!-- Sticky Price Display -->
+            <div class="price-sticky-bar">
+                <div class="price-content">
+                    <span class="price-label" data-lang="label_estimated_total">Total</span>
+                    <span class="price-value" id="total-price">$0</span>
+                </div>
+                <p class="price-note" data-lang="price_note"></p>
+            </div>
+
+            <!-- Submit -->
+            <div class="fe-submit-area">
+                <div class="fe-check-group">
+                    <input type="checkbox" name="agree" id="agree" class="fe-check-input" required>
+                    <label for="agree" class="fe-check-label" data-lang="label_agree"></label>
+                </div>
+                <button type="submit" class="fe-btn fe-btn--submit">
+                    <span data-lang="submit_button"></span>
+                </button>
+            </div>
+        </form>
+
+        <footer class="fe-footer">
+            <p>&copy; 2025 CHUU. All Rights Reserved.</p>
+        </footer>
+    </div>
+</div>
+
+</body>
+</html>

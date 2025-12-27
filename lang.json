@@ -28,7 +28,7 @@
         "cookies_09_price_6pack": "$28",
         "faq_title": "FAQ",
         "order_button": "Order Now",
-        "order_button_url": "https://app.dam.so/order/chuu/?lang=en",
+        "order_button_url": "/request",
         "contact_label_name": "Name:",
         "contact_label_email": "E-mail:",
         "location_title": "Location"

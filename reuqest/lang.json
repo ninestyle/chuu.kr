@@ -1,0 +1,161 @@
+{
+    "_default": {
+        "site_title": "CHUU Order",
+        "home_subtitle": "Baking your sweet moments",
+        "customer_info_title": "Customer Information",
+        "cake_order_title": "Custom Cake",
+        "cookie_order_title": "Cookies",
+        "pickup_delivery_title": "Pickup & Delivery",
+        "additional_requests_title": "Additional Requests",
+        "submit_button": "Submit Order",
+        "label_agree": "I agree to the privacy policy.",
+        
+        "label_estimated_total": "Estimated Total",
+        "price_note": "* Final price may vary based on complex designs.",
+        
+        "customer_name": "Name",
+        "customer_contact": "Contact",
+        
+        "cake_type": "Cake Type",
+        "cake_type_none": "Select Type",
+        "cakes_lettering_title": "Lettering Cake",
+        "cakes_photo_title": "Photo Cake",
+        "cakes_3d_title": "3D Cake",
+        
+        "cake_size_label": "Size",
+        "opt_size_lunchbox": "Lunchbox (1-2 ppl)",
+        "opt_size_1": "Size 1 (15cm)",
+        "opt_size_2": "Size 2 (18cm)",
+        
+        "cake_flavor_label": "Flavor",
+        "opt_flavor_vanilla": "Vanilla",
+        "opt_flavor_choco": "Chocolate",
+        "opt_flavor_carrot": "Carrot",
+        "opt_flavor_redvelvet": "Red Velvet",
+        
+        "cake_cream_label": "Cream",
+        "opt_cream_fresh": "Fresh Cream",
+        "opt_cream_cheese": "Cream Cheese",
+        
+        "cake_details_label": "Design / Lettering",
+        "cake_details_placeholder": "Enter lettering text or describe design details...",
+        "photo_upload": "Reference / Photo File",
+        "ex_file_default_label": "Select File",
+        
+        "cookies_desc": "Enter quantity (ea).",
+        "cookies_01_title": "Chocolate Chip",
+        "cookies_02_title": "Earl Grey Tea",
+        "cookies_03_title": "Cheddar Cheese",
+        "cookies_04_title": "Matcha White",
+        "cookies_05_title": "Red Velvet",
+        "cookies_06_title": "Oreo S'more",
+        
+        "pickup_method": "Method",
+        "store_pickup": "Store Pickup",
+        "delivery": "Delivery",
+        "desired_date": "Date",
+        "delivery_address": "Address",
+        "delivery_address_ph": "Start typing address...",
+        "delivery_note": "* Delivery fee will be charged separately."
+    },
+    "ko": {
+        "site_title": "CHUU 주문서",
+        "home_subtitle": "당신의 달콤한 순간을 만듭니다.",
+        "customer_info_title": "주문자 정보",
+        "cake_order_title": "케이크 주문",
+        "cookie_order_title": "쿠키 주문",
+        "pickup_delivery_title": "수령 방법 및 날짜",
+        "additional_requests_title": "추가 요청사항",
+        "submit_button": "주문하기",
+        "label_agree": "개인정보 수집 및 이용에 동의합니다.",
+        
+        "label_estimated_total": "총 예상 금액",
+        "price_note": "* 복잡한 디자인이나 요청사항에 따라 최종 가격은 달라질 수 있습니다.",
+        
+        "customer_name": "성함",
+        "customer_contact": "연락처",
+        
+        "cake_type": "케이크 종류",
+        "cake_type_none": "종류 선택",
+        "cakes_lettering_title": "레터링 케이크",
+        "cakes_photo_title": "포토 케이크",
+        "cakes_3d_title": "입체 케이크",
+        
+        "cake_size_label": "사이즈",
+        "opt_size_lunchbox": "도시락 (1-2인)",
+        "opt_size_1": "1호 (15cm)",
+        "opt_size_2": "2호 (18cm)",
+        
+        "cake_flavor_label": "시트 맛",
+        "opt_flavor_vanilla": "바닐라",
+        "opt_flavor_choco": "초코",
+        "opt_flavor_carrot": "당근",
+        "opt_flavor_redvelvet": "레드벨벳",
+        
+        "cake_cream_label": "크림 종류",
+        "opt_cream_fresh": "생크림",
+        "opt_cream_cheese": "크림치즈",
+        
+        "cake_details_label": "레터링 문구 / 요청사항",
+        "cake_details_placeholder": "케이크 위 문구나 원하시는 디자인을 적어주세요.",
+        "photo_upload": "참고 사진 (디자인/포토)",
+        "ex_file_default_label": "파일 선택",
+        
+        "cookies_desc": "원하시는 수량을 입력해주세요. (개당)",
+        "cookies_01_title": "초콜릿 칩",
+        "cookies_02_title": "얼그레이 티",
+        "cookies_03_title": "황치즈",
+        "cookies_04_title": "말차 화이트",
+        "cookies_05_title": "레드벨벳",
+        "cookies_06_title": "오레오 스모어",
+        
+        "pickup_method": "수령 방법",
+        "store_pickup": "매장 픽업",
+        "delivery": "퀵/배송 (착불)",
+        "desired_date": "수령 희망일",
+        "delivery_address": "배송 주소",
+        "delivery_address_ph": "상세 주소를 입력하세요",
+        "delivery_note": "* 배송 선택 시 배송비는 별도 청구됩니다."
+    },
+    "en": {
+        "site_title": "CHUU Order",
+        "home_subtitle": "Baking your sweet moments",
+        "cake_type_none": "Select Type",
+        "cakes_lettering_title": "Lettering Cake",
+        "cakes_photo_title": "Photo Cake",
+        "cakes_3d_title": "3D Cake",
+        
+        "cake_size_label": "Size",
+        "opt_size_lunchbox": "Lunchbox (1-2 ppl)",
+        "opt_size_1": "Size 1 (15cm)",
+        "opt_size_2": "Size 2 (18cm)",
+        
+        "cake_flavor_label": "Sheet Flavor",
+        "opt_flavor_vanilla": "Vanilla",
+        "opt_flavor_choco": "Chocolate",
+        "opt_flavor_carrot": "Carrot",
+        "opt_flavor_redvelvet": "Red Velvet",
+        
+        "cake_cream_label": "Cream",
+        "opt_cream_fresh": "Fresh Cream",
+        "opt_cream_cheese": "Cream Cheese",
+        
+        "cake_details_label": "Lettering / Design",
+        "photo_upload": "Reference Images",
+        
+        "cookies_desc": "Enter quantity for each cookie.",
+        
+        "cookies_01_title": "Chocolate Chip",
+        "cookies_02_title": "Earl Grey Tea",
+        "cookies_03_title": "Cheddar Cheese",
+        "cookies_04_title": "Matcha White",
+        "cookies_05_title": "Red Velvet",
+        "cookies_06_title": "Oreo S'more",
+        
+        "pickup_method": "Method",
+        "store_pickup": "Store Pickup",
+        "delivery": "Delivery",
+        "desired_date": "Date",
+        "delivery_address": "Address"
+    }
+}
